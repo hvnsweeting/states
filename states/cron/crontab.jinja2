@@ -11,8 +11,8 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 # m h dom mon dow user	command
 17 *	* * *	root    nice -n 19 ionice -c3 run-parts --report /etc/cron.hourly
-25 {{ pillar['crontab_hour'] }}	* * *	root	nice -n 19 ionice -c3 run-parts --report /etc/cron.daily
-47 {{ pillar['crontab_hour'] }}	* * 7	root	nice -n 19 ionice -c3 run-parts --report /etc/cron.weekly
-52 {{ pillar['crontab_hour'] }}	1 * *	root	nice -n 19 ionice -c3 run-parts --report /etc/cron.monthly
+25 {{ pillar['crontab_hour']|default("6") }}	* * *	root	nice -n 19 ionice -c3 run-parts --report /etc/cron.daily
+47 {{ pillar['crontab_hour']|default("6") }}	* * 7	root	nice -n 19 ionice -c3 run-parts --report /etc/cron.weekly
+52 {{ pillar['crontab_hour']|default("6") }}	1 * *	root	nice -n 19 ionice -c3 run-parts --report /etc/cron.monthly
 
 # end of file
