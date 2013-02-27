@@ -40,7 +40,7 @@ graylog2:
     version: 0.9.6p1
     checksum: md5=f7b49a5259781a5a585cf7ee406e35c6
     hostnames:
-      - {{ salt['network.interfaces']()['eth0']['inet'][0] }}
+      - {{ salt['network.interfaces']()['eth0']['inet'][0]['address'] }}
     port: 8000
     email:
       {# this will surely won't work #}
