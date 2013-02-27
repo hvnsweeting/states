@@ -12,15 +12,6 @@ uwsgi:
   repository: git://github.com/bclermont/uwsgi.git
   version: 1.4.3-patched
 
-nginx:
-  redirect_numeric_ip: http://www.google.com/
-
-{#
-deployment_key_source: salt://deployment/ssh.key
-
-crontab_hour: 6
-#}
-
 ubuntu_mirror: mirror.anl.gov/pub/ubuntu
 
 message_do_not_modify: Salt managed file, any changes might be lost.
@@ -47,8 +38,7 @@ graylog2:
     version: 0.9.6p1
     checksum: md5=f7b49a5259781a5a585cf7ee406e35c6
     hostnames:
-      {# feel free to put whatever it resolve #}
-      - {{ grains['id'] }}
+      - {{ salt['network.interfaces']()['eth0']['inet'][0] }}
     port: 8000
     email:
       {# this will surely won't work #}
