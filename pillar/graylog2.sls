@@ -16,6 +16,8 @@ ubuntu_mirror: mirror.anl.gov/pub/ubuntu
 
 message_do_not_modify: Salt managed file, any changes might be lost.
 
+nginx:
+
 debug: False
 
 elasticsearch:
