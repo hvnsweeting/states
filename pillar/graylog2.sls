@@ -21,8 +21,8 @@ nginx:
 debug: False
 
 elasticsearch:
-  version: 0.19.11
-  md5: 4028d34c80fb4da94846c401fdc56589
+  version: 0.20.5
+  md5: e244c5a39515983ba81006a3186843f4
   heap_size: 200m
   cluster:
     name: {{ grains['id'] }}
