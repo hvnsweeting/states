@@ -34,7 +34,7 @@ graylog2-server:
   archive:
     - extracted
     - name: /usr/local/
-    - source: https://github.com/downloads/Graylog2/graylog2-server/graylog2-server-{{ pillar['graylog2']['server']['version'] }}.tar.gz
+    - source: http://download.graylog2.org/graylog2-server/graylog2-server-{{ pillar['graylog2']['server']['version'] }}.tar.gz
     - source_hash: {{ pillar['graylog2']['server']['checksum'] }}
     - archive_format: tar
     - tar_options: z
