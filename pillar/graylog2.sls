@@ -32,10 +32,9 @@ elasticsearch:
         public: 127.0.0.1
 
 graylog2:
-  elasticsearch: 127.0.0.1
   server:
-    version: 0.9.6p1
-    checksum: md5=499ae16dcae71eeb7c3a30c75ea7a1a6
+    version: 0.11.0
+    checksum: md5=135c9eb384a03839e6f2eca82fd03502
   web:
     version: 0.9.6p1
     checksum: md5=f7b49a5259781a5a585cf7ee406e35c6
