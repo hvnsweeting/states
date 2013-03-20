@@ -4,7 +4,7 @@ bootstrap:
   mlockall: true
 
 cluster:
-  name: elasticsearch-{{ cluster['name'] }}
+  name: {{ cluster['name'] }}
   routing:
     allocation:
       node_concurrent_recoveries: 2
