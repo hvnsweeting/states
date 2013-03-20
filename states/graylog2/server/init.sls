@@ -1,4 +1,5 @@
 include:
+  - graylog2
   - nrpe
   - diamond
 
