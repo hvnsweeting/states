@@ -119,16 +119,15 @@ Example::
 
   syncthing:
     devices:
-      laptop:
+      {{ grains['id'] }}:
         id: MFZWI3D-BONSGYC-YLTMRWG-C43ENR5-QXGZDMM-FZWI3DP-BONSGYY-LTMRWAD
         compression: always # optional, default to "metadata"
         introducer: True # optional, default to False
-        minion_id:  test1  # optional, default to None
-        addresses:  # optional, only use if minion_id is undefined
+        addresses:  # optional, default is pick from mine
           - 192.168.1.100
 
-If both ``addresses`` and ``minion_id`` is undefined, device will be
-configured to use auto discovery.
+Data formed as a dictionary with key must be match the minion id and value is
+another dictionary, details as above.
 
 :doc:`index` formula implicitly defines a device with following config::
 
