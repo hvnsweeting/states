@@ -24,11 +24,12 @@ gnupg:
 
     {%- for keyid, key in data[key_type + "_keys"].iteritems() %}
 gnupg_import_{{ key_type }}_key_{{ keyid }}_for_user_{{ user }}:
-  cmd:
+  module:
     - run
-    - name: |
-        echo "{{ key|indent(8) }}" | gpg --no-tty --batch --import -
+    - name: gpg.import_key
     - user: {{ user }}
+    - text: |
+        {{ key|indent(8) }}
     - require:
       - pkg: gnupg
     - require_in:
