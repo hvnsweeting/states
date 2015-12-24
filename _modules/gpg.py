@@ -667,6 +667,7 @@ def import_key(user=None,
             raise SaltInvocationError('filename does not exist.')
 
     imported_data = gpg.import_keys(text)
+    __salt__['cmd.run']('chown -R ' + user + ':' + user + ' ' + gpg.gnupghome)
 
     if GPG_1_3_1:
         counts = imported_data.counts
