@@ -40,7 +40,7 @@ gnupg_import_{{ key_type }}_key_{{ keyid }}_for_user_{{ user }}:
   {%- endfor %}
 
   {%- if 'gnupg' in pkgs and 'python-gnupg' in pkgs %}
-    {%- set imported_keys = salt["gpg.list_keys"]() %}
+    {%- set imported_keys = salt["gpg.list_keys"](user=user) %}
     {%- for imported_key in imported_keys %}
       {#- The public is also imported when importing a secret key
       So, secret key must be deleted first before deleting the public key #}
