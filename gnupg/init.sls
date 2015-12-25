@@ -15,6 +15,7 @@ gnupg:
     - wait
     - name: "true"
 
+{%- set pkgs = salt['pkg.list_pkgs']() %}
 {%- for user, data in users.iteritems() %}
   {{ dict_default(data, "public_keys", {}) }}
   {{ dict_default(data, "private_keys", {}) }}
@@ -38,7 +39,7 @@ gnupg_import_{{ key_type }}_key_{{ keyid }}_for_user_{{ user }}:
     {%- endfor %}
   {%- endfor %}
 
-  {%- if 'gpg' in salt["sys.list_modules"]() %}
+  {%- if 'gnupg' in pkgs and 'python-gnupg' in pkgs %}
     {%- set imported_keys = salt["gpg.list_keys"]() %}
     {%- for imported_key in imported_keys %}
       {#- The public is also imported when importing a secret key
