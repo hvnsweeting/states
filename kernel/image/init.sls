@@ -34,3 +34,10 @@ bikeshed:
     - name: purge-old-kernels -q -y --force-yes
     - require:
       - pkg: bikeshed
+
+kernel_metapkgs:
+  pkg:
+    - purged
+    - pkgs:
+      - linux-headers-generic
+      - linux-image-generic
