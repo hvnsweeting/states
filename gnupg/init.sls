@@ -15,6 +15,7 @@ gnupg:
     - wait
     - name: "true"
 
+{%- set pkgs = salt['pkg.list_pkgs']() %}
 {%- for user, data in users.iteritems() %}
   {{ dict_default(data, "public_keys", {}) }}
   {{ dict_default(data, "private_keys", {}) }}
@@ -24,11 +25,12 @@ gnupg:
 
     {%- for keyid, key in data[key_type + "_keys"].iteritems() %}
 gnupg_import_{{ key_type }}_key_{{ keyid }}_for_user_{{ user }}:
-  cmd:
+  module:
     - run
-    - name: |
-        echo "{{ key|indent(8) }}" | gpg --no-tty --batch --import -
+    - name: gpg.import_key
     - user: {{ user }}
+    - text: |
+        {{ key|indent(8) }}
     - require:
       - pkg: gnupg
     - require_in:
@@ -37,8 +39,8 @@ gnupg_import_{{ key_type }}_key_{{ keyid }}_for_user_{{ user }}:
     {%- endfor %}
   {%- endfor %}
 
-  {%- if 'gpg' in salt["sys.list_modules"]() %}
-    {%- set imported_keys = salt["gpg.list_keys"]() %}
+  {%- if 'gnupg' in pkgs and 'python-gnupg' in pkgs %}
+    {%- set imported_keys = salt["gpg.list_keys"](user=user) %}
     {%- for imported_key in imported_keys %}
       {#- The public is also imported when importing a secret key
       So, secret key must be deleted first before deleting the public key #}
