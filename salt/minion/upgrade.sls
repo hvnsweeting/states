@@ -59,7 +59,7 @@ salt-minion:
     - watch_in:
       - service: salt-minion
 
-{%- for file in ('master', 'logging', 'graphite', 'mysql') %}
+{%- for file in ('master', 'logging', 'graphite', 'mysql', 's3') %}
   {%- if (file == 'graphite' and salt['pillar.get']('graphite_address', False)) or file != 'graphite' %}
 /etc/salt/minion.d/{{ file }}.conf:
   file:

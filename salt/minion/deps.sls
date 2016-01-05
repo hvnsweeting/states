@@ -18,6 +18,7 @@ salt_minion_deps:
       - python-openssl {#- for tls module #}
       - python-ipy {#- for common.calc_range #}
       - gnupg
+      - python-boto
       - python-gnupg
 {%- if grains['virtual'] != 'openvzve' %}
       - pciutils

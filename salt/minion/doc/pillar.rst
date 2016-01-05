@@ -38,3 +38,22 @@ Address of :doc:`/salt/master/doc/index`.
 If set to ``False`` means this minion will run in master-less (local) mode.
 
 Default: ``False``.
+
+
+.. _pillar-salt-s3-key:
+
+salt:s3:key
+~~~~~~~~~~~
+
+:ref:`glossary-s3` key
+
+Default: no key provided (``[]``).
+
+.. _pillar-salt-s3-keyid:
+
+salt:s3:keyid
+~~~~~~~~~~~~~
+
+:ref:`glossary-s3` key ID
+
+Default: no key ID provided (``[]``).
