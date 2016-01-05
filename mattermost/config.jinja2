@@ -5,10 +5,10 @@
         "SegmentDeveloperKey": "",
         "GoogleDeveloperKey": "",
         "EnableOAuthServiceProvider": false,
-        "EnableIncomingWebhooks": false,
+        "EnableIncomingWebhooks": {% if salt['pillar.get']('mattermost:enable_incoming_webhook', True) %}true{% else %}false{% endif %},
         "EnableOutgoingWebhooks": false,
         "EnablePostUsernameOverride": false,
-        "EnablePostIconOverride": false,
+        "EnablePostIconOverride": {% if salt['pillar.get']('mattermost:enable_post_icon_override', True) %}true{% else %}false{% endif %},
         "EnableTesting": false,
         "EnableSecurityFixAlert": true
     },

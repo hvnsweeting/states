@@ -47,6 +47,24 @@ Whether to enable creating new user or not.
 
 Default: enabled (``True``).
 
+.. _pillar-mattermost-enable_incoming_webhook:
+
+mattermost:enable_incoming_webhook
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether to enable incoming webhook or not.
+
+Default: enabled (``True``).
+
+.. _pillar-mattermost-enable_post_icon_override:
+
+mattermost:enable_post_icon_override
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether to enable overriding post icon or not.
+
+Default: enabled (``True``).
+
 .. _pillar-mattermost-ssl:
 
 mattermost:ssl
