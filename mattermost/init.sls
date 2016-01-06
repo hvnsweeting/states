@@ -37,7 +37,7 @@ mattermost:
 {%- if files_archive %}
     - source: {{ files_archive|replace('file://', '')|replace('https://', 'http://') }}/mirror/mattermost-1.3.0.tar.gz
 {%- else %}
-    - source: http://github.com/mattermost/platform/releases/download/v1.3.0/mattermost.tar.gz
+    - source: https://github.com/mattermost/platform/releases/download/v1.3.0/mattermost.tar.gz
 {%- endif %}
     - source_hash: md5=a423e138520ddfcd6f563f8515c34761
     - archive_format: tar

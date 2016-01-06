@@ -13,7 +13,7 @@ hugo:
 {%- if files_archive %}
       - hugo: {{ files_archive|replace('file://', '')|replace('https://', 'http://') }}/mirror/{{ filename }}
 {%- else %}
-      - hugo: http://github.com/spf13/hugo/releases/download/v0.14/{{ filename }}
+      - hugo: https://github.com/spf13/hugo/releases/download/v0.14/{{ filename }}
 {%- endif %}
     - require:
       - cmd: apt_sources
