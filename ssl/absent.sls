@@ -17,3 +17,11 @@ ssl-cert:
       - /etc/ssl/dhparam.pem
     - require:
       - pkg: ssl-cert
+{#- regenerate SSL certs or the machine after running absent will not able
+    to use SSL (esp: HTTPS) #}
+  cmd:
+    - run
+    {#- update-ca-certificates will fail if the directory does not exist #}
+    - name: mkdir /etc/ssl/certs; update-ca-certificates
+    - require:
+      - file: ssl-cert
