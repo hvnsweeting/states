@@ -138,6 +138,16 @@ graylog-server:
     - name: graylog-server
     - require:
       - pkgrepo: graylog
+  file:
+    - managed
+    - name: /etc/init/graylog-server.conf
+    - source: salt://graylog2/server/upstart.jinja2
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: 440
+    - require:
+      - pkg: graylog-server
   service:
     - running
     - enable: True
@@ -149,6 +159,7 @@ graylog-server:
       - file: /etc/graylog/server/elasticsearch.yml
       - file: /etc/default/graylog-server
       - file: /etc/graylog/server/log4j.xml
+      - file: graylog-server
     - require:
       - service: mongodb
 {%- if salt['pillar.get']("__test__", False) %}
@@ -257,3 +268,29 @@ graylog-plugin-slack:
       - pkg: graylog-server
     - watch_in:
       - service: graylog-server
+
+{%- set sentry_dsn = salt['pillar.get']('sentry_dsn', False) %}
+{%- if sentry_dsn %}
+  {%- set raven_version = "6.0.0" %}
+  {%- set raven_libs = {
+    "raven": "md5=5351075504d9c04179b0ea4f7cec6487",
+    "raven-log4j": "md5=6eb3101aa7a8d8b1ab845dea0f55f032"
+  } %}
+
+  {%- for lib, hash in raven_libs.iteritems() %}
+    {%- set filename = lib ~ "-" ~ raven_version ~ ".jar" %}
+graylog_{{ lib }}:
+  file:
+    - managed
+    - name: /usr/share/graylog-server/lib/{{ filename }}
+    - source: {{ mirror }}/mirror/{{ filename }}
+    - source_hash: {{ hash }}
+    - user: root
+    - group: root
+    - mode: 644
+    - require:
+      - pkg: graylog-server
+    - watch_in:
+      - service: graylog-server
+  {%- endfor %}
+{%- endif %}

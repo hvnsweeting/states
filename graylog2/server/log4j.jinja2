@@ -5,6 +5,12 @@
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 {{ log4j_syslog()|indent(4) }}
 
+{%- set sentry_dsn = salt['pillar.get']('sentry_dsn', False) %}
+{%- if sentry_dsn %}
+  {%- from "java/macro.jinja2" import log4j_sentry with context -%}
+{{ log4j_sentry(sentry_dsn)|indent(4) }}
+{%- endif %}
+
     <!-- Application Loggers -->
     <logger name="org.graylog2">
         <level value="warn"/>
@@ -28,6 +34,9 @@
     <root>
         <priority value="{% if salt['pillar.get']('debug', False) %}DEBUG{% else %}INFO{% endif %}"/>
         <appender-ref ref="SYSLOG"/>
+{%- if sentry_dsn %}
+        <appender-ref ref="sentry"/>
+{%- endif %}
     </root>
 
 </log4j:configuration>
