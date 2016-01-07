@@ -44,3 +44,12 @@ salt-minion:
 {%- for file in ('master', 'logging', 'graphite', 'mysql', 's3') %}
       - file: /etc/salt/minion.d/{{ file }}.conf
 {%- endfor %}
+
+/etc/salt/minion:
+  file:
+    - managed
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: 444
+    - source: salt://salt/minion/config.jinja2

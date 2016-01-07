@@ -7,15 +7,6 @@
     - group: root
     - mode: 750
 
-/etc/salt/minion:
-  file:
-    - managed
-    - template: jinja
-    - user: root
-    - group: root
-    - mode: 444
-    - source: salt://salt/minion/config.jinja2
-
 {%- for file in ('master', 'logging', 'graphite', 'mysql', 's3') %}
 /etc/salt/minion.d/{{ file }}.conf:
   file:
