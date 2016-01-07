@@ -12,6 +12,16 @@
 </appender>
 {%- endmacro %}
 
+{%- macro log4j_sentry(dsn, log_level=None) %}
+<!-- Sentry -->
+<appender name="sentry" class="net.kencochrane.raven.log4j.SentryAppender">
+  <param name="dsn" value="{{ dsn }}"/>
+  <filter class="org.apache.log4j.varia.LevelRangeFilter">
+    <param name="levelMin" value="{% if salt['pillar.get']('debug', False) %}DEBUG{% else %}{{ log_level|default("WARN", boolean=True) }}{% endif %}"/>
+  </filter>
+</appender>
+{%- endmacro %}
+
 {%- macro logback_syslog(log_level=None, throwable_excluded=True) %}
 <appender name="SYSLOG" class="ch.qos.logback.classic.net.SyslogAppender">
   <syslogHost>localhost</syslogHost>

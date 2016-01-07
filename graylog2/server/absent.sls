@@ -25,8 +25,10 @@ extend:
     - require:
       - service: graylog-server
 
-/usr/share/graylog-server/plugin:
+{%- for dir in ('lib', 'plugin') %}
+/usr/share/graylog-server/{{ dir }}:
   file:
     - absent
     - require_in:
       - pkg: graylog-server
+{%- endfor %}
