@@ -19,8 +19,6 @@ script
   . /etc/default/graylog-server
 
   exec $GRAYLOG_COMMAND_WRAPPER ${JAVA:=/usr/bin/java} $GRAYLOG_SERVER_JAVA_OPTS \
-    -jar -Dlog4j.configuration=file:///etc/graylog/server/log4j.xml \
-    -Djava.library.path=/usr/share/graylog-server/lib/sigar \
-    /usr/share/graylog-server/graylog.jar server -f /etc/graylog/server/server.conf -np \
-    $GRAYLOG_SERVER_ARGS
+    -Dlog4j.configuration=file:///etc/graylog/server/log4j.xml $GRAYLOG_SERVER_ARGS \
+    -cp /usr/share/graylog-server/graylog.jar:/usr/share/graylog-server/lib/*:/usr/share/graylog-server/lib/sigar org.graylog2.bootstrap.Main server -f /etc/graylog/server/server.conf
 end script
