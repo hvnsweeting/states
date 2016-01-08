@@ -11,17 +11,7 @@ upgrade process.
 include:
   - apt
   - salt
-
-/etc/salt/minion:
-  file:
-    - managed
-    - template: jinja
-    - user: root
-    - group: root
-    - mode: 444
-    - source: salt://salt/minion/config.jinja2
-    - require_in:
-      - pkg: salt-minion
+  - salt.minion.config
 
 salt-minion:
   file:
@@ -36,6 +26,9 @@ salt-minion:
       - pkg: salt-minion
   pkg:
     - latest
+    - require:
+      - file: /etc/salt/minion.d
+      - file: /etc/salt/minion
   service:
     - running
     - enable: True
@@ -45,35 +38,18 @@ salt-minion:
     - watch:
       - pkg: salt-minion
       - file: /etc/salt/minion
+      - file: /etc/salt/minion.d
       - file: salt-minion
       - cmd: salt
+{%- for file in ('master', 'logging', 'graphite', 'mysql', 's3') %}
+      - file: /etc/salt/minion.d/{{ file }}.conf
+{%- endfor %}
 
-/etc/salt/minion.d:
-  file:
-    - directory
-    - user: root
-    - group: root
-    - mode: 750
-    - require_in:
-      - pkg: salt-minion
-    - watch_in:
-      - service: salt-minion
-
-{%- for file in ('master', 'logging', 'graphite', 'mysql') %}
-  {%- if (file == 'graphite' and salt['pillar.get']('graphite_address', False)) or file != 'graphite' %}
-/etc/salt/minion.d/{{ file }}.conf:
+/etc/salt/minion:
   file:
     - managed
     - template: jinja
     - user: root
     - group: root
-    - mode: 440
-    - source: salt://salt/minion/{{ file }}.jinja2
-    - require:
-      - file: /etc/salt/minion.d
-    - require_in:
-      - pkg: salt-minion
-    - watch_in:
-      - service: salt-minion
-  {%- endif %}
-{%- endfor %}
+    - mode: 444
+    - source: salt://salt/minion/config.jinja2
