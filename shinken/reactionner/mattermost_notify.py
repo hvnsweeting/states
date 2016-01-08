@@ -59,14 +59,15 @@ class MattermostNotify(pysc.Application):
             state = self.config['service_state']
         emo = emoticons.get(state, ':loudspeaker:')
         message = {
-            'text': emo + message,
+            'text': emo + " " + message,
             'icon_url': "{0}/static/img/logo.png".format(
                 self.config['shinken_url'])}
         resp = requests.post(self.config['hook_url'], json=message)
         if resp.status_code != 200:
             logger.error("Could not send message to Mattermost server."
-                         "HTTP code %d", resp.status_code)
-
+                         "HTTP code %d. Msg: %s",
+                         resp.status_code,
+                         resp.text)
 
 if __name__ == "__main__":
     MattermostNotify().run()
