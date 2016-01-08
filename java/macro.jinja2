@@ -17,7 +17,7 @@
 <appender name="sentry" class="net.kencochrane.raven.log4j.SentryAppender">
   <param name="dsn" value="{{ dsn }}"/>
   <filter class="org.apache.log4j.varia.LevelRangeFilter">
-    <param name="levelMin" value="{% if salt['pillar.get']('debug', False) %}DEBUG{% else %}{{ log_level|default("WARN", boolean=True) }}{% endif %}"/>
+    <param name="levelMin" value="{% if salt['pillar.get']('debug', False) %}DEBUG{% else %}{{ log_level|default("ERROR", boolean=True) }}{% endif %}"/>
   </filter>
 </appender>
 {%- endmacro %}
