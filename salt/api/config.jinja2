@@ -21,10 +21,15 @@ external_auth:
         {%- if acl[id_or_func] is iterable %}
       - '{{ id_or_func }}':
           {%- for func in acl[id_or_func] %}
-        - '{{ func }}'
+        - {{ func }}
           {%- endfor %}
         {%- else %}
+          {%- if '@' in id_or_func %}
+          {# at top lvl, salt only quote around target name or special @ syntax #}
       - '{{ id_or_func }}'
+          {%- else %}
+      - {{ id_or_func }}
+          {%- endif %}
         {%- endif %}
       {%- endfor %}
     {%- endfor %}
