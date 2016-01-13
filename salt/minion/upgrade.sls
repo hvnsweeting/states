@@ -12,6 +12,7 @@ include:
   - apt
   - salt
   - salt.minion.config
+  - salt.minion.deps
 
 salt-minion:
   file:
