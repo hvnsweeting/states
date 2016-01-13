@@ -7,6 +7,7 @@ include:
   - requests
   - rsyslog
   - salt.event
+  - salt.minion.deps
   - salt.minion.upgrade
 
 {# it's mandatory to remove this file if the master is changed #}
