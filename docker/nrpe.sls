@@ -2,3 +2,4 @@
 
 include:
   - apt.nrpe
+  - pip.nrpe
