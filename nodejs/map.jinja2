@@ -19,7 +19,7 @@
 {%- endif %}
 
 {%- set repo = "deb " ~ mirror ~ "/mirror/nodejs/" ~ version ~
-               " " ~ grains["lsb_distrib_codename"] ~ " main" %}
+               " " ~ grains["oscodename"] ~ " main" %}
 
 {% set nodejs = {
     "default_version": default_version,

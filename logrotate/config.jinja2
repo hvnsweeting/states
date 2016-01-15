@@ -3,7 +3,7 @@
 # {{ salt['pillar.get']('message_do_not_modify') }}
 
 {#- in trusty, force 'syslog' group, as /var/log is now owned by this #}
-{%- if grains['lsb_distrib_codename'] == 'trusty' %}
+{%- if grains['oscodename'] == 'trusty' %}
 su root syslog
 {%- endif -%}
 

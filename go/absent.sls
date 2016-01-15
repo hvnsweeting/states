@@ -15,7 +15,7 @@ go:
     - absent
 {%- set files_archive = salt['pillar.get']('files_archive', False) %}
 {%- if files_archive %}
-    - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/go/1.4.1 {{ grains['lsb_distrib_codename'] }} main
+    - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/go/1.4.1 {{ grains['oscodename'] }} main
 {%- else %}
     - ppa: evarlast/golang1.4
 {%- endif %}

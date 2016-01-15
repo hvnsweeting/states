@@ -13,7 +13,7 @@ libjs-underscore:
   pkgrepo:
     - managed
   {%- if files_archive %}
-    - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/underscore/1.4.2-1 {{ grains['lsb_distrib_codename'] }} main
+    - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/underscore/1.4.2-1 {{ grains['oscodename'] }} main
     - key_url: salt://underscore/key.gpg
   {%- else %}
     - ppa: chris-lea/libjs-underscore

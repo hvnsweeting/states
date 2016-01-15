@@ -7,7 +7,7 @@
 amavis_procs:
   description: Amavis Processes
   {#- +1 for master process #}
-  command: "/usr/lib/nagios/plugins/check_procs -c {{ max_proc + 1 }}:{{ max_proc + 1 }} -u amavis {% if grains['lsb_distrib_codename'] == 'precise' %}-C amavisd{% else %}-a /usr/sbin/amavisd-new{% endif %}"
+  command: "/usr/lib/nagios/plugins/check_procs -c {{ max_proc + 1 }}:{{ max_proc + 1 }} -u amavis {% if grains['oscodename'] == 'precise' %}-C amavisd{% else %}-a /usr/sbin/amavisd-new{% endif %}"
 
 amavis_port:
   description: Amavis Listen Port

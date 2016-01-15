@@ -105,7 +105,7 @@ nginx_dependencies:
       - cmd: apt_sources
 
 {%- set version = '1.7.9' %}
-{%- set sub_version = '{0}-1~{1}'.format(version, grains['lsb_distrib_codename']) %}
+{%- set sub_version = '{0}-1~{1}'.format(version, grains['oscodename']) %}
 {%- set filename = 'nginx_{0}_{1}.deb'.format(sub_version, grains['osarch']) %}
 
 {#- PID file owned by root, no need to manage #}

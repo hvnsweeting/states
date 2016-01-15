@@ -18,7 +18,7 @@ file contains all common macros
         example: salt-minion_0.17.5-1precise1_all.deb
         this macro will provide ``0.17.5-1precise1``
     -#}
-        {{ salt_version() }}{{ grains['lsb_distrib_codename'] }}1
+        {{ salt_version() }}{{ grains['oscodename'] }}1
 {%- endmacro -%}
 
 {#-

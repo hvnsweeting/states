@@ -12,7 +12,7 @@ include:
 graylog:
   pkgrepo:
     - managed
-    - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/graylog/{{ version }} {{ grains['lsb_distrib_codename'] }} 1.0
+    - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/graylog/{{ version }} {{ grains['oscodename'] }} 1.0
     - key_url: salt://graylog2/pubkey.gpg
     - file: /etc/apt/sources.list.d/graylog.list
     - clean_file: True

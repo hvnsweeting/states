@@ -4,7 +4,7 @@
 {%- set allow_src_ips = salt['pillar.get']('squid:allow_src_ips', []) -%}
 {%- set allow_dst_domains = salt['pillar.get']('squid:allow_dst_domains', []) -%}
 
-{%- if grains['lsb_distrib_codename'] == 'precise' %}
+{%- if grains['oscodename'] == 'precise' %}
 acl manager proto cache_object
 acl localhost src 127.0.0.1/32 ::1
 acl to_localhost dst 127.0.0.0/8 0.0.0.0/32 ::1

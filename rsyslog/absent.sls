@@ -21,9 +21,9 @@ rsyslog:
     - absent
 {%- set files_archive = salt['pillar.get']('files_archive', False) %}
 {%- if files_archive %}
-    - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/rsyslog/7.4.4 {{ grains['lsb_distrib_codename'] }} main
+    - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/rsyslog/7.4.4 {{ grains['oscodename'] }} main
 {%- else %}
-    - name: deb http://archive.robotinfra.com/mirror/rsyslog/7.4.4 {{ grains['lsb_distrib_codename'] }} main
+    - name: deb http://archive.robotinfra.com/mirror/rsyslog/7.4.4 {{ grains['oscodename'] }} main
 {%- endif %}
 
 /etc/apt/sources.list.d/tmortensen-rsyslogv7-{{ grains['oscodename'] }}.list:

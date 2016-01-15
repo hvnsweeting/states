@@ -10,7 +10,7 @@ apt-key del 0E27C0A6:
 salt_absent_old_apt_salt_{{ i }}:
   file:
     - absent
-    - name: /etc/apt/sources.list.d/saltstack-salt-{{ grains['lsb_distrib_codename'] }}.{{ i }}
+    - name: /etc/apt/sources.list.d/saltstack-salt-{{ grains['oscodename'] }}.{{ i }}
 {%- endfor %}
 
 salt:
@@ -18,9 +18,9 @@ salt:
     - absent
 {%- set files_archive = salt['pillar.get']('files_archive', False) %}
 {%- if files_archive %}
-    - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/salt/{{ version }} {{ grains['lsb_distrib_codename'] }} main
+    - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/salt/{{ version }} {{ grains['oscodename'] }} main
 {%- else %}
-    - name: deb http://archive.robotinfra.com/mirror/salt/{{ version }} {{ grains['lsb_distrib_codename'] }} main
+    - name: deb http://archive.robotinfra.com/mirror/salt/{{ version }} {{ grains['oscodename'] }} main
 {%- endif %}
     - file: /etc/apt/sources.list.d/saltstack-salt.list
   file:

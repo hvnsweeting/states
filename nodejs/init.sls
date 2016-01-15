@@ -19,7 +19,7 @@ nodejs:
       - nodejs-legacy
       - npm
   {%- elif os.is_precise %}
-    {%- set filename = "nodejs_" +  nodejs.version  + "-1chl1~" +  grains['lsb_distrib_codename']  + "1_" +  grains['osarch']  + ".deb" %}
+    {%- set filename = "nodejs_" +  nodejs.version  + "-1chl1~" +  grains['oscodename']  + "1_" +  grains['osarch']  + ".deb" %}
     - sources:
     {%- if files_archive %}
       - nodejs: {{ files_archive|replace('file://', '')|replace('https://', 'http://') }}/mirror/{{ filename }}
