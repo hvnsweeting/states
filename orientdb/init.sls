@@ -7,9 +7,9 @@ include:
   - rsyslog
   - sudo
 
-{%- set version = '2.1.0' -%}
-{%- set old_version = '2.0.6' -%}
-{%- set checksum = 'e50e1a607d7ca1dc2c92461f55974e3f' %}
+{%- set version = '2.1.5' -%}
+{%- set old_version = '2.1.0' -%}
+{%- set checksum = 'ab474b3903a720728c5e379e8175329b' %}
 {%- set debug = salt['pillar.get']('orientdb:debug', False) -%}
 {%- set storages = salt['pillar.get']('orientdb:storages') -%}
 {%- set cluster = salt['pillar.get']('orientdb:cluster', {}) %}
