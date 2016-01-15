@@ -16,7 +16,7 @@ bikeshed:
   pkgrepo:
     - managed
 {%- if files_archive %}
-    - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/bikeshed {{ grains['lsb_distrib_codename'] }} main
+    - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/bikeshed {{ grains['oscodename'] }} main
     - key_url: salt://kernel/image/key.gpg
 {%- else %}
     - ppa: bikeshed/ppa

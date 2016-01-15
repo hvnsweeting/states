@@ -4,12 +4,12 @@
     "version": salt["pillar.get"]("postgresql:version", None)|default("9.2", boolean=True)|string,
     "repo_configs": {
       "9.2": {
-        "repo": "deb " ~ files_archive|replace('https://', 'http://') ~ "/mirror/postgresql/9.2.4-0 " ~ grains['lsb_distrib_codename'] ~ " main",
+        "repo": "deb " ~ files_archive|replace('https://', 'http://') ~ "/mirror/postgresql/9.2.4-0 " ~ grains['oscodename'] ~ " main",
         "key": "key.gpg",
         "unix_socket_dir_var": "unix_socket_directory",
       },
       "9.4": {
-        "repo": "deb " ~ files_archive|replace('https://', 'http://') ~ "/mirror/postgresql/9.4.5-1 " ~ grains['lsb_distrib_codename'] ~ "-pgdg  main",
+        "repo": "deb " ~ files_archive|replace('https://', 'http://') ~ "/mirror/postgresql/9.4.5-1 " ~ grains['oscodename'] ~ "-pgdg  main",
         "key": "key-9.4.gpg",
         "unix_socket_dir_var": "unix_socket_directories",
       },
@@ -24,7 +24,7 @@
         "unix_socket_dir_var": "unix_socket_directories",
       },
       "9.4": {
-        "repo": "deb " ~ files_archive|replace('https://', 'http://') ~ "/mirror/postgresql/9.4.5-1 " ~ grains['lsb_distrib_codename'] ~ "-pgdg  main",
+        "repo": "deb " ~ files_archive|replace('https://', 'http://') ~ "/mirror/postgresql/9.4.5-1 " ~ grains['oscodename'] ~ "-pgdg  main",
         "key": "key-9.4.gpg",
         "unix_socket_dir_var": "unix_socket_directories",
       },

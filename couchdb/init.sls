@@ -18,7 +18,7 @@ couchdb:
     - managed
 {%- set files_archive = salt['pillar.get']('files_archive', False) %}
 {%- if files_archive %}
-    - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/couchdb {{ grains['lsb_distrib_codename'] }} main
+    - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/couchdb {{ grains['oscodename'] }} main
     - key_url: salt://couchdb/key.gpg
 {%- else %}
     - ppa: couchdb/stable

@@ -12,7 +12,7 @@ redis:
     - managed
 {%- set files_archive = salt['pillar.get']('files_archive', False) %}
 {%- if files_archive %}
-    - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/redis {{ grains['lsb_distrib_codename'] }} main
+    - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/redis {{ grains['oscodename'] }} main
     - key_url: salt://redis/key.gpg
 {%- else %}
     - ppa: chris-lea/redis

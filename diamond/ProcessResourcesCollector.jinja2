@@ -18,7 +18,7 @@ exe=^\/sbin\/init$
 
 [[udev]]
 
-{%- if grains['lsb_distrib_codename'] == 'precise' %}
+{%- if grains['oscodename'] == 'precise' %}
 exe = ^\/sbin\/udevd$
 {%- else %}
 exe = ^\/lib\/systemd\/systemd-udevd$

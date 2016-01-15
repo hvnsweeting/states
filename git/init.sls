@@ -9,7 +9,7 @@ git:
     - managed
 {%- set files_archive = salt['pillar.get']('files_archive', False) %}
 {%- if files_archive %}
-    - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/git {{ grains['lsb_distrib_codename'] }} main
+    - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/git {{ grains['oscodename'] }} main
     - key_url: salt://git/key.gpg
 {%- else %}
     - ppa: git-core/ppa

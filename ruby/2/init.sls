@@ -13,7 +13,7 @@ include:
 {%- set files_archive = salt['pillar.get']('files_archive', False) %}
 {%- set mirror = files_archive if files_archive else "http://archive.robotinfra.com" %}
 {%- set repo = "deb %s/mirror/ruby/%s %s main" % (
-  mirror, version, grains['lsb_distrib_codename']) %}
+  mirror, version, grains['oscodename']) %}
 
 ruby2:
   pkgrepo:
