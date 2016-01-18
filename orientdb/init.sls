@@ -292,6 +292,8 @@ orientdb_{{ lib }}:
     - mode: 440
     - require:
       - archive: orientdb
+    - require_in:
+      - file: /etc/orientdb/logging.properties
     - watch_in:
       - service: orientdb
   {%- endfor %}
