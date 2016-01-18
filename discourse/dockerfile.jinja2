@@ -26,20 +26,13 @@ expose:
   - "80:80"   {# fwd host port 80   to container port 80 (http) #}
 
 params:
-  db_default_text_search_config: "pg_catalog.english"
-  db_shared_buffers: "{{ grains['mem_total'] / 4 }}MB"
 {#
-  Set higher on large instances it defaults to 10MB, for a 3GB install 40MB is a good default
-  this improves sorting performance, but adds memory usage per-connection
-  db_work_mem: "40MB"
-
   Which Git revision should this container use? (default: tests-passed)
   version: tests-passed
 #}
 
 env:
   LANG: en_US.UTF-8
-  # DISCOURSE_DEFAULT_LOCALE: en
 
   DISCOURSE_DB_SOCKET: ''
   DISCOURSE_DB_PASSWORD: {{ salt['password.pillar']('discourse:db:password', 10) }}
