@@ -1,6 +1,7 @@
 {#- Usage of this is governed by a license that can be found in doc/license.rst -#}
 
 include:
+  - apt.nrpe
   - backup.client.{{ salt['pillar.get']('backup_storage') }}.nrpe
   - bash.nrpe
   - cron.nrpe
