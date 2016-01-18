@@ -14,6 +14,7 @@ include:
 {%- set storages = salt['pillar.get']('orientdb:storages') -%}
 {%- set cluster = salt['pillar.get']('orientdb:cluster', {}) %}
 {%- set files_archive = salt['pillar.get']('files_archive', False) %}
+{%- set mirror = files_archive|replace('file://', '')|replace('https://', 'http://') if files_archive else "http://archive.robotinfra.com" %}
 
 /etc/orientdb:
   file:
@@ -256,3 +257,42 @@ orientdb-create-initial-{{ name }}:
 {%- endif %}
 
 {{ manage_upstart_log('orientdb') }}
+
+{%- set sentry_dsn = salt['pillar.get']('sentry_dsn', False) %}
+{%- if sentry_dsn %}
+  {%- set raven_libs = {
+    "guava": {
+      "version": "18.0",
+      "md5": "947641f6bb535b1d942d1bc387c45290"
+    },
+    "jackson-core": {
+      "version": "2.5.0",
+      "md5": "e41b843e866581d60fa24edde0e7b72a"
+    },
+    "slf4j-api": {
+      "version": "1.7.9",
+      "md5": "5c87f8d8335792d578ac25b9b0b4eed3"
+    },
+    "raven": {
+      "version": "6.0.0",
+      "md5": "5351075504d9c04179b0ea4f7cec6487"
+    }
+  } %}
+
+  {%- for lib, properties in raven_libs.iteritems() %}
+    {%- set filename = lib ~ "-" ~ properties['version'] ~ ".jar" %}
+orientdb_{{ lib }}:
+  file:
+    - managed
+    - name: /usr/local/orientdb-community-{{ version }}/lib/{{ filename }}
+    - source: {{ mirror }}/mirror/{{ filename }}
+    - source_hash: md5={{ properties['md5'] }}
+    - user: root
+    - group: orientdb
+    - mode: 440
+    - require:
+      - archive: orientdb
+    - watch_in:
+      - service: orientdb
+  {%- endfor %}
+{%- endif %}

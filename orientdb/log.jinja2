@@ -2,7 +2,10 @@
 
 .level = {% if debug %}FINEST{% else %}WARNING{% endif %}
 
-handlers = java.util.logging.ConsoleHandler, com.agafua.syslog.SyslogHandler
+{%- set sentry_dsn = salt['pillar.get']('sentry_dsn', False) %}
+handlers = java.util.logging.ConsoleHandler, com.agafua.syslog.SyslogHandler{% if sentry_dsn %}, net.kencochrane.raven.jul.SentryHandler
+
+net.kencochrane.raven.jul.SentryHandler.dsn={{ sentry_dsn }}{% endif %}
 
 java.util.logging.ConsoleHandler.level = WARNING
 java.util.logging.ConsoleHandler.formatter = java.util.logging.SimpleFormatter
