@@ -1,0 +1,106 @@
+{#- Usage of this is governed by a license that can be found in doc/license.rst -#}
+
+# {{ salt['pillar.get']('message_do_not_modify') }}
+{#-
+After making changes to this file, you MUST rebuild for any changes
+to take effect in your live Discourse instance:
+
+/var/discourse/launcher rebuild app
+
+Make sure to obey YAML syntax! You can use this site to help check:
+http://www.yamllint.com/
+
+this is the all-in-one, standalone Discourse Docker container template
+
+You may add rate limiting by uncommenting the web.ratelimited template.
+Out of the box it allows 12 reqs a second per ip, and 100 per minute per ip
+This is configurable by amending the params in this file
+#}
+
+templates:
+  - "templates/web.template.yml"
+  - "templates/web.ratelimited.template.yml"
+
+{# which TCP/IP ports should this container expose? #}
+expose:
+  - "80:80"   {# fwd host port 80   to container port 80 (http) #}
+
+params:
+  db_default_text_search_config: "pg_catalog.english"
+  db_shared_buffers: "{{ grains['mem_total'] / 4 }}MB"
+{#
+  Set higher on large instances it defaults to 10MB, for a 3GB install 40MB is a good default
+  this improves sorting performance, but adds memory usage per-connection
+  db_work_mem: "40MB"
+
+  Which Git revision should this container use? (default: tests-passed)
+  version: tests-passed
+#}
+
+env:
+  LANG: en_US.UTF-8
+  # DISCOURSE_DEFAULT_LOCALE: en
+
+  DISCOURSE_DB_SOCKET: ''
+  DISCOURSE_DB_PASSWORD: {{ salt['password.pillar']('discourse:db:password', 10) }}
+  DISCOURSE_DB_HOST: {{ salt['monitoring.get_first_ip']('docker0', 'private') }}
+  DISCOURSE_REDIS_HOST: {{ salt['monitoring.get_first_ip']('docker0', 'private') }}
+
+{# TODO: How many concurrent web requests are supported?
+  With 2GB we recommend 3-4 workers, with 1GB only 2
+  If you have lots of memory, use one or two workers per logical CPU core #}
+  UNICORN_WORKERS: 3
+
+{# TODO: List of comma delimited emails that will be made admin and developer
+   on initial signup example 'user1@example.com,user2@example.com' #}
+  DISCOURSE_DEVELOPER_EMAILS: '{{ ",".join(salt['pillar.get']('discourse:initial_admins')) }}'
+
+  DISCOURSE_HOSTNAME: {{ salt['pillar.get']('discourse:hostnames')[0] }}
+
+  DISCOURSE_SMTP_ADDRESS: {{ salt['pillar.get']('smtp:server') }}
+  DISCOURSE_SMTP_PORT: 25
+  DISCOURSE_SMTP_USER_NAME: {{ salt['pillar.get']('smtp:user') }}
+  DISCOURSE_SMTP_PASSWORD: {{ salt['pillar.get']('smtp:password') }}
+  DISCOURSE_SMTP_ENABLE_START_TLS: true
+
+{#- The CDN address for this Discourse instance (configured to pull)
+  DISCOURSE_CDN_URL: //discourse-cdn.example.com #}
+
+{# These containers are stateless, all data is stored in /shared #}
+volumes:
+  - volume:
+      host: /var/lib/discourse/shared/standalone
+      guest: /shared
+  - volume:
+      host: /var/lib/discourse/shared/standalone/log/var-log
+      guest: /var/log
+
+{# The docker manager plugin allows you to one-click upgrade Discourse
+http://discourse.example.com/admin/docker #}
+#}
+hooks:
+  after_code:
+    - exec:
+        cd: $home/plugins
+        cmd:
+          - git clone https://github.com/discourse/docker_manager.git
+
+run:
+  - exec: echo "Beginning of custom commands"
+
+{#
+  If you want to set the 'From' email address for your first registration, uncomment and change:
+  - exec: rails r "SiteSetting.notification_email='info@unconfigured.discourse.org'"
+  After getting the first signup email, re-comment the line. It only needs to run once.
+
+  If you want to configure password login for root, uncomment and change:
+  Use only one of the following lines:
+  - exec: /usr/sbin/usermod -p 'PASSWORD_HASH' root
+  - exec: /usr/sbin/usermod -p "$(mkpasswd -m sha-256 'RAW_PASSWORD')" root
+
+  If you want to authorized additional users, uncomment and change:
+  - exec: ssh-import-id username
+  - exec: ssh-import-id anotherusername
+#}
+  - exec: echo "End of custom commands"
+  - exec: awk -F\# '{print $1;}' ~/.ssh/authorized_keys | awk 'BEGIN { print "Authorized SSH keys for this container:"; } NF>=2 {print $NF;}'
