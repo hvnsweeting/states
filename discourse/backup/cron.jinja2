@@ -1,0 +1,24 @@
+#!/bin/bash
+# {{ salt['pillar.get']('message_do_not_modify') }}
+
+set -e
+
+source /usr/local/share/salt_common.sh
+locking_script
+log_start_script "$@"
+trap "log_stop_script \$?" EXIT
+
+# limit resources usage
+renice -n 19 -p $$ > /dev/null
+ionice -c idle -p $$
+XZ_DEFAULTS=--memlimit={{ salt['pillar.get']('backup:xz_memlimit', 64) }}MiB
+
+cd /var/lib/discourse/shared/backups/default
+for file in *.tar.gz; do
+    [ -e "$file" ] || continue
+    # discourse uses %H-%M-%S, not %H_%M_%S like our convention. Convert it
+    formalized_fn=discourse-$(echo $file | cut -f3- -d'_' | cut -f1 -d'.' | sed 's/-/_/4g')
+    # we prefer xz
+    gzip --decompress $file --stdout | xz > $formalized_fn.tar.xz
+    /usr/local/bin/backup-store $formalized_fn.tar.xz
+done

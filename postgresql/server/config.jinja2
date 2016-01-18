@@ -74,6 +74,9 @@ tcp_keepalives_idle = 0
 tcp_keepalives_interval = 0
 tcp_keepalives_count = 0
 
+{#- Memory #}
+work_mem = {{ salt['pillar.get']('postgresql:work_mem', 1) }}MB
+
 {#-
  Resource Usage except WAL
 #}

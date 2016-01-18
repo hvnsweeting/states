@@ -1,0 +1,18 @@
+{#- Usage of this is governed by a license that can be found in doc/license.rst -#}
+
+{%- from 'postgresql/server/nrpe/instance.jinja2' import postgresql_instance with context -%}
+{%- set deployment = 'discourse' %}
+
+# {{ salt['pillar.get']('message_do_not_modify') }}
+
+discourse_sidekiq_procs:
+  description: Discourse Sidekiq Process
+  command: "/usr/lib/nagios/plugins/check_procs -c 1:1 --ereg-argument-array 'sidekiq.*discourse'"
+
+discourse_unicorn_procs:
+  description: Discourse Unicorn Process
+  command: "/usr/lib/nagios/plugins/check_procs -c 2: --ereg-argument-array 'unicorn.*-c config/unicorn.conf.rb'"
+
+{{ postgresql_instance(deployment, deployment,
+                       salt['password.pillar']("discourse:db:password", 10),
+                       username=deployment) }}
