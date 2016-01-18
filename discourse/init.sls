@@ -1,9 +1,16 @@
+{#- Usage of this is governed by a license that can be found in doc/license.rst -#}
+{%- set ssl = salt['pillar.get']('discourse:ssl', False) %}
+
 include:
   - docker
   - git
+  - nginx
   - postgresql.server
   - postgresql.server.contrib
   - redis
+{% if ssl %}
+  - ssl
+{% endif %}
 
 /usr/local/discourse:
   file:
@@ -27,7 +34,7 @@ discourse:
     - user: root
     - group: root
     - require:
-      - file: /usr/local/discourse
+      - git: discourse
   postgres_user:
     - present
     - name: discourse
@@ -100,5 +107,33 @@ discourse_start:
     - run
     - cwd: /usr/local/discourse
     - name: ./launcher start app
+    - unless: docker ps | grep ' app'
     - require:
       - cmd: discourse_bootstrap
+
+/etc/nginx/conf.d/discourse.conf:
+  file:
+    - managed
+    - template: jinja
+    - user: root
+    - group: www-data
+    - mode: 400
+    - source: salt://nginx/proxy.jinja2
+    - require:
+      - pkg: nginx
+      - cmd: discourse_start
+    - context:
+        destination: http://127.0.0.1:8080
+        ssl: {{ salt['pillar.get']('discourse:ssl', False) }}
+        ssl_redirect: {{ salt['pillar.get']('discourse:ssl_redirect', False) }}
+        hostnames: {{ salt['pillar.get']('discourse:hostnames') }}
+    - watch_in:
+      - service: nginx
+
+{% if salt['pillar.get']('discourse:ssl', False) %}
+extend:
+  nginx:
+    service:
+      - watch:
+        - cmd: ssl_cert_and_key_for_{{ salt['pillar.get']('discourse:ssl', False) }}
+{% endif %}

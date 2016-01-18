@@ -5,11 +5,13 @@
 include:
   - apt.nrpe
   - docker.nrpe
+  - discourse
   - postgresql.server.nrpe
   - redis.nrpe
 {%- if salt['pillar.get']('discourse:ssl', False) %}
   - ssl.nrpe
 {%- endif %}
+  - sudo.nrpe
 
 {{ passive_check('discourse', check_ssl_score=True) }}
 

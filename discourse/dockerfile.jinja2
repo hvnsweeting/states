@@ -23,7 +23,7 @@ templates:
 
 {# which TCP/IP ports should this container expose? #}
 expose:
-  - "80:80"   {# fwd host port 80   to container port 80 (http) #}
+  - "127.0.0.1:8080:80"
 
 params:
 {#
@@ -62,10 +62,10 @@ env:
 {# These containers are stateless, all data is stored in /shared #}
 volumes:
   - volume:
-      host: /var/lib/discourse/shared/standalone
+      host: /var/lib/discourse/shared/
       guest: /shared
   - volume:
-      host: /var/lib/discourse/shared/standalone/log/var-log
+      host: /var/lib/discourse/shared/log/var-log
       guest: /var/log
 
 {# The docker manager plugin allows you to one-click upgrade Discourse

@@ -28,6 +28,9 @@ Related Formulas
 Usage
 -----
 
+Discourse must be used with :doc:`/postgresql/doc/index` 9.3.
+Set the version through pillar value :ref:`pillar-postgresql-version`.
+
 Administrator must set :ref:`pillar-postgresql-shared_buffers` to a max of 25%
 of the total memory. On 1GB installs set to 128MB (to leave room for other
 processes) on a 4GB instance you may raise to 1GB.
