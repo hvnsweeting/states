@@ -32,3 +32,17 @@ discourse:db:password
 ~~~~~~~~~~~~~~~~~~~~~
 
 .. include:: /postgresql/doc/password.inc
+
+.. _pillar-discourse-ssl:
+
+discourse:ssl
+~~~~~~~~~~~~~
+
+.. include:: /nginx/doc/ssl.inc
+
+.. _pillar-discourse-ssl_redirect:
+
+discourse:ssl_redirect
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. include:: /nginx/doc/ssl_redirect.inc
