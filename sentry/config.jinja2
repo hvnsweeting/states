@@ -41,7 +41,7 @@ SENTRY_FEATURES = {
 # You should configure the absolute URI to Sentry. It will attempt to guess it if you don't
 # but proxies may interfere with this.
 {%- set hostnames = salt['pillar.get']('sentry:hostnames') %}
-SENTRY_URL_PREFIX = '{% if salt['pillar.get']('sentry:ssl', False) %}https{% else %}http{% endif %}://{{ hostnames[0] }}'  # No trailing slash!
+SENTRY_URL_PREFIX = 'http{% if salt['pillar.get']('sentry:ssl', False) %}s{% endif %}://{{ hostnames[0] }}'  # No trailing slash!
 
 {#-SENTRY_WEB_HOST = '0.0.0.0'#}
 {#-SENTRY_WEB_PORT = 8080#}
