@@ -6,6 +6,7 @@ will be tested with bind in test.sls
 
 include:
   - pip
+  - salt.minion.deps
 
 ddns_dnspython:
   pip:
@@ -62,5 +63,6 @@ ddns_{{ domain }}_absent_old_ip_{{ loop.index }}:
       - file: ddns_tsig_key
     - require:
       - pip: ddns_dnspython
+      - pkg: salt_minion_deps
   {%- endfor %}
 {%- endfor %}
