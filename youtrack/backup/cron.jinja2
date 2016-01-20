@@ -21,4 +21,5 @@ for file in *.tar.gz; do
     # we prefer xz
     gzip --decompress $file --stdout | xz > $formalized_fn.tar.xz
     /usr/local/bin/backup-store $formalized_fn.tar.xz
+    rm -f "$file"
 done
