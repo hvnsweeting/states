@@ -695,6 +695,7 @@ class States(unittest.TestCase):
             self.fail(cleanup_files_msg)
 
         is_clean = True
+        self.sls('salt.minion.deps')
 
     def sls(self, states):
         """
