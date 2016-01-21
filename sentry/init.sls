@@ -100,7 +100,6 @@ sentry:
     - enable: True
     - require:
       - file: /var/lib/deployments/sentry
-      - service: redis
     - watch:
       - cmd: sentry_settings
       - file: /etc/init/sentry-celery.conf
@@ -200,6 +199,7 @@ sentry-syncdb-all:
       - module: sentry
       - file: sentry_settings
       - service: rsyslog
+      - service: redis
     - watch:
       - postgres_database: sentry
 
