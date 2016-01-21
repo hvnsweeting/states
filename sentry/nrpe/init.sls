@@ -64,6 +64,8 @@ sentry_monitoring:
   cmd:
     - script
     - source: salt://sentry/nrpe/sentry_monitoring.py
+    - env:
+      - SENTRY_CONF: '/etc'
     - args: >
         --dsn-file {{ dsn_file }}
 {%- if salt['pillar.get']("__test__", False) %}
