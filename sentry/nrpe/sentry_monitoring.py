@@ -16,7 +16,7 @@ import pysc
 
 # Bootstrap the Sentry environment
 from sentry.utils.runner import configure
-configure('/etc/sentry.conf.py')
+configure()
 
 from sentry.models import Team, Project, ProjectKey, User, Organization
 
