@@ -33,3 +33,7 @@ sentry-uwsgi:
 /etc/cron.daily/sentry-cleanup:
   file:
     - absent
+
+{{ opts['cachedir'] }}/pip/sentry:
+  file:
+    - absent
