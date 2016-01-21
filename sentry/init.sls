@@ -195,7 +195,7 @@ sentry_settings:
 sentry-syncdb-all:
   cmd:
     - wait
-    - name: /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py syncdb --all --noinput
+    - name: /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py django syncdb --all --noinput
     - stateful: False
     - require:
       - module: sentry
@@ -207,7 +207,7 @@ sentry-syncdb-all:
 sentry_admin_user:
   cmd:
     - wait
-    - name: /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py createsuperuser_plus --username={{ salt['pillar.get']('sentry:initial_admin_user:username') }} --email={{ salt['pillar.get']('sentry:initial_admin_user:email') }} --password={{ salt['pillar.get']('sentry:initial_admin_user:password') }}
+    - name: /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py createuser --superuser --username={{ salt['pillar.get']('sentry:initial_admin_user:username') }} --email={{ salt['pillar.get']('sentry:initial_admin_user:email') }} --password={{ salt['pillar.get']('sentry:initial_admin_user:password') }}
     - require:
       - cmd: sentry-syncdb-all
     - watch:
@@ -216,7 +216,7 @@ sentry_admin_user:
 sentry-migrate-fake:
   cmd:
     - wait
-    - name: /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py migrate --fake --noinput
+    - name: /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py django migrate --fake --noinput
     - stateful: False
     - watch:
       - cmd: sentry-syncdb-all
@@ -259,7 +259,7 @@ sentry-migrate-fake:
 sentry_collectstatic:
   cmd:
     - wait
-    - name: /usr/local/sentry/manage collectstatic --noinput
+    - name: /usr/local/sentry/manage django collectstatic --noinput
     - require:
       - cmd: sentry_settings
       - cmd: sentry
