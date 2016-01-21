@@ -18,7 +18,14 @@ import pysc
 from sentry.utils.runner import configure
 configure()
 
-from sentry.models import Team, Project, ProjectKey, User, Organization
+from sentry.models import (
+    Organization,
+    OrganizationMember,
+    Project,
+    ProjectKey,
+    Team,
+    User,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -43,17 +50,33 @@ class SentryMonitoring(pysc.Application):
         user.is_superuser = False
         user.save()
 
-        # get a create Monitoring organization
-        organization, _ = Organization.objects.get_or_create(
-            name="Monitoring", owner=user)
+        # get or create Monitoring organization
+        organization, _ = Organization.objects.get_or_create(name="Monitoring")
 
-        # get a create Monitoring team
+        organization_member, _ = OrganizationMember.objects.get_or_create(
+            user=user,
+            organization=organization,
+            defaults={
+                'role': 'member',
+            }
+        )
+
+        # get or create Monitoring team
         team, _ = Team.objects.get_or_create(
-            name="Monitoring", organization=organization, owner=user)
+            name="Monitoring",
+            defaults={
+                'organization': organization,
+            }
+        )
 
-        # get a create Monitoring project
+        # get or create Monitoring project
         project, _ = Project.objects.get_or_create(
-            name="Monitoring", team=team, organization=organization)
+            name="Monitoring",
+            team=team,
+            defaults={
+                'organization': organization,
+            }
+        )
 
         key = ProjectKey.objects.get(project=project)
         key.roles = 3  # enable Web API access role
