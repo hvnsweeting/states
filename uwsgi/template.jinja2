@@ -20,6 +20,7 @@ uwsgi:
 {%- endblock %}
   master: true
   workers: {{ workers }}
+  plugin-dir: /usr/local/uwsgi-1.9.17.1/
   harakiri: {{ timeout }}
 {%- set debug = salt['pillar.get']('debug', False) %}
   harakiri-verbose: {% if debug %}false{% else %}true{% endif %}
@@ -83,5 +84,8 @@ uwsgi:
 {%- if php_settings|default(False) %}
 {{ php_settings }}
 {%- endif %}
+{%- block plugin %}
+  plugin: python27, gevent
+{%- endblock %}
 {%- block footer %}
 {%- endblock %}

@@ -1,11 +1,14 @@
 {#- Usage of this is governed by a license that can be found in doc/license.rst -#}
 
 include:
-  - python.common
+  - apt
+  - build
+  - python.3
 
-python:
+python3-dev:
   pkg:
     - latest
-    - name: python{{ grains['pythonversion'][0] }}.{{ grains['pythonversion'][1] }}
     - require:
+      - pkg: build
       - cmd: apt_sources
+      - pkg: python

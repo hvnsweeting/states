@@ -1,4 +1,5 @@
 {#- Usage of this is governed by a license that can be found in doc/license.rst -#}
 
-# {{ salt['pillar.get']('message_do_not_modify') }}
-virtualenv==13.1.2
+include:
+  - apt.nrpe
+  - rsyslog.nrpe

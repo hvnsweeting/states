@@ -3,9 +3,9 @@
 include:
   - python.common
 
-python:
+python3:
   pkg:
     - latest
-    - name: python{{ grains['pythonversion'][0] }}.{{ grains['pythonversion'][1] }}
+    - name: python3
     - require:
       - cmd: apt_sources
