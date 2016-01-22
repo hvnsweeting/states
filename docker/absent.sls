@@ -1,11 +1,39 @@
 {#- Usage of this is governed by a license that can be found in doc/license.rst -#}
 
-docker:
-  pkgrepo:
+{%- from "upstart/absent.sls" import upstart_absent with context -%}
+{{ upstart_absent('docker') }}
+
+docker_absent:
+  file:
     - absent
-    - file: /etc/apt/sources.list.d/docker.list
+    - name: /etc/apt/sources.list.d/docker.list
   pkg:
     - purged
     - pkgs:
       - docker-engine
       - linux-image-extra-{{ grains['kernelrelease'] }}
+    - require:
+      - file: docker
+  user:
+    - absent
+    - force: True
+    - require:
+      - pkg: docker_absent
+  group:
+    - absent
+    - force: True
+    - require:
+      - pkg: docker_absent
+
+/var/lib/docker:
+  file:
+    - absent
+    - name: /var/lib/docker
+    - require:
+      - pkg: docker_absent
+
+/etc/docker:
+  file:
+    - absent
+    - require:
+      - pkg: docker_absent
