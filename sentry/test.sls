@@ -42,9 +42,9 @@ test:
     - test
     - map:
         ProcessResources:
-    {{ diamond_process_test('uwsgi-sentry') }}
-    {{ diamond_process_test('sentry-worker') }}
-    {{ diamond_process_test('sentry-beat') }}
+          {{ diamond_process_test('uwsgi-sentry') }}
+          {{ diamond_process_test('sentry-worker') }}
+          {{ diamond_process_test('sentry-beat') }}
     - require:
       - sls: sentry
       - sls: sentry.diamond
