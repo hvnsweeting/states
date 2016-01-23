@@ -31,16 +31,6 @@ redis:
     - mode: 440
     - require:
       - pkg: redis
-  service:
-    - running
-    - enable: True
-    - name: redis-server
-    - order: 50
-    - watch:
-      - file: redis
-      - file: /etc/init.d/redis-server
-      - pkg: redis
-      - user: redis
   pkg:
     - installed
     - name: redis-server
@@ -51,6 +41,16 @@ redis:
     - shell: /bin/false
     - require:
       - pkg: redis
+  service:
+    - running
+    - enable: True
+    - name: redis-server
+    - order: 50
+    - watch:
+      - file: redis
+      - file: /etc/init.d/redis-server
+      - pkg: redis
+      - user: redis
 
 /etc/init.d/redis-server:
   file:
