@@ -11,5 +11,5 @@ file_roots:
 pillar_roots:
   base:
     - /root/salt/pillar
-state_verbose: False
+state_verbose: True
 default_include: /etc/salt/minion.d/*.conf
