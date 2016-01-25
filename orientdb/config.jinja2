@@ -56,6 +56,7 @@
         {#- Automatic Backup #}
         <handler class="com.orientechnologies.orient.server.handler.OAutomaticBackup">
             <parameters>
+                <!-- backup's context is: {{ show_full_context()['backup'] }} -->
                 <parameter name="enabled"
                            value="{% if backup|default(False) and backup_storages %}true{% else %}false{% endif %}"/>
                 <parameter name="delay" value="{{ salt['pillar.get']('orientdb:backup_frequency', 24) }}h"/>
