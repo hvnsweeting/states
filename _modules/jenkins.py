@@ -52,9 +52,9 @@ def latest_stable_build(jobname):
     return build_number
 
 
-def download_artifact(filename, jobname, fn_glob, build=False):
+def download_artifact(filename, jobname, fn_glob, build):
     base_url, auth = _config()
-    if not build:
+    if build == 'latest':
         build = latest_stable_build(jobname)
 
     request_url = '{0}/job/{1}/{2}/api/json'.format(base_url, jobname, build)
