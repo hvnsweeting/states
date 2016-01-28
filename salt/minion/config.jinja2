@@ -42,3 +42,7 @@ grains:
   highstate: {{ salt['pillar.get']('salt:highstate', True) }}
 
 ipv6: True
+
+{%- for k, v in salt['pillar.get']('salt:extra', {}) %}
+{{ k }}: {{ v }}
+{%- endfor %}

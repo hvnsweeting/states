@@ -7,7 +7,11 @@
     - group: root
     - mode: 750
 
-{%- for file in ('master', 'logging', 'graphite', 'mysql', 's3') %}
+/etc/salt/minion.d/s3.conf:
+  file:
+    - absent
+
+{%- for file in ('master', 'logging', 'graphite', 'mysql') %}
 /etc/salt/minion.d/{{ file }}.conf:
   file:
     - managed
