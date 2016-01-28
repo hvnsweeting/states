@@ -11,7 +11,7 @@
   file:
     - absent
 
-{%- for file in ('master', 'logging', 'graphite', 'mysql') %}
+{%- for file in ('master', 'logging', 'graphite', 'mysql', 'extra') %}
 /etc/salt/minion.d/{{ file }}.conf:
   file:
     - managed

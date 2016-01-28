@@ -42,7 +42,7 @@ salt-minion:
       - file: /etc/salt/minion.d
       - file: salt-minion
       - cmd: salt
-{%- for file in ('master', 'logging', 'graphite', 'mysql') %}
+{%- for file in ('master', 'logging', 'graphite', 'mysql', 'extra') %}
       - file: /etc/salt/minion.d/{{ file }}.conf
 {%- endfor %}
 

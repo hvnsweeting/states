@@ -17,3 +17,10 @@ salt_minion_absent_cache_dir:
     - name: /var/cache/salt/minion
     - require:
       - pkg: salt-minion
+
+salt_minion_config:
+  file:
+    - absent
+    - name: /etc/salt/minion.d
+    - require:
+      - pkg: salt-minion
