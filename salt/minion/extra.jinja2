@@ -2,6 +2,6 @@
 
 # {{ salt['pillar.get']('message_do_not_modify') }}
 
-{%- for k, v in salt['pillar.get']('salt:extra', {}) %}
+{%- for k, v in salt['pillar.get']('salt:extra', {}).iteritems() %}
 {{ k }}: {{ v }}
 {%- endfor %}
