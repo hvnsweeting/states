@@ -31,18 +31,19 @@ mattermost:
     - password: "*"
     - enforce_password: True
 {%- set files_archive = salt['pillar.get']('files_archive', False) %}
+{%- set version = '1.4.0' %}
   archive:
     - extracted
     - name: /usr/local
 {%- if files_archive %}
-    - source: {{ files_archive|replace('file://', '')|replace('https://', 'http://') }}/mirror/mattermost-1.3.0.tar.gz
+    - source: {{ files_archive|replace('file://', '')|replace('https://', 'http://') }}/mirror/mattermost-{{ version }}.tar.gz
 {%- else %}
-    - source: https://github.com/mattermost/platform/releases/download/v1.3.0/mattermost.tar.gz
+    - source: https://github.com/mattermost/platform/releases/download/v{{ version }}/mattermost.tar.gz
 {%- endif %}
-    - source_hash: md5=a423e138520ddfcd6f563f8515c34761
+    - source_hash: md5=7e5b144c1dc221e07c92f642b4c6f44f
     - archive_format: tar
     - tar_options: z
-    - if_missing: /usr/local/mattermost/bin/platform
+    - if_missing: /usr/local/mattermost/salt_mattermost_{{ version }}
     - require:
       - user: mattermost
   postgres_user:
@@ -80,8 +81,22 @@ mattermost:
       - file: mattermost
       - file: /etc/mattermost.json
       - file: /var/log/mattermost
+      - archive: mattermost
     - require_in:
       - service: nginx
+
+mattermost_version_manage:
+  file:
+    - managed
+    - replace: False
+    - name: /usr/local/mattermost/salt_mattermost_{{ version }}
+    - require:
+      - archive: mattermost
+  cmd:
+    - run
+    - name: find /usr/local/mattermost/ -maxdepth 1 -mindepth 1 -type f -name 'salt_mattermost_*' ! -name 'salt_mattermost_{{ version }}' -delete
+    - require:
+      - archive: mattermost
 
 /etc/mattermost.json:
   file:
