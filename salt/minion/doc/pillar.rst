@@ -39,21 +39,17 @@ If set to ``False`` means this minion will run in master-less (local) mode.
 
 Default: ``False``.
 
+.. _pillar-salt-extra:
 
-.. _pillar-salt-s3-key:
+salt:extra
+~~~~~~~~~~
 
-salt:s3:key
-~~~~~~~~~~~
+Dictionary of extra configuration add to :doc:`index` config file. E.g::
 
-:ref:`glossary-s3` key
+  salt:
+    extra:
+      jenkins.username: myjenkins
+      jenkins.token: 123124ssafd
+      jenkins.base_url: 'https://test.jenkins.io'
 
-Default: no key provided (``[]``).
-
-.. _pillar-salt-s3-keyid:
-
-salt:s3:keyid
-~~~~~~~~~~~~~
-
-:ref:`glossary-s3` key ID
-
-Default: no key ID provided (``[]``).
+Default: ``{}``.
