@@ -46,6 +46,7 @@ mattermost:
     - if_missing: /usr/local/mattermost/salt_mattermost_{{ version }}
     - require:
       - user: mattermost
+      - file: /user/local
   postgres_user:
     - present
     - name: mattermost
