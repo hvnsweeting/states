@@ -60,7 +60,14 @@ def download_artifact(filename, jobname, fn_glob, build):
     request_url = '{0}/job/{1}/{2}/api/json'.format(base_url, jobname, build)
     try:
         r = requests.get(request_url, auth=auth)
-        files = [f['fileName'] for f in r.json()['artifacts']]
+        if r.status_code >= 300:
+            logger.error('Failed to get json data from Jenkins'
+                         ': status code %d, %s', r.status_code, r.text)
+            return None
+
+        artifacts_json = r.json()['artifacts']
+        logger.debug("Received from jenkins: %s", artifacts_json)
+        files = [f['fileName'] for f in artifacts_json]
         logger.debug("Artifacts of build %d %s: %s", build, jobname, files)
         try:
             artifact_name = glob.fnmatch.filter(files, fn_glob)[0]
@@ -76,3 +83,4 @@ def download_artifact(filename, jobname, fn_glob, build):
     with open(filename, 'wb') as fd:
         for chunk in response.iter_content(chunk_size=1024):
             fd.write(chunk)
+    return True
