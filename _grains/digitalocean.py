@@ -47,13 +47,12 @@ def get_host_info():
     grains = {'digitalocean': False}
     try:
         json_data = _retrieve_metadata("/metadata/v1.json")
+        data = json.loads(json_data)
+        if data.get('droplet_id', False):
+            grains['digitalocean'] = data
     except (socket.timeout, socket.error) as serr:
         log.info("Metadata service error or "
                  "this is not running in DigitalOcean: {}".format(serr))
-
-    data = json.loads(json_data)
-    if data.get('droplet_id', False):
-        grains['digitalocean'] = data
 
     return grains
 
