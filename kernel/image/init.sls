@@ -6,7 +6,9 @@ include:
 kernel:
   pkg:
     - installed
-    - name: linux-image-{{ grains['kernelrelease'] }}
+    - pkgs:
+      - linux-image-{{ grains['kernelrelease'] }}
+      - linux-headers-{{ grains['kernelrelease'] }}
     - required:
       - cmd: apt_sources
 
