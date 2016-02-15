@@ -9,6 +9,7 @@ nsca_dir: /etc/nagios/nsca.d
 ssh:
   hostname: {{ salt['pillar.get']('backup_server:address') }}
   username: root
+  port: {{ salt['pillar.get']('backup_server:port', 22) }}
   host_key_auto_add: true
 
 backup:
