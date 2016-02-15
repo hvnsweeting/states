@@ -18,6 +18,6 @@ mkdir "${subdir}"
 mv "${archive_path}" "${subdir}"
 {#- Do not preserve permission as it also change the permission of /var/lib/backup
 which need to be in 775 for the monitoring check (run as non-root) to read some files #}
-rsync --archive --no-perms --quiet --relative ./"${subdir}"/ root@{{ salt['pillar.get']('backup_server:address') }}:/var/lib/backup
+rsync -e 'ssh -p {{ salt['pillar.get']('backup_server:port', 22) }}' --archive --no-perms --quiet --relative ./"${subdir}"/ root@{{ salt['pillar.get']('backup_server:address') }}:/var/lib/backup
 cd /
 rm -rf "${tmpdir}"

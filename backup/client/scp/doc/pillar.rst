@@ -12,6 +12,7 @@ Example::
 
   backup_server:
     address: 192.168.1.1
+    port: 22
     subdir: common_backup
 
 .. _pillar-backup_server-address:
@@ -41,3 +42,12 @@ IDs of :doc:`/backup/client/doc/index` as default value. With this value, each
 ``/var/lib/backup``.
 
 Default: use :doc:`/salt/minion/doc/index` ID (``False``).
+
+.. _pillar-backup_server-port:
+
+backup_server:port
+~~~~~~~~~~~~~~~~~~
+
+SSH port to copy file through.
+
+Default: (``22``).
