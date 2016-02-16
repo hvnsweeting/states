@@ -60,7 +60,7 @@ def main():
         print 'Output directory is %s' % default_directory
 
     os.chdir(root_dir)
-    sys.argv[1:] = ['-c', 'doc', '-W', '.', output_dir]
+    sys.argv[1:] = ['-b', 'singlehtml', '-c', 'doc', '-W', '.', output_dir]
 
     from pkg_resources import load_entry_point
     sys.exit(
