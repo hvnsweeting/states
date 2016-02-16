@@ -10,6 +10,7 @@ User-agent: *
 Disallow:
 """
 
+
 def in_directory(dir1, dir2):
     dirs1 = dir1.split(os.sep)
     dirs2 = dir2.split(os.sep)
@@ -22,20 +23,24 @@ def in_directory(dir1, dir2):
             return False
     return True
 
+
 def common_root_dir():
     my_dir = os.path.dirname(os.path.abspath(__file__))
     return os.path.abspath(os.path.join(my_dir, '..'))
+
 
 def main():
     root_dir = common_root_dir()
     default_directory = os.path.abspath(os.path.join(root_dir, '..',
                                                      'salt-doc'))
 
-    if len(sys.argv) > 2:
+    if len(sys.argv) > 3:
         print "Invalid argument."
         print "%s [output-directory]"
         print "Default directory: %s" % default_directory
         sys.exit(1)
+
+    publish = True if len(sys.argv) == 3 else False
 
     # check if it's a valid virtualenv path
     virtualenv_key = 'VIRTUAL_ENV'
@@ -61,6 +66,8 @@ def main():
 
     os.chdir(root_dir)
     sys.argv[1:] = ['-c', 'doc', '-W', '.', output_dir]
+    if not publish:
+        sys.argv[1:] = ['-b', 'singlehtml'] + sys.argv[1:]
 
     from pkg_resources import load_entry_point
     sys.exit(
