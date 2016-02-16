@@ -40,7 +40,9 @@ class PublishDoc(pysc.Application):
         subprocess.check_call(
             [os.path.join(virtualenv, "bin", "python"),
              os.path.join("doc", "build.py"),
-             config["output"]],
+             config["output"],
+             'publish',
+             ],
             cwd=config["cwd"],
             env=env,
         )

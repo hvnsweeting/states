@@ -34,11 +34,13 @@ def main():
     default_directory = os.path.abspath(os.path.join(root_dir, '..',
                                                      'salt-doc'))
 
-    if len(sys.argv) > 2:
+    if len(sys.argv) > 3:
         print "Invalid argument."
         print "%s [output-directory]"
         print "Default directory: %s" % default_directory
         sys.exit(1)
+
+    publish = True if len(sys.argv) == 3 else False
 
     # check if it's a valid virtualenv path
     virtualenv_key = 'VIRTUAL_ENV'
@@ -63,7 +65,9 @@ def main():
         print 'Output directory is %s' % default_directory
 
     os.chdir(root_dir)
-    sys.argv[1:] = ['-b', 'singlehtml', '-c', 'doc', '-W', '.', output_dir]
+    sys.argv[1:] = ['-c', 'doc', '-W', '.', output_dir]
+    if not publish:
+        sys.argv[1:] = ['-b', 'singlehtml'] + sys.argv[1:]
 
     from pkg_resources import load_entry_point
     sys.exit(
