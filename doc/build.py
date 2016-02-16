@@ -10,6 +10,7 @@ User-agent: *
 Disallow:
 """
 
+
 def in_directory(dir1, dir2):
     dirs1 = dir1.split(os.sep)
     dirs2 = dir2.split(os.sep)
@@ -22,9 +23,11 @@ def in_directory(dir1, dir2):
             return False
     return True
 
+
 def common_root_dir():
     my_dir = os.path.dirname(os.path.abspath(__file__))
     return os.path.abspath(os.path.join(my_dir, '..'))
+
 
 def main():
     root_dir = common_root_dir()
