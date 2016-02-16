@@ -86,7 +86,17 @@ class SCPBackupFile(BackupFile):
 
         log.info("connecting to %s", self.hostname)
         log.debug("kwargs: %s", str(self.kwargs))
-        ssh.connect(**self.kwargs)
+        for key_file in self.kwargs['key_filename'][:]:
+            try:
+                ssh.connect(**self.kwargs)
+                break
+            except IOError as e:
+                log.info("Key %s does not exist, trying another", key_file)
+                try:
+                    self.kwargs['key_filename'].pop(0)
+                except IndexError:
+                    raise Exception('No more ssh private key to try.'
+                                    'Make sure good ssh key exist.')
         log.debug("opening sftp")
         ftp = ssh.open_sftp()
         log.debug("chdir %s", self.pwd)
