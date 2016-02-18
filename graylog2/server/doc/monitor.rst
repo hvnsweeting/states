@@ -16,7 +16,16 @@ Check :doc:`/elasticsearch/doc/index` cluster status.
 graylog2_server-es_port_transport
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Check :doc:`/elasticsearch/doc/index` transport port :ref:`glossary-TCP` connection.
+Check :doc:`/elasticsearch/doc/index` transport port :ref:`glossary-TCP`
+connection.
+
+.. _monitor-graylog2_server~es_port_transport_ipv6:
+
+graylog2_server-es_port_transport_ipv6
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Check :doc:`/elasticsearch/doc/index` transport port :ref:`glossary-TCP`
+connection through IPv6.
 
 .. _monitor-graylog2_procs:
 
