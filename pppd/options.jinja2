@@ -56,3 +56,13 @@ nologfd
 {%- if salt['pillar.get']('pppd:debug', False) or salt['pillar.get']('debug', False) %}
 debug
 {%- endif %}
+
+{#-
+put plugins here
+(putting them higher up may cause them to sent messages to the pty)
+#}
+
+{{ dict_default(instance, 'plugins', []) }}
+{%- for plugin in instance['plugins'] %}
+plugin {{ plugin }}
+{%- endfor -%}
