@@ -71,13 +71,6 @@ virtualbox-oracle-extpack:
       - pkg: virtualbox
       - file: virtualbox-oracle-extpack
 
-cleanup_virtualbox-oracle-extpack:
-  file:
-    - absent
-    - name: {{ opts['cachedir'] }}/{{ extpack_file }}
-    - require:
-      - cmd: virtualbox-oracle-extpack
-
 /etc/init.d/virtualbox:
  file:
    - managed
