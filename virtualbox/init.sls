@@ -14,6 +14,7 @@ virtualbox:
       - virtualbox-dkms
       - virtualbox-source
       - libgl1-mesa-glx
+    - hold: True
     - require:
       - cmd: apt_sources
       - pkg: kernel-headers
