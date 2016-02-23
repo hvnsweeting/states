@@ -72,14 +72,14 @@ virtualbox-oracle-extpack:
       - file: virtualbox-oracle-extpack
 
 /etc/init.d/virtualbox:
- file:
-   - managed
-   - template: jinja
-   - user: root
-   - group: root
-   - mode: 755
-   - source: salt://virtualbox/sysvinit.jinja2
-   - require:
-     - pkg: virtualbox
-   - require_in:
-     - service: virtualbox
+  file:
+    - managed
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: 755
+    - source: salt://virtualbox/sysvinit.jinja2
+    - require:
+      - pkg: virtualbox
+    - require_in:
+      - service: virtualbox
