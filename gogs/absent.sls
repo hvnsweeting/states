@@ -3,7 +3,7 @@
 {%- from "upstart/absent.sls" import upstart_absent with context -%}
 {{ upstart_absent('gogs') }}
 
-{%- for filename in ('/etc/gogs', '/usr/local/gogs', '/var/lib/gogs') %}
+{%- for filename in ('/etc/gogs', '/usr/local/gogs', '/var/lib/gogs', '/etc/gogs.ini') %}
 {{ filename }}:
   file:
     - absent
