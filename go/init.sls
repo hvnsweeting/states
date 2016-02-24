@@ -9,10 +9,10 @@ go:
     - managed
 {%- set files_archive = salt['pillar.get']('files_archive', False) %}
 {%- if files_archive %}
-    - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/go/1.4.1 {{ grains['oscodename'] }} main
+    - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/go/1.6 {{ grains['oscodename'] }} main
     - key_url: salt://go/key.gpg
 {%- else %}
-    - ppa: evarlast/golang1.4
+    - ppa: ubuntu-lxc/lxd-stable
 {%- endif %}
     - file: /etc/apt/sources.list.d/go.list
     - clean_file: True
