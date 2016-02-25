@@ -62,7 +62,8 @@ put plugins here
 (putting them higher up may cause them to sent messages to the pty)
 #}
 
-{{ dict_default(instance, 'plugins', []) }}
+{%- set plugins = plugins|default([], boolean=True) %}
+{{ dict_default(instance, 'plugins', plugins) }}
 {%- for plugin in instance['plugins'] %}
 plugin {{ plugin }}
 {%- endfor -%}
