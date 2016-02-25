@@ -34,6 +34,6 @@ ppp-options-{{ server_name }}:
     - mode: 440
     - require:
       - pkg: ppp
-    - context:
+    - defaults:
         server_name: {{ server_name }}
 {%- endfor %}
