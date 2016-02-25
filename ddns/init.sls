@@ -29,7 +29,7 @@ ddns_tsig_key:
 {%- set zone = salt['pillar.get']('ddns:zone') %}
 {%- set ttl = salt['pillar.get']('ddns:ttl', 3600) %}
 {%- set nameserver = salt['pillar.get']('ddns:nameserver') %}
-{%- set domains = salt['pillar.get']('ddns:domains', None)|default(grains['id'], boolean=True) %}
+{%- set domains = salt['pillar.get']('ddns:domains', None)|default({grains['id']:{}}, boolean=True) %}
 {%- set interface = salt['pillar.get']('network_interface', 'eth0') %}
 {%- for domain in domains %}
   {%- set ips = salt['pillar.get']('ddns:domains:' ~ domain ~ ':ips', None) | default(salt['network.ip_addrs'](interface), boolean=True) %}
