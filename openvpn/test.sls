@@ -70,7 +70,7 @@ test_openvpn_{{ instance }}:
           - wait for a while
           - grep the status file for the client's common name
         #}
-test_openvpn_refresh_pillar:
+test_openvpn_refresh_pillar_{{ instance }}:
   module:
     - wait
     - name: saltutil.refresh_pillar
