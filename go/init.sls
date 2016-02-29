@@ -13,7 +13,7 @@ go:
     - extracted
     - name: /usr/local
 {%- if files_archive %}
-    - source: {{ files_archive|replace('https://', 'http://') }}/mirror/go/go{{ version }}.{{ grains['kernel'] | lower }}-{{ grains['osarch'] }}.tar.gz
+    - source: {{ files_archive|replace('https://', 'http://') }}/mirror/go/{{ version }}/go{{ version }}.{{ grains['kernel'] | lower }}-{{ grains['osarch'] }}.tar.gz
 {%- else %}
     - source: https://storage.googleapis.com/golang/go{{ version }}.{{ grains['kernel'] | lower }}-{{ grains['osarch'] }}.tar.gz
 {%- endif %}
