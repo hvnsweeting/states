@@ -101,7 +101,8 @@ postgresql:work_mem
 
 Specifies the amount of memory to be used by internal sort operations and hash
 tables before writing to temporary disk files. Unit: MB.
-Default: one megabyte (1MB) (``1``).
+
+Default: 1MB (``1``).
 
 .. _pillar-postgresql-shared_buffers:
 
