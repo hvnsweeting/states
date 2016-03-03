@@ -258,14 +258,6 @@ Define level of logging.
 
 Default: just log informational messages (``INFO``).
 
-.. _pillar-shinken-mattermost:
-
-shinken:mattermost
-~~~~~~~~~~~~~~~~~~
-
-Whether to send a notification to :doc:`/mattermost/doc/index` web hook
-or not.
-
 .. _pillar-shinken-slack:
 
 shinken:slack
@@ -274,6 +266,16 @@ shinken:slack
 Whether to send a notification to `Slack <https://slack.com/>`_ or not.
 
 Default: turn off (``False``).
+
+.. _pillar-shinken-mattermost:
+
+shinken:mattermost
+~~~~~~~~~~~~~~~~~~
+
+Whether to send a notification to :doc:`/mattermost/doc/index` web hook
+or not.
+
+Default: do not use (``False``).
 
 Conditional
 -----------
