@@ -10,7 +10,6 @@
 {%- set scheme = 'https' if ssl else 'http' %}
 {%- set channel = salt["pillar.get"]("shinken:slack:channel", None) %}
 {%- set token = salt["pillar.get"]("shinken:slack:token", None) %}
-{%- set webhook_url = salt['pillar.get']('shinken:mattermost:webhook_url', None) %}
 {%- set shinken_url = scheme ~ '://' ~ hostname %}
 {%- set integrations = {
     'mattermost': {
