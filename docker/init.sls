@@ -12,7 +12,7 @@ docker:
   pkgrepo:
     - managed
     {#- source  https://apt.dockerproject.org/repo #}
-    - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/docker {{ grains['oscodename'] }} main
+    - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/docker ubuntu-{{ grains['oscodename'] }} main
     - key_url: salt://docker/key.gpg
     - file: /etc/apt/sources.list.d/docker.list
     - clean_file: True
