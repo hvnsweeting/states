@@ -2,7 +2,6 @@
 
 {%- set ksm = grains['virtual'] == 'kvm' and salt['file.file_exists']('/sys/kernel/mm/ksm/run') %}
 uwsgi:
-  plugin-dir: /usr/local/uwsgi-1.9.17.1/
   threaded-logger: True
   logger: syslog:uwsgi
 {%- if salt['pillar.get']('debug', False) %}

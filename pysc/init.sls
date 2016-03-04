@@ -37,7 +37,7 @@ pysc:
     - requirements: {{ opts['cachedir'] }}/pip/pysc
     - require:
       - module: pip
-      - file: python_config
+      - file: python
     - watch:
       - pkg: yaml
       - file: pysc

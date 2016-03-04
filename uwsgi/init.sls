@@ -80,24 +80,6 @@ uwsgi_build:
       - pkg: python-dev
       - file: uwsgi_patch_carbon_name_order
 
-uwsgi_python27_plugin:
-  cmd:
-    - run
-    - name: python uwsgiconfig.py --plugin plugins/python custom python27
-    - cwd: {{ extracted_dir }}
-    - unless: test -f {{ extracted_dir }}/python27_plugin.so
-    - watch:
-      - cmd: uwsgi_build
-
-uwsgi_gevent_plugin:
-  cmd:
-    - run
-    - name: python uwsgiconfig.py --plugin plugins/gevent custom gevent
-    - cwd: {{ extracted_dir }}
-    - unless: test -f {{ extracted_dir }}/gevent_plugin.so
-    - watch:
-      - cmd: uwsgi_build
-
 uwsgi_sockets:
   file:
     - directory
@@ -154,8 +136,6 @@ uwsgi:
       - pkg: salt_minion_deps
     - watch:
       - cmd: uwsgi
-      - cmd: uwsgi_python27_plugin
-      - cmd: uwsgi_gevent_plugin
       - file: uwsgi
       - file: /etc/uwsgi.yml
       - user: web
