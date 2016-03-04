@@ -40,14 +40,14 @@ plugins =
 bin_name = uwsgi
 append_version =
 plugin_dir = .
-embedded_plugins = python,
+embedded_plugins =
 {%- if rack|default(False) -%}
     rack,
 {%- endif -%}
 {%- if salt['cmd.has_exec']('php-config') -%}
     php,
 {%- endif -%}
-    syslog, gevent, ping, nagios, carbon, signal
+    syslog, ping, nagios, carbon, signal
 as_shared_library = false
 locking = auto
 event = auto

@@ -1,0 +1,16 @@
+{%- set url =  'https' if salt['pillar.get']('taiga:ssl', False) else 'http' %}
+{%- set ws_scheme = 'wss' if salt['pillar.get']('taiga:ssl', False) else 'ws' %}
+
+{%- set url = url ~ '://' ~ salt['pillar.get']('taiga:hostnames')[0] %}
+{%- set ws_url = ws_scheme ~ '://' ~ salt['pillar.get']('taiga:hostnames')[0] %}
+{
+    "api": "{{ url ~ '/api/v1/' }}",
+    "eventsUrl": "{{ ws_url ~ '/events' }}",
+    "debug": "false",
+    "publicRegisterEnabled": false,
+    "feedbackEnabled": false,
+    "privacyPolicyUrl": null,
+    "termsOfServiceUrl": null,
+    "maxUploadFileSize": null,
+    "contribPlugins": []
+}

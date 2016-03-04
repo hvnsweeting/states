@@ -1,0 +1,9 @@
+{#- Usage of this is governed by a license that can be found in doc/license.rst -#}
+
+{% extends "uwsgi/template.jinja2" %}
+{% block plugin %}
+  plugin: python34, gevent
+{% endblock %}
+{% block footer %}
+  buffer-size: 65535
+{% endblock %}

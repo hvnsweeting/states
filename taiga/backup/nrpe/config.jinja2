@@ -1,0 +1,20 @@
+{#- Usage of this is governed by a license that can be found in doc/license.rst -#}
+{%- from 'nrpe/passive.jinja2' import passive_interval with context -%}
+
+# {{ salt['pillar.get']('message_do_not_modify') }}
+
+taiga_backup_postgres_procs:
+  description: Taiga Backup PostgreSQL Database Process
+  command: '/usr/lib/nagios/plugins/check_procs -c 0:1 -u root -a "/usr/local/bin/backup-postgresql taiga"'
+
+taiga_backup:
+  description: Taiga Backup Age And Size
+  command: /usr/lib/nagios/plugins/check_backup.py --formula=taiga.backup --check=taiga_backup
+  {{ passive_interval(12 * 60) }} {#- 12 hours #}
+  arguments:
+    facility: postgresql-taiga
+    warning: {{ salt['pillar.get']('backup:age', 48) }}
+  timeout: 55
+  dependencies:
+    {#- no alert if load is too high #}
+    - load_average
