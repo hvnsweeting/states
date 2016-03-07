@@ -51,7 +51,7 @@ server-ipv6 {{ server_ipv6 }}
 {%- endblock topology %}
 
 {%- block authentication_mode %}
-ca /etc/openvpn/ca.crt
+ca /etc/openvpn/{{ instance }}/ca.crt
 cert /etc/openvpn/{{ instance }}/server.crt
 key /etc/openvpn/{{ instance }}/server.key
 dh /etc/openvpn/dh.pem
