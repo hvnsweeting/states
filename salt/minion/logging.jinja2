@@ -1,7 +1,11 @@
 {#- Usage of this is governed by a license that can be found in doc/license.rst -#}
 
 # {{ salt['pillar.get']('message_do_not_modify') }}
+{%- if salt['pillar.get']('__test__', False) %}
+log_file: /var/log/salt/minion-ci
+{%- else %}
 log_file: file:///dev/log
+{%- endif %}
 {%- if salt['pillar.get']('debug', False) %}
 log_level: debug
 {%- else %}
