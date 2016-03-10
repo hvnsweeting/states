@@ -98,7 +98,7 @@ function collect_logs {
         sudo salt -t 30 "$BUILD_IDENTITY" --output json cmd.run "xz -c /root/salt/$ltype.log > /tmp/$BUILD_IDENTITY-$ltype.log.xz"
     done
 
-    sudo salt -t 30 "$BUILD_IDENTITY" --output json cmd.run "tar -C /var/log -cJf /tmp/$BUILD_IDENTITY-upstart.log.tar.xz upstart"
+    sudo salt -t 30 "$BUILD_IDENTITY" --output json cmd.run "tar -C /var/log -cJf /tmp/$BUILD_IDENTITY-upstart.log.tar.xz upstart syslog"
     echo "Finished collecting log files."
 
     sudo salt -t 30 "$BUILD_IDENTITY" --output yaml cmd.run "grep COUNTER: /root/salt/stdout.log"
