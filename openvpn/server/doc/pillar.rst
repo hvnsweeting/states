@@ -134,6 +134,35 @@ Example::
           - client1
           - client2
           - client3: 172.16.0.3
+      devops-1:
+        ca_crt: |
+          -----BEGIN CERTIFICATE-----
+          -----END CERTIFICATE-----
+        ca_key: |
+          -----BEGIN PRIVATE KEY-----
+          -----END PRIVATE KEY-----
+        server_csr: |
+          -----BEGIN CERTIFICATE REQUEST-----
+          -----END CERTIFICATE REQUEST-----
+        server_key: |
+          -----BEGIN PRIVATE KEY-----
+          -----END PRIVATE KEY-----
+        server_crt: |
+          -----BEGIN CERTIFICATE-----
+          -----END CERTIFICATE-----
+        topology: net30
+        mode: tls
+        port: 1197
+        protocol: udp
+        device: tun
+        server: 192.168.0.0 255.255.254.0
+        server-ipv6: 2001:db8:0:123::/64
+        ifconfig-pool: 192.168.0.5 192.168.0.9
+        ifconfig-ipv6-pool: 2001:db8:0:123::4/64
+        extra_configs:
+          - client-to-client
+        clients:
+          - {{ grains['id'] }}: 192.168.0.5
       hr:
         mode: tls
         port: 1195
@@ -180,6 +209,51 @@ openvpn:servers:{{ instance }}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Name of tunnel.
+
+.. _pillar-openvpn-servers-instance-ca_crt:
+
+openvpn:servers:{{ instance }}:ca_crt
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The :ref:`glossary-CA` certificate.
+
+Default: generate automatically (``None``).
+
+.. _pillar-openvpn-servers-instance-ca_key:
+
+openvpn:servers:{{ instance }}:ca_key
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The :ref:`glossary-CA` key.
+
+Default: generate automatically (``None``).
+
+.. _pillar-openvpn-servers-instance-server_csr:
+
+openvpn:servers:{{ instance }}:server_csr
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The server :ref:`glossary-CSR`.
+
+Default: generate automatically (``None``).
+
+.. _pillar-openvpn-servers-instance-server_key:
+
+openvpn:servers:{{ instance }}:server_key
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The server key.
+
+Default: generate automatically (``None``).
+
+.. _pillar-openvpn-servers-instance-server_crt:
+
+openvpn:servers:{{ instance }}:server_crt
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The server certificate.
+
+Default: generate automatically (``None``).
 
 .. _pillar-openvpn-servers-instance-topology:
 

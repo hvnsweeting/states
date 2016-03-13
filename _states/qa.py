@@ -99,7 +99,7 @@ def test_pillar(name, doc):
     else:
         unused = []
 
-    # pillar key usage that have different default values
+    # pillar key usage that have multiple default values
     multiple_defaults = set(filter(lambda x: len(calls[x]) > 1, calls))
 
     bad_mandatory_calls = []
@@ -174,7 +174,7 @@ def test_pillar(name, doc):
                 (unused, "unused documented pillars"),
                 (bad_mandatory_calls, "mandatory pillars used with defaults"),
                 (multiple_defaults,
-                    "pillars with different default value calls"),
+                    "pillars with multiple default value calls"),
                 (bad_defaults,
                     "pillars with defaults different than documented"),
                 (errors, "errors"),

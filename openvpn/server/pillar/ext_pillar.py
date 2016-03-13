@@ -47,7 +47,7 @@ def ext_pillar(minion_id, pillar):
             for extension in ("crt", "key", "conf"):
                 with open(_vpn_file(minion_id, instance, extension)) as fh:
                     openvpn_pillar[extension] = fh.read()
-            with open(os.path.join(OPENVPN_DIR, "ca.crt")) as fh:
+            with open(os.path.join(OPENVPN_DIR, instance, "ca.crt")) as fh:
                 openvpn_pillar["ca"] = fh.read()
             output[OPENVPN_PILLAR_KEY]['instances'][instance] = openvpn_pillar
         else:
