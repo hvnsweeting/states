@@ -18,11 +18,13 @@ docker_absent:
       - file: docker
   user:
     - absent
+    - name: docker
     - force: True
     - require:
       - pkg: docker_absent
   group:
     - absent
+    - name: docker
     - force: True
     - require:
       - pkg: docker_absent
