@@ -13,6 +13,8 @@ docker_absent:
       - docker-engine
       - linux-image-extra-{{ grains['kernelrelease'] }}
     - require:
+      - file: docker_absent
+    - require_in:
       - file: docker
   user:
     - absent
