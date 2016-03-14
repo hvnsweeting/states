@@ -36,6 +36,18 @@ remote {{ remote_address }} {{ port }} {{ (protocol|list)[:-1]|join }}
   {%- else %}
 remote {{ remote_address }} {{ port }} {{ protocol }}
   {%- endif %}
+  {%- for other_instance, other_vpn_instance in salt['pillar.get']('openvpn:servers', {}).iteritems() if other_instance != instance %}
+    {%- if vpn_instance['ca_crt'] | default(None) and vpn_instance['ca_crt'] == other_vpn_instance['ca_crt'] | default(None) %}
+      {%- set other_protocol = other_vpn_instance['protocol']|default('udp') -%}
+      {%- set other_port = other_vpn_instance['port']|default(1194) -%}
+      {%- if other_protocol.endswith("6") and first_ipv6 %}
+remote {{ first_ipv6 }} {{ other_port }} {{ other_protocol }}
+remote {{ remote_address }} {{ other_port }} {{ (other_protocol|list)[:-1]|join }}
+      {%- else %}
+remote {{ remote_address }} {{ other_port }} {{ other_protocol }}
+      {%- endif %}
+    {%- endif %}
+  {%- endfor %}
   {%- if client in mine %}
 ca /etc/openvpn/client/{{ instance }}/ca.crt
 cert /etc/openvpn/client/{{ instance }}/{{ client }}.crt
