@@ -75,6 +75,7 @@ diamond:
     - watch:
       - pkg: python-dev
       - file: diamond_requirements
+      - virtualenv: diamond
   file:
     - managed
     - name: /etc/init/diamond.conf
