@@ -31,6 +31,15 @@ Example::
       target_2: example.com
     batch: 256
 
+.. _pillar-diamond-influxdb-address:
+
+diamond:influxdb:address
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+:doc:`/influxdb/doc/index` address to send data to.
+
+Default: (``False``).
+
 .. _pillar-diamond-interfaces:
 
 diamond:interfaces
@@ -66,6 +75,42 @@ Default: :doc:`index` default value (``256``).
 
 Conditional
 -----------
+
+diamond:influxdb:port
+~~~~~~~~~~~~~~~~~~~~~
+
+:doc:`/influxdb/doc/index` port.
+
+Default: (``8086``).
+
+diamond:influxdb:batch_size
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:doc:`/influxdb/doc/index` batch size.
+
+Default: (``50``).
+
+diamond:influxdb:cache_size
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:doc:`/influxdb/doc/index` cache size.
+
+Default: (``1000``).
+
+diamond:influxdb:username
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:doc:`/influxdb/doc/index` username.
+
+diamond:influxdb:password
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:doc:`/influxdb/doc/index` password.
+
+diamond:influxdb:database
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:doc:`/influxdb/doc/index` database to send data to.
 
 diamond:ping:{{ target }}
 ~~~~~~~~~~~~~~~~~~~~~~~~~
