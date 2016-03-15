@@ -5,7 +5,7 @@
 configobj==5.0.6
 pip==1.5.2
 psutil==2.2.1
-six==1.9.0
+six==1.10.0
 {%- if salt['pillar.get']('files_archive', False) %}
 diamond==3.7.2
 {%- else %}
@@ -15,6 +15,9 @@ https://github.com/hvnsweeting/Diamond/archive/v3.7.2.tar.gz
 graypy==0.2.9
 {%- endif %}
 {%- if salt['pillar.get']('sentry_dsn', False) %}
-requests==2.4.3
+requests==2.9.1
 raven==4.1.1
 {%- endif %}
+influxdb==2.12.0
+pytz==2016.1
+python_dateutil==2.5.0

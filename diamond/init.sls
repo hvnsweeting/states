@@ -75,6 +75,7 @@ diamond:
     - watch:
       - pkg: python-dev
       - file: diamond_requirements
+      - virtualenv: diamond
   file:
     - managed
     - name: /etc/init/diamond.conf
@@ -120,3 +121,15 @@ diamond:
     - mode: 440
     - require:
       - file: /etc/diamond/collectors
+
+/usr/local/diamond/lib/python2.7/site-packages/diamond/handler/influxdbHandler.py:
+  file:
+    - managed
+    - source: salt://diamond/influxdbHandler.py
+    - user: root
+    - group: root
+    - mode: 440
+    - require:
+      - module: diamond
+    - watch_in:
+      - service: diamond

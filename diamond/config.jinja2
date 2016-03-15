@@ -4,6 +4,8 @@
 
 {%- set __test__ = salt['pillar.get']("__test__", False) %}
 {%- set graphite_address = salt['pillar.get']('graphite_address', False) %}
+{%- set influxdb_address = salt['pillar.get']('diamond:influxdb:address', False ) %}
+
 [server]
 
 # Handlers for published metrics.
@@ -11,6 +13,9 @@ handlers = {% if graphite_address -%}
 diamond.handler.graphite.GraphiteHandler
 {%- else -%}
 diamond.handler.null.NullHandler
+{%- endif -%}
+{%- if influxdb_address -%}
+,diamond.handler.influxdbHandler.InfluxdbHandler
 {%- endif -%}
 {%- if __test__ -%}
 ,diamond.handler.archive.ArchiveHandler
@@ -47,6 +52,18 @@ host = {{ graphite_address }}
 port = 2003
 timeout = 15
 batch = {{ salt['pillar.get']('diamond:batch', 256) }}
+
+{% if influxdb_address %}
+[[InfluxdbHandler]]
+hostname = {{ influxdb_address }}
+port = {{ salt['pillar.get']('diamond:influxdb:port', 8086) }}
+batch_size = {{ salt['pillar.get']('diamond:influxdb:batch_size', 50) }}
+cache_size = {{ salt['pillar.get']('diamond:influxdb:cache_size', 1000) }}
+username = {{ salt['pillar.get']('diamond:influxdb:username') }}
+password = {{ salt['pillar.get']('diamond:influxdb:password') }}
+database = {{ salt['pillar.get']('diamond:influxdb:database') }}
+time_precision = s
+{%- endif %}
 
 {% if salt['pillar.get']("__test__", False) %}
 [[ArchiveHandler]]
