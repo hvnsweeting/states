@@ -4,7 +4,7 @@
 
 {%- set __test__ = salt['pillar.get']("__test__", False) %}
 {%- set graphite_address = salt['pillar.get']('graphite_address', False) %}
-{%- set influxdb_address = salt['pillar.get']('influxdb_address', False) %}
+{%- set influxdb_address = salt['pillar.get']('diamond:influxdb:address', False ) %}
 
 [server]
 
@@ -55,7 +55,7 @@ batch = {{ salt['pillar.get']('diamond:batch', 256) }}
 
 {% if influxdb_address %}
 [[InfluxdbHandler]]
-hostname = {{ salt['pillar.get']('diamond:influxdb:address') }}
+hostname = {{ influxdb_address }}
 port = {{ salt['pillar.get']('diamond:influxdb:port', 8086) }}
 batch_size = {{ salt['pillar.get']('diamond:influxdb:batch_size', 50) }}
 cache_size = {{ salt['pillar.get']('diamond:influxdb:cache_size', 1000) }}
