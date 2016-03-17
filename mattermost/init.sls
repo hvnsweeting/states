@@ -31,7 +31,7 @@ mattermost:
     - password: "*"
     - enforce_password: True
 {%- set files_archive = salt['pillar.get']('files_archive', False) %}
-{%- set version = '1.4.0' %}
+{%- set version = '2.1.0' %}
   archive:
     - extracted
     - name: /usr/local
@@ -40,7 +40,7 @@ mattermost:
 {%- else %}
     - source: https://github.com/mattermost/platform/releases/download/v{{ version }}/mattermost.tar.gz
 {%- endif %}
-    - source_hash: md5=7e5b144c1dc221e07c92f642b4c6f44f
+    - source_hash: md5=751f237d227db6c8da73a79e41a545b2
     - archive_format: tar
     - tar_options: z
     - if_missing: /usr/local/mattermost/salt_mattermost_{{ version }}
