@@ -71,21 +71,17 @@ COMMIT
 -A INPUT -s {{ ip }} -j ACCEPT
   {%- endfor -%}
   {%- for protocol, ports in filter.iteritems() -%}
-    {%- set anywhere_ports = [] %}
+    {%- set public_ports = [] %}
     {%- for port in ports %}
       {%- if port is mapping %}
         {%- set port, sources = port.items()[0] %}
 -A INPUT -p {{ protocol }} -s {{ sources }} --dport {{ port }} -j ACCEPT
       {%- else %}
-        {%- do anywhere_ports.append(port) %}
+        {%- do public_ports.append(port) %}
       {%- endif %}
     {%- endfor %}
-    {%- if anywhere_ports %}
-      {%- if anywhere_ports|length == 1 %}
--A INPUT -p {{ protocol }} -m {{ protocol }} --dport {{ anywhere_ports[0] }} -j ACCEPT
-      {%- else %}
--A INPUT -p {{ protocol }} -m multiport --dports {{ anywhere_ports | join(',') }} -j ACCEPT
-      {%- endif %}{# if length == 1 -#}
+    {%- if public_ports %}
+-A INPUT -p {{ protocol }} -m multiport --dports {{ public_ports | join(',') }} -j ACCEPT
     {%- endif %}
     {%- if grains['virtual'] == 'openvzve' %}
 -A INPUT -i venet0 -j DROP
