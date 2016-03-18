@@ -77,7 +77,7 @@ mattermost:
     - name: mattermost
     - enable: True
     - require:
-      - archive: mattermost
+      - file: /usr/local/mattermost/en.json
     - watch:
       - file: mattermost
       - file: /etc/mattermost.json
@@ -85,6 +85,14 @@ mattermost:
       - archive: mattermost
     - require_in:
       - service: nginx
+
+{#- https://forum.mattermost.org/t/cli-tool-crashing-missing-translation/959/5 #}
+/usr/local/mattermost/en.json:
+  file:
+    - symlink
+    - target: /usr/local/mattermost/i18n/en.json
+    - require:
+      - archive: mattermost
 
 mattermost_version_manage:
   file:
