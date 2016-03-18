@@ -8,5 +8,5 @@
   file:
     - absent
     - require:
-      - service: diamond
+      - service: gogs
 {%- endfor %}
