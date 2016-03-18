@@ -124,6 +124,7 @@ gogs-ssh-key:
     - group: git
     - mode: 440
     - name: /var/lib/gogs/ssh
+    - replace: False
     - require:
       - cmd: gogs-ssh-key
 
