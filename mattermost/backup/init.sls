@@ -1,6 +1,7 @@
 {#- Usage of this is governed by a license that can be found in doc/license.rst -#}
 
 include:
+  - backup.client
   - bash
   - cron
   - postgresql.server.backup
@@ -18,3 +19,5 @@ backup-mattermost:
       - pkg: cron
       - file: /usr/local/bin/backup-postgresql
       - file: bash
+      - file: /usr/local/share/salt_common.sh
+      - file: /usr/local/bin/backup-file
