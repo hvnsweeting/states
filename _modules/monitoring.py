@@ -134,7 +134,8 @@ def data():
         'roles': __salt__['pillar.get']('roles', []),
         'checks': list_checks(),
         'monitor': __salt__['pillar.get']('monitor', True),
-        'parents': __salt__['pillar.get']('parent_hosts', [])
+        'parents': __salt__['pillar.get']('parent_hosts', []),
+        'filter': __salt__['pillar.get']('firewall:filter', {})
     }
 
     if 'availabilityZone' in __salt__['grains.ls']():
