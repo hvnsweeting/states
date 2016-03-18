@@ -12,4 +12,4 @@ log_start_script "$@"
 trap "log_stop_script \$?" EXIT
 
 /usr/local/bin/backup-postgresql mattermost
-/usr/local/bin/backup-file mattermost /var/lib
+/usr/local/bin/backup-file mattermost /var/lib mattermost
