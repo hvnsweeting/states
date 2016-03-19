@@ -58,7 +58,7 @@ def _is_disabled(jobpath):
     except IOError as e:
         log.debug('Job config does not exist: %s', e)
         return True
-    except Exception:
+    except Exception as e:
         log.debug('Malformed XML config %s', e)
         return False
 
