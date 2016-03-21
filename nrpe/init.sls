@@ -173,7 +173,7 @@ service: nagios-nrpe-server #}
       - pkg: nagios-nrpe-server
       - file: nagios-nrpe-server
       - file: /etc/nagios/nrpe_local.cfg
-      - file: /etc/nagios/nrpe.d/000.nagios.servers.cfg
+      - file: /etc/nagios/nrpe.d/*
       - file: /var/lib/nagios
 {#- PID file owned by root in trusty, no need to manage #}
 {%- if os.is_precise %}
@@ -330,7 +330,7 @@ nsca_passive:
       - file: /usr/local/nagios/bin/nsca_passive
       - module: nrpe-virtualenv
       - file: /etc/nagios/nsca.yaml
-      - file: /etc/nagios/nsca.d
+      - file: /etc/nagios/nsca.d/*
       - file: hostname
 
 {% from 'nrpe/passive.jinja2' import passive_check with context %}
