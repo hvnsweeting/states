@@ -2,7 +2,7 @@
 {%- set ssh_port = salt['pillar.get']('gogs:ssh', 2022) -%}
 {%- set version = '0.8.10' -%}
 {%- from 'nginx/nrpe/instance.jinja2' import nginx_instance with context -%}
-{%- from 'postgresql/server/nrpe/instance.jinja2' import postgresql_instance_prefix with context -%}
+{%- from 'postgresql/server/nrpe/instance.jinja2' import postgresql_instance with context -%}
 # {{ salt['pillar.get']('message_do_not_modify') }}
 
 gogs_procs:
@@ -45,5 +45,5 @@ gogs_http_port_ipv6:
   dependencies:
     - gogs_ssh_port_ipv6
 
-{{ postgresql_instance_prefix("gogs") }}
+{{ postgresql_instance('gogs', 'gogs', salt['password.pillar']('gogs:db:password', 10)) }}
 {{ nginx_instance("gogs", timeout=55, http_uri='/user/login/', extra_dependencies=('gogs_http_port', 'gogs_postgresql')) }}

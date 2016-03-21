@@ -68,7 +68,7 @@ gogs:smtp
 
 .. _pillar-gogs-db_password:
 
-gogs:db_password
+gogs:db:password
 ~~~~~~~~~~~~~~~~
 
 .. include:: /postgresql/doc/password.inc

@@ -8,7 +8,7 @@
 } -%}
 {%- from 'upstart/rsyslog.jinja2' import manage_upstart_log with context -%}
 {%- set ssh_port = salt['pillar.get']('gogs:ssh', 2022) -%}
-{%- set db_password = salt['password.pillar']('gogs:db_password', 10) -%}
+{%- set db_password = salt['password.pillar']('gogs:db:password', 10) -%}
 include:
   - apt
   - git
