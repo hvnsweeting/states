@@ -599,7 +599,11 @@ class States(unittest.TestCase):
         global files_list, users_list, groups_list
 
         if clean_up_failed:
-            self.skipTest("Previous cleanup failed")
+            if os.env.get('FAIL_FAST', True):
+                self.skipTest("Previous cleanup failed")
+            else:
+                logger.debug("Previous cleanup failed, but FAIL_FAST is True,"
+                             " keep testing")
         else:
             logger.debug("Go ahead, cleanup never failed before")
 
