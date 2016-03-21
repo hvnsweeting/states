@@ -9,3 +9,4 @@ trap "log_stop_script \$?" EXIT
 
 export TERM=dumb
 test -e /usr/sbin/amavisd-new-cronjob && su amavis -c '/usr/sbin/amavisd-new-cronjob sa-clean' -s /bin/bash
+find /var/lib/amavis/virusmails/ -type f -mtime +10 -delete
