@@ -40,9 +40,7 @@ extend:
 
 /etc/cron.daily/amavisd-new:
   file:
-{%- if os.is_precise %}
     - managed
-    - source: salt://amavis/cron_daily.jinja2
     - template: jinja
     - user: root
     - group: root
@@ -51,12 +49,10 @@ extend:
       - pkg: cron
       - file: bash
       - pkg: amavis
+{%- if os.is_precise %}
+    - source: salt://amavis/cron_daily.jinja2
 {%- else %}
-    {#-
-    On trusty, this cron job was moved to /etc/cron.d/
-    Moreover, `/usr/sbin/amavisd-new-cronjob` must be run as `amavis` user
-    #}
-    - absent
+    - source: salt://amavis/cron_clean_quarantined.jinja2
 
 /var/lib/amavis/.spamassassin:
   file:
