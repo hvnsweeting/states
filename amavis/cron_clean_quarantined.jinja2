@@ -1,0 +1,11 @@
+#!/bin/bash
+# {{ salt['pillar.get']('message_do_not_modify') }}
+# Usage of this is governed by a license that can be found in doc/license.rst
+
+# log start stop time to syslog
+source /usr/local/share/salt_common.sh
+log_start_script "$@"
+trap "log_stop_script \$?" EXIT
+
+export TERM=dumb
+find /var/lib/amavis/virusmails/ -type f -mtime +10 -delete
