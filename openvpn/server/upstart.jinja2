@@ -9,7 +9,7 @@ start on (net-device-up
 stop on runlevel [!2345]
 
 respawn
-respawn limit 6 30
+respawn limit 6 60
 
 pre-start script
     if [ ! -e /var/run/openvpn ]; then
@@ -19,3 +19,4 @@ pre-start script
 end script
 
 exec /usr/sbin/openvpn --config /etc/openvpn/{{ instance }}/config
+post-stop exec sleep 5
