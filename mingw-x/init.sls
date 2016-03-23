@@ -10,7 +10,7 @@ mingw:
     - managed
 {%- if files_archive %}
     - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/mingw {{ grains['oscodename'] }} main
-    - key_url: salt://mingw/key.gpg
+    - key_url: salt://mingw-x/key.gpg
 {%- else %}
     - ppa: tobydox/mingw-x-trusty
 {%- endif %}
