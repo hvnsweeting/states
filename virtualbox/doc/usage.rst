@@ -105,3 +105,53 @@ example ``tap1-win7-ie11``.
 
 Same warning applies likes starting VM with
 :ref:`virtualbox-usage-remote-installing-in-a-headless-server`.
+
+Adding new partition
+--------------------
+
+1. Listing to get name of target VM
+
+
+.. code-block:: bash
+
+    vboxmanage list vms
+
+Says, targeted VM called my_vm.
+
+2. Listing to get HDD UUID
+
+.. code-block:: bash
+
+    vboxmanage list hdds
+
+3. Stop my_vm
+
+.. code-block:: bash
+
+    vboxmanage controlvm my_vm poweroff soft
+
+4. Cloning to VDI image format if it is using different format
+
+.. code-block:: bash
+
+    VBoxManage clonehd <infilename or UUID> <outfilename> --format VDI --variant Standard
+
+5. Resize disk
+
+.. code-block:: bash
+
+    VBoxManage modifyhd <absolute path to file> --resize <size in MB>
+
+6. Replace old HDD with new, resized one
+
+.. code-block:: bash
+
+    VBoxManage storageattach my_vm --storagectl SATA --device 0 --port 0 --type hdd --medium new_disk.VDI
+
+7. Turn on the VM
+
+.. code-block:: bash
+
+    VBoxManage startvm my_vm --type headless
+
+8. Then using fdisk/parted to re-partitioning the hard disk.
