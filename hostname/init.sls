@@ -14,17 +14,20 @@ hostname:
     - name: {{ grains['id'] }}
     - ip: 127.0.0.1
     - require:
-      - cmd: hostname
       - host: localhost
+{%- if not grains['virtual_subtype'] == 'Docker' %}
   cmd:
-{%- if grains['id'] != grains['localhost'] %}
+  {%- if grains['id'] != grains['localhost'] %}
     - run
-{%- else %}
+  {%- else %}
     - wait
-{%- endif %}
+  {%- endif %}
     - name: hostname `cat /etc/hostname`
+    - require_in:
+      - host: hostname
     - watch:
       - file: hostname
+{%- endif %}
 
 localhost:
   host:
