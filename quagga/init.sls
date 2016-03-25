@@ -5,11 +5,25 @@
 include:
   - apt
 
+{%- set upgrade = salt['pillar.get']('quagga:upgrade', False) %}
+
 quagga:
+{%- if upgrade %}
+  debconf:
+    - set
+    - data:
+        'quagga/really_stop': {'type': 'boolean', 'value': 'true'}
+    - require:
+      - pkg: apt_sources
+    - require_in:
+      - pkg: quagga
+{%- endif %}
   pkg:
     - installed
+{%- if not upgrade %}
     {#- stderr: *** As requested via Debconf, the Quagga daemon will not stop! *** #}
     - hold: True
+{%- endif %}
     - require:
       - cmd: apt_sources
   file:
