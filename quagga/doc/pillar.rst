@@ -53,6 +53,7 @@ Optional
 Example::
 
   quagga:
+    upgrade: True
     zebra:
       password: qazwsx
       enable_password: tgbyhn
@@ -66,6 +67,15 @@ Example::
       password: qazwsx
       enable_password: tgbyhn
       router_id: 255.1.1.1
+
+.. _pillar-quagga-upgrade:
+
+quagga:upgrade
+~~~~~~~~~~~~~~
+
+Whether to upgrade quagga automatically or not.
+
+Default: do not upgrade as it can cause loss of connectivity (``False``).
 
 .. _pillar-quagga-{{ daemon }}-password:
 
