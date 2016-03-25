@@ -603,8 +603,10 @@ class States(unittest.TestCase):
             if os.environ.get('FAIL_FAST', True):
                 self.skipTest("Previous cleanup failed")
             else:
-                logger.debug("Previous cleanup failed, but FAIL_FAST is True,"
+                clean_up_failed = False
+                logger.debug("Previous cleanup failed, but FAIL_FAST is False,"
                              " keep testing")
+
         else:
             logger.debug("Go ahead, cleanup never failed before")
 
