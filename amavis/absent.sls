@@ -33,8 +33,6 @@ amavis:
       - user: amavis
 {% endfor %}
 
-{%- if os.is_precise %}
 /etc/cron.daily/amavisd-new:
   file:
     - absent
-{%- endif %}
