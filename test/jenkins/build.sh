@@ -83,6 +83,12 @@ function timer {
     echo "TIME-METER: Run integration.py took: $((finish_run_test_time - start_run_test_time)) seconds"
 }
 
+function destroy_vm_on_condition {
+    if ${DESTROY_VM:-true}; then
+        destroy_test_vm
+    fi
+}
+
 function collect_logs {
     timer
 
@@ -117,6 +123,7 @@ function collect_logs {
     echo "End of error logs."
 
     echo "TIME-METER: Total time: $(($(date +%s) - start_time)) seconds"
+    destroy_vm_on_condition
 }
 
 function collect_logs_then_fail {
@@ -207,6 +214,3 @@ for i in {1..5}; do
 done
 
 sudo salt -t 5 --verbose "$BUILD_IDENTITY" --output yaml cmd.run "salt-call -c $CUSTOM_CONFIG_DIR state.sls test.teardown -lerror"
-if ${DESTROY_VM:-false}; then
-    destroy_test_vm
-fi
