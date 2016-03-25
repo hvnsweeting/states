@@ -8,6 +8,8 @@ include:
 quagga:
   pkg:
     - installed
+    {#- stderr: *** As requested via Debconf, the Quagga daemon will not stop! *** #}
+    - hold: True
     - require:
       - cmd: apt_sources
   file:
