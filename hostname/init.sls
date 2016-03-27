@@ -15,7 +15,7 @@ hostname:
     - ip: 127.0.0.1
     - require:
       - host: localhost
-{%- if not grains['virtual_subtype'] == 'Docker' %}
+{%- if not salt['grains.get']('virtual_subtype', False) == 'Docker' %}
   cmd:
   {%- if grains['id'] != grains['localhost'] %}
     - run
