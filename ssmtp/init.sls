@@ -12,7 +12,6 @@ ssmtp:
       - service: rsyslog
       - cmd: apt_sources
       - debconf: ssmtp
-      - cmd: hostname
       - host: hostname
   debconf:
     - set

@@ -38,7 +38,6 @@ ejabberd:
     - installed
     - require:
       - host: hostname
-      - cmd: hostname
       - pkg: postgresql
       - cmd: erlang_mod_pgsql
       - cmd: system_locale
@@ -52,7 +51,7 @@ ejabberd:
     - require:
       - pkg: ejabberd
       - cmd: erlang_mod_pgsql
-      - cmd: hostname
+      - host: hostname
       - file: ejabberd_init
     - watch:
     {%- if ssl %}
