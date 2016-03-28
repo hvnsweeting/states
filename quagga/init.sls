@@ -17,6 +17,9 @@ quagga:
       - pkg: apt_sources
     - require_in:
       - pkg: quagga
+{%- if salt['pillar.get']('apt:upgrade', False) %}
+      - module: apt_sources
+{%- endif %}
 {%- endif %}
   pkg:
     - installed
