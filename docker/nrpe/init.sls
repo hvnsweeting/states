@@ -3,3 +3,5 @@
 include:
   - apt.nrpe
   - pip.nrpe
+
+{{ passive_check('docker') }}
