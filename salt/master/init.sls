@@ -342,3 +342,21 @@ salt_master_git_repo_{{ loop.index }}:
     - require_in:
       - file: salt_master_cron_git_pull_repos
 {%- endfor %}
+
+{%- set extra_envs = salt['pillar.get']('salt_master:extra_envs', []) %}
+{%- for extra_env in extra_envs %}
+  {%- set gitlink = extra_env.values()[0] if extra_env is mapping else extra_env %}
+  {%- set dirname = gitlink.split('/')[-1] %}
+salt_master_extra_env_{{ dirname.replace('.git', '') }}:
+  git:
+    - latest
+    - name: {{ gitlink }}
+    - rev: {{ salt['pillar.get']('branch', 'master') }}
+    - target: /srv/salt/states/{{ dirname }}
+    - require:
+      - pkg: git
+      - file: /srv/salt
+      - file: openssh-client
+    - require_in:
+      - file: salt_master_cron_git_pull_repos
+{%- endfor %}
