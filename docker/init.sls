@@ -33,3 +33,16 @@ docker:
       - module: pip
       - pkg: docker
     - reload_modules: True
+  file:
+    - managed
+    - name: /etc/default/docker
+    - source: salt://docker/default.jinja2
+    - template: jinja
+    - user: root
+    - group: root
+    - require:
+      - pkg: docker
+  service:
+    - running
+    - watch:
+      - file: docker

@@ -41,3 +41,9 @@ docker_absent:
     - absent
     - require:
       - pkg: docker_absent
+
+/etc/default/docker:
+  file:
+    - absent
+    - require:
+      - pkg: docker_absent
