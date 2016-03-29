@@ -257,17 +257,6 @@ log = logging.getLogger(__name__)
 
 COMMENT_REGEX = r'^([[:space:]]*){0}[[:space:]]?'
 
-__virtualname__ = 'file'
-
-
-def __virtual__():
-    '''
-    Do not overwrite on MacOS
-    '''
-    if __grains__['os'] != 'MacOS':
-        return __virtualname__
-    return False
-
 
 def _get_accumulator_filepath():
     '''
