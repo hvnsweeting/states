@@ -17,6 +17,9 @@ Example::
         - git@git.example.com:common.git
         - git@git.example.com:states.git
         - git@git.example.com:anotherstates.git: subdir
+      extra_envs:
+        - windows: git@git.example.com:namespace/windows-formulas.git
+        - git@git.example.com:namespace/osx.git
       workers: 1
       pillar:
         branch: develop
@@ -57,6 +60,17 @@ Default: ``[]``.
 
   Make sure there is no branch names under a sub-directory namespace
   (with a ``/`` into it. This cause Salt 2014.1.x to fail.
+
+.. _pillar-salt_master-extra_envs:
+
+salt_master:extra_envs
+~~~~~~~~~~~~~~~~~~~~~~
+
+A list of extra environments. The element can be a dictionary with key is the
+environment name and value is the git URL, or it can just be a git URL, then
+the environment name will be pick up from the basename.
+
+Default: no extra environment (``[]``).
 
 .. _pillar-salt_master-git_pull_frequency:
 
