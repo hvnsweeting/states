@@ -2,7 +2,9 @@
 
 {%- set default_modules = ['nf_conntrack'] if grains['virtual'] != 'openvzve' else [] %}
 
-{%- for module in salt['pillar.get']('kernel_modules', [])|default(default_modules, boolean=True) %}
+{%- set modules = salt['pillar.get']('kernel_modules', [])|default(default_modules, boolean=True) %}
+{%- for module in modules %}
+  {%- if not loop.last and module not in modules[loop.index:] %}
 kernel_module_{{ module }}:
   kmod:
     - present
@@ -12,6 +14,7 @@ kernel_module_{{ module }}:
       - cmd: kernel_modules
     - require_in:
       - file: kernel_modules
+  {%- endif %}
 {%- endfor %}
 
 {#- API #}
