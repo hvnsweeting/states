@@ -10,11 +10,17 @@ quagga:
         'quagga/really_stop': {'type': 'boolean', 'value': True}
   service:
     - dead
+    - require:
+      - debconf: quagga
+  module:
+    - run
+    - name: pkg.unhold
+    - m_name: quagga
   pkg:
     - purged
     - require:
       - service: quagga
-      - debconf: quagga
+      - module: quagga
   group:
     - absent
     - name: quaggavty
