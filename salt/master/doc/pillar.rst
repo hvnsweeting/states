@@ -21,9 +21,10 @@ Example::
         - windows: git@git.example.com:namespace/windows-formulas.git
         - git@git.example.com:namespace/osx.git
       workers: 1
-      pillar:
-        branch: develop
-        remote: git@git.example.com:dev/pillars.git
+      ext_pillar:
+        git:
+          - develop gitlab@git.example.com:dev/pillars.git
+          - master:prod gitlab@git.example.com:dev/pillars.git
 
 .. _pillar-salt_master-gitfs_remotes:
 
@@ -82,31 +83,15 @@ fetched (in minutes, only allows value from ``0`` to ``59``).
 
 Default: ``5`` minutes.
 
-.. _pillar-salt_master-pillar-remote:
+.. _pillar-salt_master-ext_pillar-git:
 
-salt_master:pillar:remote
-~~~~~~~~~~~~~~~~~~~~~~~~~
+salt_master:ext_pillar:git
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:doc:`/git/doc/index` remote address to use for pillar source repository.
+List of repositories which is specified in the format `<branch> <repo_url>` or
+`<branch>:<env> <repo_url>`.
 
-Default: ``False`` - not used.
-
-.. warning::
-
-  To work it also need :ref:`pillar-salt_master-pillar-branch` defined.
-
-.. _pillar-salt_master-pillar-branch:
-
-salt_master:pillar:branch
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-:doc:`/git/doc/index` branch to checkout and use as a pillar source repository.
-
-Default: ``False`` - not used.
-
-.. warning::
-
-  To work it also need :ref:`pillar-salt_master-pillar-remote` defined.
+Default: not used (``[]``).
 
 .. _pillar-salt_master-loop_interval:
 

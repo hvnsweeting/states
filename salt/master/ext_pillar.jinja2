@@ -2,7 +2,16 @@
 # {{ salt['pillar.get']('message_do_not_modify') }}
 
 ext_pillar:
-  - git: {{ branch }} {{ remote }}
+{%- if grains['saltversioninfo'] < (2015, 8, 0, 0) %}
+  {%- for repo in git_ext_pillar %}
+  - git: {{ repo }}
+  {%- endfor %}
+{%- else %}
+  - git:
+  {%- for repo in git_ext_pillar %}
+    - {{ repo }}
+  {%- endfor %}
+{%- endif %}
 {%- if accumulator|default(False) -%}
   {%- if 'ext_pillar' in accumulator -%}
     {%- for line in accumulator['ext_pillar'] %}

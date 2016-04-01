@@ -24,7 +24,7 @@ openvpn_pillar:
 
 openvpn_ext_pillar_config:
   file:
-  {%- if salt['pillar.get']('salt_master:pillar:branch', False) and salt['pillar.get']('salt_master:pillar:remote', False) %}
+  {%- if salt['pillar.get']('salt_master:ext_pillar:git', []) %}
     - accumulated
     - name: ext_pillar
     - filename: /etc/salt/master.d/ext_pillar.conf

@@ -6,16 +6,14 @@ and use it to install the master.
 
 {%- from 'upstart/rsyslog.jinja2' import manage_upstart_log with context -%}
 
-{%- set branch = salt['pillar.get']('salt_master:pillar:branch', False) %}
-{%- set remote = salt['pillar.get']('salt_master:pillar:remote', False) %}
-{%- set use_ext_pillar = branch and remote %}
+{%- set git_ext_pillar = salt['pillar.get']('salt_master:ext_pillar:git', []) %}
 
 include:
   - bash
   - cron
   - local
   - git
-{%- if use_ext_pillar %}
+{%- if git_ext_pillar %}
   - pip
 {%- endif %}
   - pysc
@@ -97,7 +95,7 @@ include:
   file:
     - absent
 
-{%- if use_ext_pillar %}
+{%- if git_ext_pillar %}
 /etc/salt/master.d/ext_pillar.conf:
   file:
     - managed
@@ -107,8 +105,7 @@ include:
     - group: root
     - mode: 400
     - context:
-        branch: {{ branch }}
-        remote: {{ remote }}
+        git_ext_pillar: {{ git_ext_pillar }}
     - require:
       - pkg: salt-master
     - watch_in:
