@@ -16,7 +16,7 @@ test:
     - doc: {{ opts['cachedir'] }}/doc/output
     - require:
       - cmd: doc
-  gogs:
+  diamond:
     - test
     - map:
         ProcessResources:
