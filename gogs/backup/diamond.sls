@@ -7,7 +7,7 @@ include:
   - backup.diamond
   - gogs.diamond
 
-gogs_backup_diamond_resources:
+gogs_backup_file_diamond_resources:
   file:
     - accumulated
     - name: processes
