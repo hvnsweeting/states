@@ -7,7 +7,7 @@ include:
   - nrpe
 
 {%- from 'nrpe/passive.jinja2' import passive_check with context %}
-{{ passive_check('graphite.backup') }}
+{{ passive_check('gogs.backup') }}
 
 extend:
   check_backup.py:

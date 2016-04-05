@@ -3,6 +3,7 @@
 include:
   - apt
   - pppd
+  - kernel.modules
   - rsyslog
   - sysctl
 
