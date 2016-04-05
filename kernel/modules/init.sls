@@ -4,7 +4,7 @@
 
 {%- set modules = salt['pillar.get']('kernel_modules', [])|default(default_modules, boolean=True) %}
 {%- for module in modules %}
-  {%- if not loop.last and module not in modules[loop.index:] %}
+  {%- if module not in modules[loop.index:] %}
 kernel_module_{{ module }}:
   kmod:
     - present
