@@ -66,6 +66,15 @@ Same format as :ref:`pillar-pptpd-local_ips`.
 Optional
 --------
 
+.. _pillar-pptpd-logwtmp:
+
+pptpd:logwtmp
+~~~~~~~~~~~~~
+
+Record client connections and disconnections or not.
+
+Default: no logging (``False``).
+
 .. _pillar-pptpd-debug:
 
 pptpd:debug

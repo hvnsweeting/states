@@ -5,8 +5,10 @@
 ppp /usr/sbin/pppd
 option /etc/ppp/pptpd-options
 
+{%- if salt['pillar.get']('pptpd:logwtmp', False) %}
 {#- Use wtmp(5) to record client connections and disconnections. #}
 logwtmp
+{%- endif %}
 
 {%- if salt['pillar.get']('pptpd:debug', False) or salt['pillar.get']('debug', False) %}
 debug
