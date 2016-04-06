@@ -137,7 +137,11 @@ define contact {
     contact_name {{ user }}
     email {{ salt['pillar.get']('shinken:users:' + user + ':email') }}
     password {{ salt['pillar.get']('shinken:users:' + user + ':password') }}
-    {%- if salt['pillar.get']('shinken:users:' + user + ':read_only', False) %}
+    {%- if not salt['pillar.get']('shinken:users:' + user + ':notification', True) %}
+    use read-only-contact
+    host_notifications_enabled 0
+    service_notifications_enabled 0
+    {%- elif salt['pillar.get']('shinken:users:' + user + ':read_only', False) %}
     use read-only-contact
     {%- else %}
     use salt-contact
