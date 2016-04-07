@@ -16,7 +16,7 @@ Linux
 .. code-block:: bash
 
     # client        server  secret                  IP addresses
-    username	    *	    password	            *
+    username        *       password                *
 
 3. Try to connect from the command line:
 
