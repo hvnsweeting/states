@@ -1,6 +1,6 @@
 {#- Usage of this is governed by a license that can be found in doc/license.rst -#}
 
-{% set version = '1.0.2' %}
+{% set version = '1.3.4' %}
 
 include:
   - diamond
