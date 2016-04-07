@@ -164,7 +164,7 @@ roundcube_password_plugin_ldap_driver_dependency:
     - source: salt://roundcube/nginx.jinja2
     - template: jinja
     - user: root
-    - group: root
+    - group: www-data
     - mode: 440
     - require:
       - pkg: nginx
