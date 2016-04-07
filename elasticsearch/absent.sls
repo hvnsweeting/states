@@ -30,9 +30,3 @@ elasticsearch:
     - require:
       - process: elasticsearch
 {% endfor %}
-
-/etc/elasticsearch/nginx_basic_auth:
-  file:
-    - absent
-    - require:
-      - process: elasticsearch
