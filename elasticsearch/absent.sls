@@ -23,7 +23,7 @@ elasticsearch:
       - pkg: elasticsearch
 {% endif %}
 
-{% for filename in ('/etc/default/elasticsearch', '/etc/elasticsearch', '/etc/nginx/conf.d/elasticsearch.conf') %}
+{% for filename in ('/etc/default/elasticsearch', '/etc/elasticsearch', '/etc/nginx/conf.d/elasticsearch.conf', '/var/lib/elasticsearch') %}
 {{ filename }}:
   file:
     - absent
