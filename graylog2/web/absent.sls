@@ -20,6 +20,8 @@ extend:
       - absent
       - require:
         - user: graylog-web
+    pkg:
+      - purged
 
 {%- for file in ('/etc/graylog/web', '/etc/init.d/graylog-web') %}
 {{ file }}:
