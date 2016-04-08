@@ -8,11 +8,11 @@
 include:
   - apt
 
-{%- set version = '1.0.2' %}
+{%- set version = '1.3.4' %}
 graylog:
   pkgrepo:
     - managed
-    - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/graylog/{{ version }} {{ grains['oscodename'] }} 1.0
+    - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/graylog/{{ version }} {{ grains['oscodename'] }} 1.3
     - key_url: salt://graylog2/pubkey.gpg
     - file: /etc/apt/sources.list.d/graylog.list
     - clean_file: True

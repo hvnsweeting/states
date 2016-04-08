@@ -159,6 +159,7 @@ graylog-server:
       - file: /etc/graylog/server/elasticsearch.yml
       - file: /etc/default/graylog-server
       - file: /etc/graylog/server/log4j.xml
+      - pkg: graylog-server
       - file: graylog-server
     - require:
       - service: mongodb

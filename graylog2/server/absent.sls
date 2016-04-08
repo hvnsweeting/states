@@ -19,11 +19,13 @@ extend:
     pkg:
       - purged
 
-/etc/graylog/server:
+{%- for file in ('/etc/graylog/server', '/etc/init.d/graylog-server') %}
+{{ file }}:
   file:
     - absent
     - require:
       - service: graylog-server
+{%- endfor %}
 
 {%- for dir in ('lib', 'plugin') %}
 /usr/share/graylog-server/{{ dir }}:

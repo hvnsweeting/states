@@ -14,7 +14,7 @@ include:
   - nginx
   - ssl
 {% endif %}
-{%- set version = '1.4.4' %}
+{%- set version = '1.7.5' %}
 
 /etc/default/elasticsearch:
   file:
@@ -56,6 +56,18 @@ include:
 {%- endcall %}
 
 elasticsearch:
+  pkg:
+    - installed
+    - sources:
+{%- set files_archive = salt['pillar.get']('files_archive', False) %}
+{%- if files_archive %}
+        - elasticsearch: {{ files_archive|replace('file://', '')|replace('https://', 'http://') }}/mirror/elasticsearch-{{ version }}.deb
+{%- else %}
+        - elasticsearch: http://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-{{ version }}.deb
+{%- endif %}
+    - require:
+      - host: hostname
+      - pkg: jre-7
 {%- set aws = salt['pillar.get']('elasticsearch:aws', False) %}
 {% if aws %}
   elasticsearch_plugins:
@@ -65,6 +77,11 @@ elasticsearch:
     - require:
       - pkg: elasticsearch
 {% endif %}
+  user:
+    - present
+    - shell: /bin/false
+    - require:
+      - pkg: elasticsearch
   file:
     - managed
     - name: /etc/elasticsearch/elasticsearch.yml
@@ -79,14 +96,6 @@ elasticsearch:
         origin_state: elasticsearch
     - require:
       - pkg: elasticsearch
-  process:
-    - wait
-    - name: '-Delasticsearch'
-    - timeout: 10
-    - require:
-      - pkg: elasticsearch
-      - pkg: salt_minion_deps
-      - service: elasticsearch
   service:
     - running
     - enable: True
@@ -105,23 +114,14 @@ elasticsearch:
       - elasticsearch_plugins: elasticsearch
 {%- endif %}
       - user: elasticsearch
-  pkg:
-    - installed
-    - sources:
-{%- set files_archive = salt['pillar.get']('files_archive', False) %}
-{%- if files_archive %}
-        - elasticsearch: {{ files_archive|replace('file://', '')|replace('https://', 'http://') }}/mirror/elasticsearch-{{ version }}.deb
-{%- else %}
-        - elasticsearch: http://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-{{ version }}.deb
-{%- endif %}
-    - require:
-      - host: hostname
-      - pkg: jre-7
-  user:
-    - present
-    - shell: /bin/false
+  process:
+    - wait
+    - name: '-Delasticsearch'
+    - timeout: 10
     - require:
       - pkg: elasticsearch
+      - pkg: salt_minion_deps
+      - service: elasticsearch
 
 {%- if salt['pkg.version']('elasticsearch') not in ('', version) %}
 elasticsearch_old_version:
