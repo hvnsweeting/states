@@ -2,7 +2,7 @@
 
 # {{ salt['pillar.get']('message_do_not_modify') }}
 
-{%- set max_age = 86400 %}  {# one day in seconds #}
+{%- set max_age = 129600 %}  {# 1.5 day in seconds #}
 clamav_last_scan:
   description: ClamAV Last Successful Scan
   command: '/usr/lib/nagios/plugins/check_file_age -w {{ max_age }} -c {{ max_age }} /var/lib/clamav/last-scan'
