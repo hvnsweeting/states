@@ -4,6 +4,14 @@ Monitor
 Mandatory
 ---------
 
+erlang_dummy
+~~~~~~~~~~~~
+
+Dummy check.
+
+Optional
+--------
+
 .. |deployment| replace:: erlang
 
 .. warning::
@@ -17,7 +25,6 @@ erlang_procs
 :doc:`index` Port Mapper Daemon.
 
 .. include:: /nrpe/doc/check_procs.inc
-
 
 erlang_port
 ~~~~~~~~~~~

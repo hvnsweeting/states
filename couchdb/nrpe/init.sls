@@ -8,3 +8,13 @@ include:
   - rsyslog.nrpe
 
 {{ passive_check('couchdb') }}
+
+extend:
+  nsca-erlang:
+    file:
+      - context:
+          use_epmd: False
+  erlang-monitoring:
+    monitoring:
+      - context:
+          use_epmd: False
