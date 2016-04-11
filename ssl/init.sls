@@ -168,7 +168,6 @@ ssl_cert_and_key_for_{{ name }}:
       - file: /etc/ssl/certs/{{ name }}_ca.crt
       - file: /etc/ssl/private/{{ name }}.pem
       - file: /etc/ssl/certs/{{ name }}_chained.crt
-      - file: /etc/ssl/private/{{ name }}_bundle.pem
     - require:
       - cmd: ssl_create_symlink_by_hash_for_{{ name }}
       - file: ssl_dhparam
