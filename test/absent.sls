@@ -31,8 +31,6 @@
   "elasticsearch",
   "elasticsearch.backup",
   "erlang",
-  "etherpad",
-  "etherpad.backup",
   "firewall",
   "gitlab",
   "gitlab.backup",
@@ -92,7 +90,6 @@
   "dovecot",
   "ejabberd",
   "elasticsearch",
-  "etherpad",
   "gitlab-sidekiq",
   "gitlab-unicorn",
   "gitlab-git-http-server",
@@ -194,7 +191,6 @@ include:
   - dovecot.absent
   - ejabberd.absent
   - elasticsearch.absent
-  - etherpad.absent
   - git.absent
   - gitlab.absent
   - graylog2.server.absent
@@ -263,7 +259,6 @@ extend:
     service:
       - require:
         - service: ejabberd
-        - service: etherpad
         - service: gitlab-sidekiq
         - service: gitlab-unicorn
         - service: pgbouncer
