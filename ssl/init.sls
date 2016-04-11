@@ -113,20 +113,6 @@ that support SSL.
     - require:
       - pkg: ssl-cert
 
-{#- This is for ejabberd #}
-/etc/ssl/private/{{ name }}_bundle.pem:
-  file:
-    - managed
-    - contents: |
-        {{ server_crt }}
-        {{ server_key }}
-        {{ ca_crt }}
-    - user: root
-    - group: ssl-cert
-    - mode: 440
-    - require:
-      - pkg: ssl-cert
-
 {#-
 Some browsers may complain about a certificate signed by a well-known
 certificate authority, while other browsers may accept the certificate without

@@ -142,9 +142,6 @@ ALLOWED_HOSTS = [{% for hostname in salt['pillar.get']('sentry:hostnames') %}"{{
 STATIC_ROOT = '/var/lib/deployments/sentry/static'
 STATIC_URL = '/_static/'
 
-{#- XMPP/ejabber integration #}
-INSTALLED_APPS += ('sentry_xmpp',)
-
 {#- upgrade: 6.4.4 - 7.40 #}
 
 SENTRY_ALLOW_REGISTRATION = False

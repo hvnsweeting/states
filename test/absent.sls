@@ -23,8 +23,6 @@
   "diamond",
   "dovecot",
   "dovecot.backup",
-  "ejabberd",
-  "ejabberd.backup",
   "elasticsearch",
   "elasticsearch.backup",
   "erlang",
@@ -84,7 +82,6 @@
   "clamav-daemon",
   "cron",
   "dovecot",
-  "ejabberd",
   "elasticsearch",
   "gitlab-sidekiq",
   "gitlab-unicorn",
@@ -184,7 +181,6 @@ include:
   - cron.absent
   - diamond.absent
   - dovecot.absent
-  - ejabberd.absent
   - elasticsearch.absent
   - git.absent
   - gitlab.absent
@@ -253,7 +249,6 @@ extend:
   postgresql:
     service:
       - require:
-        - service: ejabberd
         - service: gitlab-sidekiq
         - service: gitlab-unicorn
         - service: pgbouncer
