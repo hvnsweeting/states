@@ -40,5 +40,9 @@ virtualbox:
       - /etc/init.d/virtualbox
       - /usr/lib/virtualbox
       - /var/log/vbox-install.log
+      - /lib/modules/{{ grains['kernelrelease'] }}/misc/vboxdrv.ko
+      - /lib/modules/{{ grains['kernelrelease'] }}/misc/vboxnetadp.ko
+      - /lib/modules/{{ grains['kernelrelease'] }}/misc/vboxnetflt.ko
+      - /lib/modules/{{ grains['kernelrelease'] }}/misc/vboxpci.ko
     - require:
       - pkgrepo: virtualbox
