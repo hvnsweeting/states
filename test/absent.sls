@@ -65,7 +65,6 @@
   "salt.minion",
   "sentry",
   "sentry.backup",
-  "squid",
   "ssh.server",
   "statsd",
   "tomcat.6",
@@ -109,7 +108,6 @@
   "shinken-reactionner",
   "shinken-receiver",
   "shinken-scheduler",
-  "squid3",
   "openssh-server",
   "statsd",
   "tomcat6",
@@ -208,7 +206,6 @@ include:
   - shinken.reactionner.absent
   - shinken.receiver.absent
   - shinken.scheduler.absent
-  - squid.absent
   - ssh.server.absent
   - statsd.absent
   - tomcat.6.absent
