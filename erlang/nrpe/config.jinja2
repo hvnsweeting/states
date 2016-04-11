@@ -1,7 +1,8 @@
 {#- Usage of this is governed by a license that can be found in doc/license.rst -#}
-
 # {{ salt['pillar.get']('message_do_not_modify') }}
 
+{#- set use_epmd = use_epmd|default(true) #}
+{%- if use_epmd %}
 erlang_procs:
   description: Erlang Port Mapper Daemon
   command: '/usr/lib/nagios/plugins/check_procs -w 1:1 -c :1 -C epmd'
@@ -13,3 +14,9 @@ erlang_port:
   timeout: {{ timeout }}
   dependencies:
     - erlang_procs
+{%- endif %}
+
+{#- this file can't be empty #}
+erlang_dummy:
+  description: Please ignore this check
+  command: /usr/lib/nagios/plugins/check_dummy 0
