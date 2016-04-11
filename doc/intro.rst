@@ -50,7 +50,7 @@ Databases SQL or NoSQL, such as:
 
 States that protect the server, such as:
 
-- :doc:`/denyhosts/doc/index` to block bruteforce SSH attacks
+- :doc:`/fail2ban/doc/index` to block bruteforce SSH attacks
 - :doc:`/firewall/doc/index`
 - :doc:`/clamav/doc/index` anti-virus
 - :doc:`/openvpn/doc/index` to secure communication

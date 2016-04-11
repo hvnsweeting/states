@@ -13,9 +13,9 @@ Notice
 
 Since each build job clones code from :doc:`/gitlab/doc/index` server, user may
 need to specify the Credential for each git link if needed. If
-:doc:`/gitlab/doc/index` server uses :doc:`/denyhosts/doc/index`,
+:doc:`/gitlab/doc/index` server uses :doc:`/fail2ban/doc/index`,
 user must specify Credential before adding git link,
-or adds address of CI server to :ref:`pillar-denyhosts-whitelist` of
+or adds address of CI server to :ref:`pillar-fail2ban-whitelist` of
 :doc:`/gitlab/doc/index` server.
 
 Update pillar

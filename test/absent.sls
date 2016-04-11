@@ -20,7 +20,6 @@
   "carbon.backup",
   "clamav.server",
   "cron",
-  "denyhosts",
   "diamond",
   "djangopypi2",
   "djangopypi2.backup",
@@ -86,7 +85,6 @@
   "apt_cache",
   "clamav-daemon",
   "cron",
-  "denyhosts",
   "dovecot",
   "ejabberd",
   "elasticsearch",
@@ -186,7 +184,6 @@ include:
   - carbon.absent
   - clamav.absent
   - cron.absent
-  - denyhosts.absent
   - diamond.absent
   - dovecot.absent
   - ejabberd.absent

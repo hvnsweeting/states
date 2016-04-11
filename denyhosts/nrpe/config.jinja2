@@ -1,7 +1,0 @@
-{#- Usage of this is governed by a license that can be found in doc/license.rst -#}
-
-# {{ salt['pillar.get']('message_do_not_modify') }}
-
-denyhosts_procs:
-  description: Denyhosts Daemon
-  command: '/usr/lib/nagios/plugins/check_procs -c 1:1 -C python -a "/usr/sbin/denyhosts --daemon --purge --config=/etc/denyhosts.conf" -u root'
