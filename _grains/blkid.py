@@ -22,17 +22,6 @@ __salt__ = {
     'cmd.run': salt.modules.cmdmod._run_quiet
 }
 
-__virtualname__ = 'blkid'
-
-
-def __virtual__():
-    '''
-    Only works on Linux systems
-    '''
-    if __grains__['kernel'] == 'Linux':
-        return __virtualname__
-    return False
-
 
 def blkid():
     grains = {"blkid": []}
