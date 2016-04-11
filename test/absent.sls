@@ -68,7 +68,6 @@
   "squid",
   "ssh.server",
   "statsd",
-  "terracotta",
   "tomcat.6",
   "tomcat.7",
   "uwsgi",
@@ -113,7 +112,6 @@
   "squid3",
   "openssh-server",
   "statsd",
-  "terracotta",
   "tomcat6",
   "tomcat7",
   "uwsgi",
@@ -213,7 +211,6 @@ include:
   - squid.absent
   - ssh.server.absent
   - statsd.absent
-  - terracotta.absent
   - tomcat.6.absent
   - tomcat.7.absent
   - uwsgi.absent
