@@ -21,8 +21,6 @@
   "clamav.server",
   "cron",
   "diamond",
-  "djangopypi2",
-  "djangopypi2.backup",
   "dovecot",
   "dovecot.backup",
   "ejabberd",
