@@ -6,7 +6,7 @@
 {%- else -%}
     {%- set bits = "32" -%}
 {%- endif -%}
-{% for file in ('/usr/local/src/sslyze-' + version|replace(".", "_") + '-linux' + bits, '/usr/lib/nagios/plugins/check_ssl_configuration.py', '/usr/local/nagios/salt-sslyze-requirements.txt') %}
+{% for file in ('/usr/local/src/sslyze-' + version|replace(".", "_") + '-linux' + bits, '/usr/local/nagios/salt-sslyze-requirements.txt') %}
 {{ file }}:
   file:
     - absent

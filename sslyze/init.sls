@@ -62,23 +62,3 @@ sslyze_{{ name }}_{{ trust_store }}:
         {%- endfor -%}
     {%- endfor -%}
 {%- endif %}
-
-check_ssl_configuration.py:
-  file:
-    - managed
-    - name: /usr/lib/nagios/plugins/check_ssl_configuration.py
-    - source: salt://sslyze/check_ssl_configuration.py
-    - user: root
-    - group: nagios
-    - mode: 550
-    - require:
-      - host: hostname
-      - pkg: nagios-nrpe-server
-      - module: nrpe-virtualenv
-      - cmd: sslyze
-      - pkg: salt_minion_deps
-{#- consumers of sslyze check use cron, make them only require sslyze check script #}
-      - pkg: cron
-    - require_in:
-      - service: nagios-nrpe-server
-      - service: nsca_passive
