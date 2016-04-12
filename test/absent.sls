@@ -20,19 +20,12 @@
   "carbon.backup",
   "clamav.server",
   "cron",
-  "denyhosts",
   "diamond",
-  "djangopypi2",
-  "djangopypi2.backup",
   "dovecot",
   "dovecot.backup",
-  "ejabberd",
-  "ejabberd.backup",
   "elasticsearch",
   "elasticsearch.backup",
   "erlang",
-  "etherpad",
-  "etherpad.backup",
   "firewall",
   "gitlab",
   "gitlab.backup",
@@ -72,10 +65,8 @@
   "salt.minion",
   "sentry",
   "sentry.backup",
-  "squid",
   "ssh.server",
   "statsd",
-  "terracotta",
   "tomcat.6",
   "tomcat.7",
   "uwsgi",
@@ -88,11 +79,8 @@
   "apt_cache",
   "clamav-daemon",
   "cron",
-  "denyhosts",
   "dovecot",
-  "ejabberd",
   "elasticsearch",
-  "etherpad",
   "gitlab-sidekiq",
   "gitlab-unicorn",
   "gitlab-git-http-server",
@@ -120,10 +108,8 @@
   "shinken-reactionner",
   "shinken-receiver",
   "shinken-scheduler",
-  "squid3",
   "openssh-server",
   "statsd",
-  "terracotta",
   "tomcat6",
   "tomcat7",
   "uwsgi",
@@ -189,12 +175,9 @@ include:
   - carbon.absent
   - clamav.absent
   - cron.absent
-  - denyhosts.absent
   - diamond.absent
   - dovecot.absent
-  - ejabberd.absent
   - elasticsearch.absent
-  - etherpad.absent
   - git.absent
   - gitlab.absent
   - graylog2.server.absent
@@ -223,10 +206,8 @@ include:
   - shinken.reactionner.absent
   - shinken.receiver.absent
   - shinken.scheduler.absent
-  - squid.absent
   - ssh.server.absent
   - statsd.absent
-  - terracotta.absent
   - tomcat.6.absent
   - tomcat.7.absent
   - uwsgi.absent
@@ -262,8 +243,6 @@ extend:
   postgresql:
     service:
       - require:
-        - service: ejabberd
-        - service: etherpad
         - service: gitlab-sidekiq
         - service: gitlab-unicorn
         - service: pgbouncer
