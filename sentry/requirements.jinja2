@@ -81,7 +81,7 @@ graypy==0.2.9
 {%- set smtp = salt['pillar.get']('sentry:smtp', False)|default(salt['pillar.get']('smtp'), boolean=True) -%}
 {%- if smtp['encryption']|default('plain') == 'ssl' %}
 django-smtp-ssl==1.0
-{%- endif -%}
+{%- endif %}
 dnspython==1.12.0
 psutil==2.1.3
 sentry-slack==0.4.0
