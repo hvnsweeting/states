@@ -13,6 +13,9 @@ virtualbox_kernel_modules
 
 Whether the :doc:`index` kernel modules are loaded or not.
 
+Optional
+--------
+
 .. _monitor-virtualbox_procs:
 
 virtualbox_procs

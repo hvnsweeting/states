@@ -8,6 +8,8 @@ virtualbox_kernel_modules:
   description: VirtualBox Kernel Modules
   command: '/usr/lib/nagios/plugins/check_vbox_kernel_modules.py --formula=virtualbox --check=virtualbox_kernel_modules'
 
+{%- if not salt['pillar.get']('__test__', False) %}
 virtualbox_procs:
   description: VBoxSVC Daemon
   command: '/usr/lib/nagios/plugins/check_procs -c 1:1 -u virtualbox -a "/usr/lib/virtualbox/VBoxSVC --auto-shutdown"'
+{%- endif %}
