@@ -335,7 +335,7 @@ Only used if :ref:`pillar-ip_addrs` is not defined.
 .. _pillar-shinken-users-username-notification:
 
 shinken:users:{{ username }}:notification
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Whether to send a notification to user {{ username }} or not.
 
