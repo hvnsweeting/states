@@ -4,3 +4,10 @@ go:
   file:
     - absent
     - name: /usr/local/go
+
+{%- for f in ('go', 'gofmt', 'godoc') %}
+go_{{ f }}:
+  file:
+    - absent
+    - name: /usr/local/bin/{{ f }}
+{%- endfor %}

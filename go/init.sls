@@ -2,8 +2,10 @@
 
 include:
   - apt
+  - git
+  - build
+  - mercurial
   - local
-  - ssh.client
 
 {%- set files_archive = salt['pillar.get']('files_archive', False) %}
 {%- set version = '1.6' %}
@@ -23,3 +25,39 @@ go:
     - archive_format: tar
     - require:
       - file: /usr/local
+
+{%- for f in ('go', 'gofmt', 'godoc') %}
+go_{{ f }}:
+  file:
+    - symlink
+    - name: /usr/local/bin/{{ f }}
+    - target: /usr/local/go/bin/{{ f }}
+    - require:
+      - archive: go
+    - require_in:
+      - cmd: go_state_api
+{%- endfor %}
+
+gopath:
+  file:
+    - directory
+    - name: /var/lib/go
+
+gopath_env:
+  file:
+    - append
+    - name: /etc/environment
+    - text: |
+        export GOPATH="/var/lib/go"
+    - require:
+      - file: gopath
+
+go_state_api: {# API #}
+  cmd:
+    - wait
+    - name: echo "Finished go SLS"
+    - require:
+      - file: gopath_env
+      - pkg: git
+      - pkg: mercurial
+      - pkg: build
