@@ -130,8 +130,10 @@ Example::
   shinken:
     users:
       ro:
+        read_only: True
         email: ro@example.com
         password: pass
+        notification: False
         managed_hosts:
           - foo
           - bar
@@ -329,6 +331,17 @@ The network interface of a minion which is used for monitoring.
 Default: The first network interface (``eth0``)
 
 Only used if :ref:`pillar-ip_addrs` is not defined.
+
+.. _pillar-shinken-users-username-notification:
+
+shinken:users:{{ username }}:notification
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether to send a notification to user {{ username }} or not.
+
+Default: send a notification to user {{ username }} (``True``).
+
+Only used if :ref:`pillar-shinken-users-username-read_only` is True.
 
 .. _pillar-shinken-users-username-managed_hosts:
 
