@@ -33,7 +33,7 @@ virtualenv:
     - requirements: {{ opts['cachedir'] }}/pip/virtualenv
     - require:
       - pkg: git
-      - module: mercurial
+      - pkg: mercurial
 {%- if not salt['file.file_exists']('/usr/local/bin/virtualenv') %}
       - file: virtualenv
 {%- endif -%}

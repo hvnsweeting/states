@@ -1,28 +1,21 @@
 {#- Usage of this is governed by a license that can be found in doc/license.rst -#}
-
 include:
-  - pip
-  - python.dev
+  - apt
 
 mercurial:
   pkg:
-    - purged
-    - name: mercurial-common
-  file:
-    - managed
-    - name: {{ opts['cachedir'] }}/pip/mercurial
-    - source: salt://mercurial/requirements.jinja2
-    - template: jinja
-    - user: root
-    - group: root
-    - mode: 440
+    - installed
     - require:
-      - module: pip
-  module:
-    - wait
-    - name: pip.install
-    - requirements: {{ opts['cachedir'] }}/pip/mercurial
+      - cmd: apt_sources
+  file:
+    - absent
+    - name: {{ opts['cachedir'] }}/pip/mercurial
+    - require:
+      - pkg: mercurial
+{% if salt['cmd.has_exec']('pip') %}
+  pip:
+    - removed
+    - name: mercurial
     - watch:
       - file: mercurial
-    - require:
-      - pkg: python-dev
+{%- endif %}
