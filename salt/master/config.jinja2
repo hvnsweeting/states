@@ -29,6 +29,7 @@ file_roots:
 {%- endfor %}
 {%- set extra_envs = salt['pillar.get']('salt_master:extra_envs', []) %}
 {%- if extra_envs %}
+  {%- set envs = {} %}
   {%- for extra_env in extra_envs %}
     {%- if extra_env is mapping %}
       {%- set env = extra_env.keys()[0] %}
@@ -37,9 +38,19 @@ file_roots:
       {%- set dirname = extra_env.split('/')[-1] %}
       {%- set env = dirname.split('.')[0] %}
     {%- endif %}
+    {%- do envs.update({env: dirname}) %}
   {{ env }}:
     - /srv/salt/states/{{ dirname }}
   {%- endfor %}
+  {%- if 'windows' in envs %}
+    {% if grains['saltversioninfo'] < (2015, 8, 0, 0) %}
+win_repo: /srv/salt/states/{{ envs['windows'] }}/win/repo
+win_repo_mastercachefile: /srv/salt/states/{{ envs['windows'] }}/win/repo/winrepo.p
+    {%- else %}
+winrepo_dir: /srv/salt/states/{{ envs['windows'] }}/win/repo
+winrepo_dir_ng: /srv/salt/states/{{ envs['windows'] }}/win/repo-ng
+    {%- endif %}
+  {%- endif %}
 {%- endif %}
 
 worker_threads: {{ salt['pillar.get']('salt_master:workers', None)|default(grains['num_cpus'], boolean=True) }}

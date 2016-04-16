@@ -73,6 +73,11 @@ the environment name will be pick up from the basename.
 
 Default: no extra environment (``[]``).
 
+.. note::
+
+  The environment name must be ``windows`` if it's used to manage the Windows
+  minions.
+
 .. _pillar-salt_master-git_pull_frequency:
 
 salt_master:git_pull_frequency
