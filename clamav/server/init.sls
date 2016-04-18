@@ -51,6 +51,7 @@ extend:
       - require:
         - file: clamav-freshclam
         - module: clamav-freshclam
+        - file: /etc/clamav/onerrorexecute.d/err-dbvirus-mail.sh
       - watch:
         - pkg: clamav-freshclam
         - user: clamav
