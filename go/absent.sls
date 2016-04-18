@@ -5,6 +5,11 @@ go:
     - absent
     - name: /usr/local/go
 
+go_path:
+  file:
+    - absent
+    - name: /var/lib/go
+
 {%- for f in ('go', 'gofmt', 'godoc') %}
 go_{{ f }}:
   file:
