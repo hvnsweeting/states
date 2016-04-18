@@ -11,5 +11,8 @@ nagios ALL=(root) NOPASSWD:/usr/lib/nagios/plugins/check_disk -w 20% -c 10% -p {
   {%- endif %}
   {%- for mount in bind_dirs %}
 nagios ALL=(root) NOPASSWD:/usr/lib/nagios/plugins/check_disk -w 20% -c 10% -p {{ mount }}
+    {%- if is_test %}
+nagios ALL=(root) NOPASSWD:/usr/lib/nagios/plugins/check_disk -w 20% -c 10% -p {{ mount }} -vv
+    {%- endif %}
   {%- endfor %}
 {%- endfor %}
