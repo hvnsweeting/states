@@ -11,6 +11,10 @@ stop on runlevel [!2345]
 respawn
 respawn limit 10 5
 
+{%- set file_max = salt['pillar.get']('sysctl:fs.file-max', False) %}
+{%- if file_max %}
+limit nofile {{ file_max }} {{ file_max }}
+{%- endif %}
 setuid graylog
 setgid graylog
 console log
