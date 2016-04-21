@@ -4,8 +4,10 @@
 {%- set hostnames = salt["pillar.get"]("syncthing:hostnames", [])|default(False, boolean=True) %}
 {%- if hostnames %}
   {%- from 'nginx/nrpe/instance.jinja2' import nginx_instance with context -%}
-  {{ nginx_instance("syncthing", http_result="401 Unauthorized",
-                  https_result="401 Unauthorized", domain_name=hostnames[0]) }}
+  {{ nginx_instance("syncthing",
+                    http_result="200 OK",
+                    https_result="200 OK",
+                    domain_name=hostnames[0]) }}
 {%- endif %}
 
 syncthing_procs:
