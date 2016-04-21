@@ -366,7 +366,7 @@ openvpn_server_key_{{ instance }}:
                     {%- endif %}
     - require:
       - file: {{ config_dir }}/ccd
-    - watch_in:
+    - require_in:
       - service: openvpn-{{ instance }}
                 {%- endif %}
                 {%- do clients.append(client) %}
@@ -487,7 +487,7 @@ openvpn_revoke_client_cert_{{ instance }}_{{ r_client }}:
     - require:
       - pkg: salt_minion_deps
       - module: openvpn_create_empty_crl_{{ instance }}
-    - watch_in:
+    - require_in:
       - service: openvpn-{{ instance }}
         {%- endfor -%}
 
@@ -513,14 +513,12 @@ openvpn_absent_old_client_{{ instance }}_{{ client }}:
       - module: openvpn_ca_crt_{{ instance }}
       {%- endif %}
       - file: openvpn_ca_key_{{ instance }}
-      - module: openvpn_create_empty_crl_{{ instance }}
       {%- if server_crt %}
       - file: openvpn_server_crt_{{ instance }}
       {%- else %}
       - module: openvpn_server_crt_{{ instance }}
       {%- endif %}
       - file: /etc/default/openvpn
-      - file: {{ config_dir }}/ccd
 {%- endcall -%}
     {%- endif %}{# tls -#}
 {%- endfor -%}
