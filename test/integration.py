@@ -288,6 +288,8 @@ def get_users():
 def list_system_files(dirs=("/bin", "/etc", "/usr", "/lib", "/sbin", "/var"),
                       ignored=('/var/lib/ucf',
                                '/etc/systemd',
+                               '/lib/firmware',
+                               '/usr/share/doc/linux-firmware',
                                '/etc/ssl/certs',
                                '/usr/share/ca-certificate/',
                                '/usr/share/zoneinfo/',
