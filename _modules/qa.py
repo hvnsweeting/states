@@ -48,6 +48,7 @@ def _get_doctrees(docs_dir):
         return '.'.join(filename.split(os.sep)[base_len:-2])
 
     # load pillar doctrees
+    _import_debug()
     for filename in pillars:
         with open(filename) as f:
             if filename.endswith(".doctrees/doc/pillar.doctree"):
@@ -57,7 +58,6 @@ def _get_doctrees(docs_dir):
                 name = get_name(filename)
                 assert name, ("Couldn't extract the formula name "
                               "from %s" % filename)
-            _import_debug()
             try:
                 doctrees[name][0] = pickle.load(f)
                 try:
