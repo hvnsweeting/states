@@ -93,4 +93,6 @@ class OldJobCleaner(pysc.Application):
 
 
 if __name__ == "__main__":
+    # disable urllib3 warnings
+    requests.packages.urllib3.disable_warnings()
     OldJobCleaner().run()
