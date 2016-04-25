@@ -13,17 +13,14 @@ file_roots:
   {{ git_branch }}:
 {%- endif %}
 {%- for repo in salt['pillar.get']('salt_master:gitfs_remotes', []) %}
-{#- needs prefix loop.index because 2 different repos from different sources
-   can have the same name #}
-    {%- set outer_loop_index = loop.index %}
     {%- if repo is mapping %}
       {# it is a dict but suppose to contain only 1 entry #}
       {%- for gitlink, subdir in repo.iteritems() %}
-        {%- set dirname = outer_loop_index ~ gitlink.split('/')[-1] %}
+        {%- set dirname = gitlink.split(':')[-1].replace('/', '-') %}
     - /srv/salt/states/{{ dirname }}/{{ subdir }}
       {%- endfor -%}
     {%- else %}
-      {%- set dirname = outer_loop_index ~ repo.split('/')[-1] %}
+      {%- set dirname = repo.split(':')[-1].replace('/', '-') %}
     - /srv/salt/states/{{ dirname }}
     {%- endif %}
 {%- endfor %}

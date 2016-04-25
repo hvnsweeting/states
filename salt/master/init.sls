@@ -322,12 +322,10 @@ salt_master_git_repo_{{ loop.index }}:
     - latest
     {%- if repo is mapping -%}
       {%- set gitlink = repo.keys()[0] %}
-      {#- needs prefix loop.index because 2 different repos from different sources
-          can have the same name #}
-      {%- set dirname = loop.index ~ gitlink.split('/')[-1] %}
+      {%- set dirname = gitlink.split(':')[-1].replace('/', '-') %}
     - name: {{ gitlink }}
     {%- else %}
-      {%- set dirname = loop.index ~ repo.split('/')[-1] %}
+      {%- set dirname = repo.split(':')[-1].replace('/', '-') %}
     - name: '{{ repo }}'
     {%- endif %}
     - rev: {{ salt['pillar.get']('branch', 'master') }}
