@@ -16,6 +16,4 @@ setgid www-data
 
 chdir /var/lib/deployments/sentry
 
-script
-  /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py celery worker -B
-end script
+exec /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py celery worker -B
