@@ -24,11 +24,27 @@ def __virtual__():
         else False
 
 
+def compareChecksum(fname, target, checksum):
+    if os.path.exists(fname):
+        compare_string = '{0}:{1}'.format(target, checksum)
+        with salt.utils.fopen(fname, 'r') as f:
+            while True:
+                current_line = f.readline()
+                if not current_line:
+                    break
+                if current_line.endswith('\n'):
+                    current_line = current_line[:-1]
+                if compare_string == current_line:
+                    return True
+    return False
+
+
 def extracted(name,
               source,
               archive_format,
               tar_options=None,
               source_hash=None,
+              source_hash_update=None,
               if_missing=None,
               keep=False):
     '''
