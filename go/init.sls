@@ -20,6 +20,7 @@ go:
     - source: https://storage.googleapis.com/golang/go{{ version }}.{{ grains['kernel'] | lower }}-{{ grains['osarch'] }}.tar.gz
 {%- endif %}
     - source_hash: sha256=e40c36ae71756198478624ed1bb4ce17597b3c19d243f3f0899bb5740d56212a
+    - source_hash_update: true
     - tar_options: z
     - if_missing: /usr/local/go
     - archive_format: tar
