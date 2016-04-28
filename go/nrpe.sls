@@ -2,4 +2,7 @@
 
 include:
   - apt.nrpe
+  - build.nrpe
+  - git.nrpe
+  - mercurial.nrpe
   - ssh.client.nrpe
