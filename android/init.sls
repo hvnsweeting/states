@@ -27,7 +27,7 @@ android_sdk:
     - source_hash: sha1=4a10e62c5d88fd6c2a69db12348cbe168228b98f
     - archive_format: tar
     - tar_options: z
-    - if_missing: /usr/local/android-sdk-linux
+    - if_missing: /usr/local/android-sdk-linux/tools/android
     - require:
       - file: /usr/local
       - pkg: salt_minion_deps
