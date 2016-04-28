@@ -19,7 +19,8 @@ limit nofile {{ file_max }} {{ file_max }}
 setuid www-data
 setgid www-data
 
+chdir /var/lib/deployments/sentry
+
 script
-  cd /var/lib/deployments/sentry
   /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py celery worker -B
 end script
