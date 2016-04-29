@@ -45,7 +45,7 @@ android_sdk_buildtools_and_api:
     - run
     - env:
       - ANDROID_HOME: /usr/local/android-sdk-linux
-    - name: echo y | $ANDROID_HOME/tools/android update sdk --no-ui --all --filter {% for buildtools_ver in salt['pillar.get']('android:buildtools_versions') -%}
+    - name: yes | $ANDROID_HOME/tools/android update sdk --no-ui --all --filter {% for buildtools_ver in salt['pillar.get']('android:buildtools_versions') -%}
       build-tools-{{ buildtools_ver }},
       {%- endfor -%}
       {%- for api_ver in salt['pillar.get']('android:sdk_api_versions') -%}
