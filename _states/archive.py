@@ -124,7 +124,18 @@ def extracted(name,
 
     if if_missing is None:
         if_missing = name
-    if (
+    if source_hash and source_hash_update:
+        hash = source_hash.split("=")
+        source_file = '{0}.{1}'.format(os.path.basename(source), hash[0])
+        hash_fname = os.path.join(__opts__['cachedir'],
+                            'files',
+                            __env__,
+                            source_file)
+        if compareChecksum(hash_fname, name, hash[1]):
+            ret['result'] = True
+            ret['comment'] = 'Hash {0} has not changed'.format(hash[1])
+            return ret
+    elif (
         __salt__['file.directory_exists'](if_missing)
         or __salt__['file.file_exists'](if_missing)
     ):
