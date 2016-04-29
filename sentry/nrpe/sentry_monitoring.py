@@ -19,6 +19,7 @@ from sentry.utils.runner import configure
 configure()
 
 from sentry.models import (
+    ApiKey,
     Organization,
     OrganizationMember,
     Project,
@@ -52,6 +53,12 @@ class SentryMonitoring(pysc.Application):
 
         # get or create Monitoring organization
         organization, _ = Organization.objects.get_or_create(name="Monitoring")
+
+        # Web API is now separated from client API
+        api_key = ApiKey.objects.get_or_create(
+            organization=organization,
+            label='Monitoring'
+        )
 
         organization_member, _ = OrganizationMember.objects.get_or_create(
             user=user,
