@@ -80,4 +80,5 @@ mine_functions:
     restart salt-minion
     salt-call state.sls salt.patch_salt
     restart salt-minion
+    salt-call saltutil.sync_all
 fi
