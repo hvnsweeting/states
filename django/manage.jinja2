@@ -21,8 +21,9 @@ export HOME=$TEMP_HOME_DIR
 {%- if settings is defined %}
 export DJANGO_SETTINGS_MODULE={{ settings }}
 {%- endif %}
+
 {%- if alternate_admin_cmd is defined %}
-sudo -E -u {{ django_user }} -g {{ django_group }} {{ alternate_admin_cmd }} $*
+sudo -E -u {{ django_user }} -g {{ django_group }} {{ virtualenv }}/bin/python {{ alternate_admin_cmd }} $*
 {%- else %}
 sudo -E -u {{ django_user }} -g {{ django_group }} {{ virtualenv }}/bin/django-admin.py $*
 {%- endif %}

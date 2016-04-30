@@ -186,6 +186,7 @@ sentry_settings:
     - source: salt://django/manage.jinja2
     - context:
         alternate_admin_cmd: /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py
+        virtualenv: /usr/local/sentry
     - require:
       - virtualenv: sentry
       - pkg: sudo
