@@ -48,12 +48,13 @@ android_sdk_buildtools_and_api:
     - run
     - env:
       - ANDROID_HOME: /usr/local/android-sdk-linux
-    - name: (for i in {1..{{ buildtools_versions|length + sdk_api_versions|length }}}; do sleep 2; echo 'y'; done) | $ANDROID_HOME/tools/android update sdk --no-ui --all --filter {% for buildtools_ver in buildtools_versions -%}
-      build-tools-{{ buildtools_ver }},
-      {%- endfor -%}
-      {%- for api_ver in sdk_api_versions -%}
-      android-{{ api_ver }},
-      {%- endfor %}
+    - names:
+{%- for buildtools_ver in buildtools_versions %}
+        - echo y | $ANDROID_HOME/tools/android update sdk --no-ui --all --filter build-tools-{{ buildtools_ver }}
+{%- endfor -%}
+{%- for api_ver in sdk_api_versions %}
+        - echo y | $ANDROID_HOME/tools/android update sdk --no-ui --all --filter android-{{ api_ver }}
+{%- endfor %}
     - require:
       - file: android_sdk
     - unless: {% for buildtools_ver in buildtools_versions -%}
