@@ -15,6 +15,10 @@ apt.conf:
     - group: root
     - mode: 440
     - template: jinja
+  {#- N: Ignoring file '20auto-upgrades.ucf-dist' in directory '/etc/apt/apt.conf.d/' as it has an invalid filename extension #}
+  cmd:
+    - run
+    - name: rm -f /etc/apt/apt.conf.d/*.ucf-dist
 
 dpkg.conf:
   file:
@@ -99,6 +103,7 @@ apt:
       - file: dpkg.conf
       - cmd: apt-key
       - cmd: apt
+      - cmd: apt.conf
 {%- set packages_blacklist = salt['pillar.get']('packages:blacklist', []) -%}
 {%- set packages_whitelist = salt['pillar.get']('packages:whitelist', []) -%}
 {%- if packages_blacklist or packages_whitelist %}
