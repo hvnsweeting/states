@@ -40,23 +40,26 @@ android_sdk:
       - archive: android_sdk
       - pkg: android_sdk
 
+{%- set buildtools_versions = salt['pillar.get']('android:buildtools_versions') %}
+{%- set sdk_api_versions = salt['pillar.get']('android:sdk_api_versions') %}
+
 android_sdk_buildtools_and_api:
   cmd:
     - run
     - env:
       - ANDROID_HOME: /usr/local/android-sdk-linux
-    - name: (while :; do echo 'y'; sleep 1; done) | $ANDROID_HOME/tools/android update sdk --no-ui --all --filter {% for buildtools_ver in salt['pillar.get']('android:buildtools_versions') -%}
+    - name: (for i in {1..{{ buildtools_versions|length + sdk_api_versions|length }}}; do sleep 2; echo 'y'; done) | $ANDROID_HOME/tools/android update sdk --no-ui --all --filter {% for buildtools_ver in buildtools_versions -%}
       build-tools-{{ buildtools_ver }},
       {%- endfor -%}
-      {%- for api_ver in salt['pillar.get']('android:sdk_api_versions') -%}
+      {%- for api_ver in sdk_api_versions -%}
       android-{{ api_ver }},
       {%- endfor %}
     - require:
       - file: android_sdk
-    - unless: {% for buildtools_ver in salt['pillar.get']('android:buildtools_versions') -%}
+    - unless: {% for buildtools_ver in buildtools_versions -%}
       test -d /usr/local/android-sdk-linux/build-tools/{{ buildtools_ver }} &&
               {%- endfor -%}
-              {%- for api_ver in salt['pillar.get']('android:sdk_api_versions') -%}
+              {%- for api_ver in sdk_api_versions -%}
       test -d /usr/local/android-sdk-linux/platforms/android-{{ api_ver }}
                 {%- if not loop.last %}&&{%- endif -%}
               {%- endfor %}
