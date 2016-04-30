@@ -7,23 +7,18 @@ Mandatory
 Example::
 
   android:
-    buildtools_versions:
-      - 21.1.2
-      - 22.0.1
-    sdk_api_versions:
-      - 22
-      - 21
+    sdks:
+      - android-23
+      - build-tools-23.0.2
+      - extra-android-m2repository
+      - extra-android-support
+      - extra-google-google_play_services
+      - extra-google-m2repository
 
-.. _pillar-android-buildtools_versions:
+.. _pillar-android-sdks:
 
-android:buildtools_versions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+android:sdks
+~~~~~~~~~~~~
 
-List of buildtools versions to install.
-
-.. _pillar-android-sdk_api_versions:
-
-android:sdk_api_versions
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-List of SDK API versions to install.
+List of :ref:`glossary-SDK` to install. Run
+``android list sdk --all --extended`` to find the id.

@@ -40,27 +40,20 @@ android_sdk:
       - archive: android_sdk
       - pkg: android_sdk
 
-{%- set buildtools_versions = salt['pillar.get']('android:buildtools_versions') %}
-{%- set sdk_api_versions = salt['pillar.get']('android:sdk_api_versions') %}
-
-android_sdk_buildtools_and_api:
+{%- for sdk in salt['pillar.get']('android:sdks') %}
+android_sdk_{{ sdk }}:
   cmd:
     - run
     - env:
       - ANDROID_HOME: /usr/local/android-sdk-linux
-    - names:
-{%- for buildtools_ver in buildtools_versions %}
-        - echo y | $ANDROID_HOME/tools/android update sdk --no-ui --all --filter build-tools-{{ buildtools_ver }}
-{%- endfor -%}
-{%- for api_ver in sdk_api_versions %}
-        - echo y | $ANDROID_HOME/tools/android update sdk --no-ui --all --filter android-{{ api_ver }}
-{%- endfor %}
+    - name: echo y | $ANDROID_HOME/tools/android update sdk --no-ui --all --filter {{ sdk }}
+    - unless: {% if sdk.startswith('build-tools') -%}
+        test -d /usr/local/android-sdk-linux/build-tools/{{ sdk | replace('build-tools-', '') }}
+              {%- elif sdk.startswith('android') -%}
+        test -d /usr/local/android-sdk-linux/platforms/android-{{ sdk | replace('android-', '') }}
+              {%- elif sdk.startswith('extra') -%}
+        test -d /usr/local/android-sdk-linux/extras/{{ sdk.split('-')[1] }}/{{ sdk.split('-')[2] }}
+              {%- endif %}
     - require:
       - file: android_sdk
-    - unless: {% for buildtools_ver in buildtools_versions -%}
-      test -d /usr/local/android-sdk-linux/build-tools/{{ buildtools_ver }} &&
-              {%- endfor -%}
-              {%- for api_ver in sdk_api_versions -%}
-      test -d /usr/local/android-sdk-linux/platforms/android-{{ api_ver }}
-                {%- if not loop.last %}&&{%- endif -%}
-              {%- endfor %}
+{%- endfor %}
