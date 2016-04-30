@@ -833,3 +833,16 @@ association with a communications interface (NIC, serial port, etc.). Standards
 point-to-point serial links) may decide MTU at connect time.
 
 .. https://en.wikipedia.org/wiki/Maximum_transmission_unit - 2015-10-23
+
+
+.. _glossary-SDK:
+
+SDK
+~~~
+
+A software development kit (SDK or "devkit") is typically a set of software
+development tools that allows the creation of applications for a certain
+software package, software framework, hardware platform, computer system, video
+game console, operating system, or similar development platform.
+
+.. https://en.wikipedia.org/wiki/Software_development_kit - 2016-04-30
