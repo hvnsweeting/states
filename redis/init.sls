@@ -21,6 +21,16 @@ redis:
     - clean_file: True
     - require:
       - cmd: apt_sources
+  pkg:
+    - installed
+    - name: redis-server
+    - require:
+      - pkgrepo: redis
+  user:
+    - present
+    - shell: /bin/false
+    - require:
+      - pkg: redis
   file:
     - managed
     - template: jinja
@@ -41,16 +51,24 @@ redis:
       - file: /etc/init.d/redis-server
       - pkg: redis
       - user: redis
-  pkg:
-    - installed
-    - name: redis-server
-    - require:
-      - pkgrepo: redis
-  user:
-    - present
-    - shell: /bin/false
+
+{%- set file_max = salt['pillar.get']('sysctl:fs.file-max', False) %}
+{%- if file_max %}
+/etc/default/redis-server:
+  file:
+    - managed
+    - contents: |
+        # {{ salt['pillar.get']('message_do_not_modify') }}
+
+        ULIMIT={{ file_max }}
+    - user: root
+    - group: root
+    - mode: 440
     - require:
       - pkg: redis
+    - watch_in:
+      - service: redis
+{%- endif %}
 
 /etc/init.d/redis-server:
   file:
