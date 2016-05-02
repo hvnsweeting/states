@@ -1,7 +1,7 @@
 {#- Usage of this is governed by a license that can be found in doc/license.rst -#}
 
-{% extends "uwsgi/template.jinja2" %}
-{% block footer %}
+{%- extends "uwsgi/template.jinja2" %}
+{%- block footer %}
   env: SENTRY_CONF=/etc/sentry.conf.py
   buffer-size: 65535
-{% endblock %}
+{%- endblock %}

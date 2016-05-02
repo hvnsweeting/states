@@ -83,5 +83,9 @@ uwsgi:
 {%- if php_settings|default(False) %}
 {{ php_settings }}
 {%- endif %}
+{%- set file_max = salt['pillar.get']('sysctl:fs.file-max', False) -%}
+{%- if file_max %}
+  max-fd: {{ file_max }}
+{%- endif -%}
 {%- block footer %}
 {%- endblock %}
