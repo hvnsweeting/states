@@ -62,6 +62,11 @@ upstream gitlab-git-http-server {
         proxy_pass http://gitlab;
     }
 
+    {# workaround https://about.gitlab.com/2016/05/02/cve-2016-4340-patches/ #}
+    location ^~ /admin/users/stop_impersonation {
+        deny all;
+    }
+
     location ~ ^/[\w\.-]+/[\w\.-]+/(info/refs|git-upload-pack|git-receive-pack)$ {
         error_page 418 = @gitlab-git-http-server;
         return 418;
