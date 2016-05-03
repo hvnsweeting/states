@@ -51,14 +51,14 @@ include:
       - service: nginx
 
 {%- set files_archive = salt['pillar.get']('files_archive', False)|default('http://archive.robotinfra.com', boolean=True) %}
-{%- set jarfile = 'youtrack-6.5.16853.jar' %}
+{%- set jarfile = 'youtrack-6.5.17057.jar' %}
 
 youtrack_jar:
   file:
     - managed
     - name: /usr/local/youtrack/{{ jarfile }}
     - source: {{ files_archive|replace('file://', '')|replace('https://', 'http://') }}/mirror/{{ jarfile }}
-    - source_hash: md5=43189ccb1489c8cb8047e5429dc4c265
+    - source_hash: md5=aa7e4a2b92f084d9389826e83441d39d
     - user: root
     - group: youtrack
     - mode: 440
