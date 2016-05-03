@@ -11,17 +11,16 @@ include:
 - sls: sslyze.nrpe
 {%- endcall %}
 
-nsca-test:
+/etc/nagios/nsca.d/test.yml:
   file:
     - managed
-    - name: /etc/nagios/nsca.d/test.yml
-    - require:
-      - file: /etc/nagios/nsca.d
     - contents: |
         sslyze:
           command: /usr/lib/nagios/plugins/check_ssl_configuration.py --formula=test --check=sslyze
           arguments:
             host: mail.google.com
+    - require:
+      - file: /etc/nagios/nsca.d
 
 test:
   monitoring:
@@ -29,8 +28,11 @@ test:
     - order: last
     - require:
       - cmd: test_crons
-  file:
-    - absent
-    - name: /etc/nagios/nsca.d/test.yml
+  {#- Do not use file.absent --> nsca_passive will be restarted
+  which caused recursive requisite #}
+  module:
+    - run
+    - name: file.remove
+    - path: /etc/nagios/nsca.d/test.yml
     - require:
       - monitoring: test
