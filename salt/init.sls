@@ -61,4 +61,4 @@ salt:
     - directory
     - user: root
     - group: root
-    - mode: 750
+    - mode: 755

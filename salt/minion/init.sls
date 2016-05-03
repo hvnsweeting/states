@@ -10,6 +10,17 @@ include:
   - salt.minion.deps
   - salt.minion.upgrade
 
+/var/cache/salt/minion:
+  file:
+    - directory
+    - user: root
+    - group: root
+    - mode: 755
+    - require:
+      - file: /var/cache/salt
+    - require_in:
+      - service: salt-minion
+
 {# it's mandatory to remove this file if the master is changed #}
 {%- if salt['file.file_exists']('/etc/salt/pki/minion/minion_master.pub') %}
 salt_minion_master_key:

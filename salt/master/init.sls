@@ -196,6 +196,17 @@ salt-master-{{ prefix }}.py:
     - require:
       - pkg: salt-master
 
+/var/cache/salt/master:
+  file:
+    - directory
+    - user: root
+    - group: root
+    - mode: 755
+    - require:
+      - file: /var/cache/salt
+    - require_in:
+      - service: salt-master
+
 salt-master:
   file:
     - managed
