@@ -24,3 +24,4 @@ sentry_monitoring_events:
     - {{ deployment }}_uwsgi_worker
   arguments:
     dsn_file: /var/lib/deployments/sentry/monitoring_dsn.yml
+    api_key_file: /var/lib/deployments/sentry/monitoring_api_key.yml

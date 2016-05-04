@@ -52,6 +52,7 @@ extend:
       - file: /usr/lib/nagios/plugins/check_sentry_events.py
 
 {%- set dsn_file = "/var/lib/deployments/sentry/monitoring_dsn.yml" %}
+{%- set api_key_file = "/var/lib/deployments/sentry/monitoring_api_key.yml" %}
 {#-
 the command below will create dsn_file with:
   * user: www-data
@@ -68,18 +69,32 @@ sentry_monitoring:
       - SENTRY_CONF: '/etc'
     - args: >
         --dsn-file {{ dsn_file }}
+        --api-key-file {{ api_key_file }}
 {%- if salt['pillar.get']("__test__", False) %}
         --test
 {%- endif %}
-    - unless: test -f {{ dsn_file }}
+    - unless: test -f {{ dsn_file }} || test -f {{ api_key_file }}
     - require:
       - file: /var/lib/deployments/sentry
       - file: sentry-uwsgi
       - module: pysc
       - service: sentry
+
+{{ dsn_file }}:
   file:
     - managed
-    - name: {{ dsn_file }}
+    - create: False
+    - user: www-data
+    - group: nagios
+    - mode: 440
+    - require:
+      - cmd: sentry_monitoring
+      - user: nagios-nrpe-server
+      - user: web
+
+{{ api_key_file }}:
+  file:
+    - managed
     - create: False
     - user: www-data
     - group: nagios
@@ -101,7 +116,8 @@ sentry_monitoring:
     - group: nagios
     - mode: 550
     - require:
-      - file: sentry_monitoring
+      - file: {{ dsn_file }}
+      - file: {{ api_key_file }}
       - module: nrpe-virtualenv
       - pkg: nagios-nrpe-server
     - require_in:

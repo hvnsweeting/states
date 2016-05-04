@@ -38,12 +38,16 @@ class SentryMonitoring(pysc.Application):
             "--dsn-file", help="path to write monitoring sentry dsn",
             required=True)
         argp.add_argument(
+            "--api-key-file", help="path to write monitoring sentry \
+                                   web api key", required=True)
+        argp.add_argument(
             "--test", help="run in test mode", action="store_true")
 
         return argp
 
     def main(self):
         dsn_file = self.config["dsn_file"]
+        api_key_file = self.config["api_key_file"]
         test_mode = self.config["test"]
 
         # get or create monitoring user
@@ -59,6 +63,9 @@ class SentryMonitoring(pysc.Application):
             organization=organization,
             label='Monitoring'
         )
+
+        with open(api_key_file, "w") as f:
+            yaml.dump({"key": api_key}, f)
 
         organization_member, _ = OrganizationMember.objects.get_or_create(
             user=user,
