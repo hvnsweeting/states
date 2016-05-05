@@ -27,10 +27,10 @@ requests.packages.urllib3.disable_warnings()
 
 class EventCountCheck(nagiosplugin.Resource):
 
-    def __init__(self, dsn_file):
+    def __init__(self, dsn_file, api_key_file):
         try:
-            loaded = unserialize_yaml(dsn_file, critical=True)
-            sentry_dsn = loaded["dsn"]
+            dsn_loaded = unserialize_yaml(dsn_file, critical=True)
+            sentry_dsn = dsn_loaded["dsn"]
             self._sentry_dsn = sentry_dsn
             logger.debug("sentry_dsn: %s", sentry_dsn)
         except IOError as err:
@@ -62,6 +62,19 @@ class EventCountCheck(nagiosplugin.Resource):
             parsed.fragment,
         ))
 
+        try:
+            api_key_loaded = unserialize_yaml(api_key_file, critical=True)
+        except IOError as err:
+            logger.error(
+                "Sentry monitoring web API key file %s does not exist"
+                "or is unreadable. Error: %s",
+                api_key_file, err)
+            raise nagiosplugin.CheckError(
+                "Invalid sentry monitoring web API key \
+                file: {}".format(api_key_file))
+        api_key = api_key_loaded['key']
+        self._api_key = api_key
+
     def probe(self):
         logger.debug("EventCountCheck.probe started")
         # send an event for testing
@@ -74,7 +87,7 @@ class EventCountCheck(nagiosplugin.Resource):
 
         try:
             r = requests.get(
-                self._url, auth=(self._public_key, self._secret_key),
+                self._url, auth=(self._api_key),
                 verify=self._verify_ssl)
             data = r.json()
             logger.debug("response: %s", data)
@@ -95,12 +108,14 @@ class EventCountCheck(nagiosplugin.Resource):
 
 def count_events(config):
     return (
-        EventCountCheck(dsn_file=config["dsn_file"]),
+        EventCountCheck(dsn_file=config["dsn_file"],
+                        api_key_file=config["api_key_file"]),
         nagiosplugin.ScalarContext("number_of_events", critical="0:"),
     )
 
 
 if __name__ == '__main__':
     nrpe.check(count_events, {
-        "dsn_file": "/var/lib/deployments/sentry/monitoring_dsn.yml"
+        "dsn_file": "/var/lib/deployments/sentry/monitoring_dsn.yml",
+        "api_key_file": "/var/lib/deployments/sentry/monitoring_api_key.yml"
     })

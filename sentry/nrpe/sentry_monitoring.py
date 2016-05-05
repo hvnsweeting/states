@@ -14,6 +14,8 @@ import yaml
 
 import pysc
 
+import re
+
 # Bootstrap the Sentry environment
 from sentry.utils.runner import configure
 configure()
@@ -39,7 +41,7 @@ class SentryMonitoring(pysc.Application):
             required=True)
         argp.add_argument(
             "--api-key-file", help="path to write monitoring sentry \
-                                   web api key", required=True)
+                                    web api key", required=True)
         argp.add_argument(
             "--test", help="run in test mode", action="store_true")
 
@@ -63,6 +65,7 @@ class SentryMonitoring(pysc.Application):
             organization=organization,
             label='Monitoring'
         )
+        api_key = re.search('[a-f0-9]{32}', str(api_key)).group()
 
         with open(api_key_file, "w") as f:
             yaml.dump({"key": api_key}, f)
