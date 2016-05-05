@@ -42,8 +42,6 @@ class EventCountCheck(nagiosplugin.Resource):
                 "Invalid sentry monitoring DSN file: {}".format(dsn_file))
 
         dsn_parsed = raven.load(sentry_dsn)
-        self._public_key = dsn_parsed["SENTRY_PUBLIC_KEY"]
-        self._secret_key = dsn_parsed["SENTRY_SECRET_KEY"]
         transport_options = dsn_parsed["SENTRY_TRANSPORT_OPTIONS"]
         self._verify_ssl = False if ("verify_ssl" in transport_options
                                      and transport_options["verify_ssl"] == "0"
@@ -87,7 +85,7 @@ class EventCountCheck(nagiosplugin.Resource):
 
         try:
             r = requests.get(
-                self._url, auth=(self._api_key),
+                self._url, auth=(self._api_key, ''),
                 verify=self._verify_ssl)
             data = r.json()
             logger.debug("response: %s", data)
