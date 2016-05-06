@@ -51,6 +51,12 @@ extend:
     - require:
       - file: /usr/lib/nagios/plugins/check_sentry_events.py
 
+/var/lib/deployments/sentry/monitoring_api_key:
+  file:
+    - absent
+    - require:
+      - file: /usr/lib/nagios/plugins/check_sentry_events.py
+
 {%- set dsn_file = "/var/lib/deployments/sentry/monitoring_dsn.yml" %}
 {%- set api_key_file = "/var/lib/deployments/sentry/monitoring_api_key.yml" %}
 {#-
