@@ -223,7 +223,7 @@ Default: No slave server ``[]``.
 bind:zones:{{ zone_name }}:resource_records
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-List of resource records. Each resource record represented by a dictionary
-of keys ``name``, ``ttl``, ``type``, ``rdata``.
+List of resource records. Each resource record represented by a string
+in format of ``<name> <ttl> <type> <rdata>``. ``ttl`` is optional.
 
 Default: Set no record (``[]``).

@@ -22,5 +22,5 @@ ns{{ nsindex }}       IN     A      {{ slave_ip }}
 {%- endfor %}
 {%- set resource_records = zonedata['resource_records']|default([]) %}
 {%- for rr in resource_records %}
-{{ rr['name'] }} {% if 'ttl' in resource_records %}{{ rr['ttl'] }}{% endif %} IN {{ rr['type'] }} {{ rr['rdata'] }};
+{{ rr }}
 {%- endfor %}
