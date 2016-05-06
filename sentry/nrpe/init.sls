@@ -73,7 +73,7 @@ sentry_monitoring:
 {%- if salt['pillar.get']("__test__", False) %}
         --test
 {%- endif %}
-    - unless: test -f {{ dsn_file }} || test -f {{ api_key_file }}
+    - unless: test -f {{ dsn_file }} && test -f {{ api_key_file }}
     - require:
       - file: /var/lib/deployments/sentry
       - file: sentry-uwsgi
