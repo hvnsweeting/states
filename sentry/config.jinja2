@@ -41,7 +41,7 @@ SENTRY_FEATURES = {
 # You should configure the absolute URI to Sentry. It will attempt to guess it if you don't
 # but proxies may interfere with this.
 {%- set hostnames = salt['pillar.get']('sentry:hostnames') %}
-SENTRY_URL_PREFIX = 'http{% if salt['pillar.get']('sentry:ssl', False) %}s{% endif %}://{{ hostnames[0] }}'  # No trailing slash!
+SENTRY_OPTIONS['system.url-prefix'] = 'http{% if salt['pillar.get']('sentry:ssl', False) %}s{% endif %}://{{ hostnames[0] }}'  # No trailing slash!
 
 {#-SENTRY_WEB_HOST = '0.0.0.0'#}
 {#-SENTRY_WEB_PORT = 8080#}
@@ -109,23 +109,23 @@ LOGGING = {
 }
 
 {% set smtp = salt['pillar.get']('sentry:smtp', False)|default(salt['pillar.get']('smtp'), boolean=True) %}
-EMAIL_HOST = '{{ smtp['server'] }}'
-EMAIL_HOST_PASSWORD = '{{ smtp['password']|default('') }}'
-EMAIL_HOST_USER = '{{ smtp['user']|default('') }}'
-EMAIL_PORT = {{ smtp['port'] }}
+SENTRY_OPTIONS['mail.host'] = '{{ smtp['server'] }}'
+SENTRY_OPTIONS['mail.password'] = '{{ smtp['password']|default('') }}'
+SENTRY_OPTIONS['mail.username'] = '{{ smtp['user']|default('') }}'
+SENTRY_OPTIONS['mail.port'] = {{ smtp['port'] }}
 DEFAULT_FROM_EMAIL = '{{ smtp['from'] }}'
 {%- set encryption = smtp['encryption']|default('plain') -%}
 {%- if encryption in ('ssl', 'starttls') %}
-EMAIL_USE_TLS = True
+SENTRY_OPTIONS['mail.use-tls'] = True
     {%- if encryption == 'ssl' %}
-EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
+SENTRY_OPTIONS['mail.backend'] = 'django_smtp_ssl.SSLEmailBackend'
     {%- endif -%}
 {%- else %}
 EMAIL_USE_TLS = False
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 {%- endif %}
 
-SERVER_EMAIL = DEFAULT_FROM_EMAIL
+SENTRY_OPTIONS['mail.from'] = DEFAULT_FROM_EMAIL
 
 {% if salt['pillar.get']('graphite_address', False) %}
 MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + (
@@ -144,7 +144,7 @@ STATIC_URL = '/_static/'
 
 {#- upgrade: 6.4.4 - 7.40 #}
 
-SENTRY_ALLOW_REGISTRATION = False
+SENTRY_FEATURES["auth:register"] = False
 
 # You should not change this setting after your database has been created
 # unless you have altered all schemas first
@@ -153,7 +153,7 @@ SENTRY_USE_BIG_INTS = True
 # The administrative email for this installation.
 # Note: This will be reported back to getsentry.com as the point of contact. See
 # the beacon documentation for more information.
-SENTRY_ADMIN_EMAIL = 'noone@nowhere.local'
+SENTRY_OPTIONS['system.admin-email'] = 'noone@nowhere.local'
 # Turn off beacon
 SENTRY_BEACON = False
 
@@ -174,4 +174,4 @@ SENTRY_FILESTORE_OPTIONS = {
 
 # If this file ever becomes compromised, it's important to regenerate your SECRET_KEY
 # Changing this value will result in all current sessions being invalidated
-SECRET_KEY = '{{ salt['password.generate']('sentry_secret_key', 56) }}'
+SENTRY_OPTIONS['system.secret-key'] = '{{ salt['password.generate']('sentry_secret_key', 56) }}'
