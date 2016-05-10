@@ -70,6 +70,8 @@ def _delete_job(jobname, url, username, token):
     )
     out = requests.post(request_url, auth=(username, token))
     log.info('%s: %s', url, out.status_code)
+    if out.status_code > 399:  # error status codes
+        raise Exception('POST %s got code %d' % (url, out.status_code))
 
 
 def delete_old_jobs(jobdir, days, url, username, token):
