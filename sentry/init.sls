@@ -147,6 +147,25 @@ sentry-uwsgi:
       - cmd: sentry_settings
       - file: /var/lib/deployments/sentry
 
+{#- better to force django migration first, as `sentry update` requires specific models #}
+sentry-migrate:
+  cmd:
+    - wait
+    - stateful: False
+    - user: www-data
+    - group: www-data
+    - name: /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py django migrate --noinput
+    - require:
+      - cmd: sentry-migrate-fake
+      - module: sentry
+      - postgres_database: sentry
+      - user: web
+    - watch:
+      - module: sentry
+      - file: sentry_settings
+    - watch_in:
+      - service: memcached
+
 sentry_settings:
   file:
     - managed
@@ -172,6 +191,7 @@ sentry_settings:
     - watch:
       - module: sentry
       - file: sentry_settings
+      - cmd: sentry-migrate
     - watch_in:
       - service: memcached
 
