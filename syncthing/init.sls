@@ -88,6 +88,7 @@ syncthing_move_old_index_dir_if_exist:
     - name: stop syncthing && mv /etc/syncthing/index-v0.11.0.db /var/lib/syncthing/index.db && start syncthing
     - require:
       - pkg: syncthing
+      - file: syncthing
       - file: /etc/syncthing
     - require_in:
       - file: syncthing_index_dir_symlink
