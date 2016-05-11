@@ -81,6 +81,32 @@ syncthing:
     - watch_in:
       - service: syncthing
 
+/var/lib/syncthing/index.db:
+  file:
+    - directory
+    - user: syncthing
+    - group: syncthing
+    - mode: 750
+    - require:
+      - user: syncthing
+    - watch_in:
+      - service: syncthing
+
+syncthing_index_dir_symlink:
+  file:
+    - symlink
+    - name: /etc/syncthing/index-v0.11.0.db
+    - target: /var/lib/syncthing/index.db
+    - mode: 444
+    - user: syncthing
+    - group: syncthing
+    - require:
+      - file: /etc/syncthing
+      - user: syncthing
+      - file: /var/lib/syncthing/index.db
+    - watch_in:
+      - service: syncthing
+
 /etc/syncthing/cert.pem:
   file:
     - managed
