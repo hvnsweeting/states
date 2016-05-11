@@ -102,6 +102,7 @@ syncthing_index_dir_symlink:
     - group: syncthing
     - require:
       - file: /etc/syncthing
+      - user: syncthing
       - file: /var/lib/syncthing/index.db
     - watch_in:
       - service: syncthing
