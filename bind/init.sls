@@ -96,7 +96,7 @@ bind_zone_dir:
 
 {%- for zonename in salt['pillar.get']('bind:zones', {}) %}
   {%- set zonedata =  salt['pillar.get']("bind:zones:" ~ zonename) %}
-  {%- if not zonedata['masters'] %} {#- filter out the master zones #}
+  {%- if not zonedata['masters']|default([]) %} {#- filter out the master zones #}
   {%- set zonepath = '/var/lib/bind/zones/' ~ salt['pillar.get']("bind:zones:" + zonename + ":file") %}
 bind_{{ zonename }}_zone_file:
   file:
