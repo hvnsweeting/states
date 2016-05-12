@@ -22,7 +22,7 @@ redis:
     - require:
       - cmd: apt_sources
   pkg:
-    - installed
+    - latest
     - name: redis-server
     - require:
       - pkgrepo: redis
