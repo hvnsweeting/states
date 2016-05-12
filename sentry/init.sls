@@ -100,7 +100,6 @@ sentry:
     - enable: True
     - require:
       - file: /var/lib/deployments/sentry
-      - service: redis
     - watch:
       - cmd: sentry_settings
       - file: /etc/init/sentry-celery.conf
@@ -148,6 +147,25 @@ sentry-uwsgi:
       - cmd: sentry_settings
       - file: /var/lib/deployments/sentry
 
+{#- better to force django migration first, as `sentry update` requires specific models #}
+sentry-migrate:
+  cmd:
+    - wait
+    - stateful: False
+    - user: www-data
+    - group: www-data
+    - name: /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py django migrate --noinput
+    - require:
+      - cmd: sentry-migrate-fake
+      - module: sentry
+      - postgres_database: sentry
+      - user: web
+    - watch:
+      - module: sentry
+      - file: sentry_settings
+    - watch_in:
+      - service: memcached
+
 sentry_settings:
   file:
     - managed
@@ -173,6 +191,7 @@ sentry_settings:
     - watch:
       - module: sentry
       - file: sentry_settings
+      - cmd: sentry-migrate
     - watch_in:
       - service: memcached
 
@@ -195,19 +214,20 @@ sentry_settings:
 sentry-syncdb-all:
   cmd:
     - wait
-    - name: /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py syncdb --all --noinput
+    - name: /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py django syncdb --all --noinput
     - stateful: False
     - require:
       - module: sentry
       - file: sentry_settings
       - service: rsyslog
+      - service: redis
     - watch:
       - postgres_database: sentry
 
 sentry_admin_user:
   cmd:
     - wait
-    - name: /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py createsuperuser_plus --username={{ salt['pillar.get']('sentry:initial_admin_user:username') }} --email={{ salt['pillar.get']('sentry:initial_admin_user:email') }} --password={{ salt['pillar.get']('sentry:initial_admin_user:password') }}
+    - name: /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py createuser --superuser --email={{ salt['pillar.get']('sentry:initial_admin_user:email') }} --password={{ salt['pillar.get']('sentry:initial_admin_user:password') }}
     - require:
       - cmd: sentry-syncdb-all
     - watch:
@@ -216,7 +236,7 @@ sentry_admin_user:
 sentry-migrate-fake:
   cmd:
     - wait
-    - name: /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py migrate --fake --noinput
+    - name: /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py django migrate --fake --noinput
     - stateful: False
     - watch:
       - cmd: sentry-syncdb-all
@@ -259,7 +279,7 @@ sentry-migrate-fake:
 sentry_collectstatic:
   cmd:
     - wait
-    - name: /usr/local/sentry/manage collectstatic --noinput
+    - name: /usr/local/sentry/manage django collectstatic --noinput
     - require:
       - cmd: sentry_settings
       - cmd: sentry

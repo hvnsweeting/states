@@ -20,6 +20,6 @@ sentry_diamond_resources:
     - text:
       - |
         [[sentry-worker]]
-        cmdline = ^\[celeryd@
+        cmdline = ^\[celeryd:
         [[sentry-beat]]
-        cmdline = ^\[celerybeat\]$
+        cmdline = ^\[celery beat\]$
