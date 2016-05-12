@@ -91,10 +91,12 @@ bind_zone_dir:
     - mode: 770 {# bind group needs to write to update dynamic DNS #}
     - require:
       - pkg: bind
+    - require_in:
+      - service: bind
 
 {%- for zonename in salt['pillar.get']('bind:zones', {}) %}
   {%- set zonedata =  salt['pillar.get']("bind:zones:" ~ zonename) %}
-  {%- if 'masters' not in zonedata %} {#- filter out the master zones #}
+  {%- if not zonedata['masters'] %} {#- filter out the master zones #}
   {%- set zonepath = '/var/lib/bind/zones/' ~ salt['pillar.get']("bind:zones:" + zonename + ":file") %}
 bind_{{ zonename }}_zone_file:
   file:
