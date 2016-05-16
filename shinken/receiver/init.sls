@@ -62,3 +62,17 @@ shinken-receiver:
       - virtualenv: shinken
       - user: shinken
       - file: /etc/shinken
+
+shinken_receiver_restart_cron:
+  file:
+    - managed
+    - name: /etc/cron.twice_daily/shinken_receiver_restart
+    - source: salt://shinken/receiver/cron.jinja2
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: 500
+    - require:
+      - file: bash
+      - file: /etc/cron.twice_daily
+      - service: shinken-receiver
