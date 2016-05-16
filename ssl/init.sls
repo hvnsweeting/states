@@ -52,6 +52,15 @@ ssl_dhparam:
     - require:
       - cmd: ssl_dhparam
 
+/etc/ssl/private:
+  file:
+    - directory
+    - user: root
+    - group: ssl-cert
+    - mode: 710
+    - require:
+      - pkg: ssl-cert
+
 {% for name in salt['pillar.get']('ssl:certs', {}) -%}
 /etc/ssl/{{ name }}:
   file:
@@ -71,6 +80,7 @@ ssl_dhparam:
     - mode: 440
     - require:
       - pkg: ssl-cert
+      - file: /etc/ssl/private
 
 /etc/ssl/certs/{{ name }}.crt:
   file:
@@ -112,6 +122,7 @@ that support SSL.
     - mode: 440
     - require:
       - pkg: ssl-cert
+      - file: /etc/ssl/private
 
 {#-
 Some browsers may complain about a certificate signed by a well-known
