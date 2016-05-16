@@ -56,9 +56,10 @@ class ImageIds(nagiosplugin.Resource):
     """
     Checks the salt-cloud instances list against cloud.profile
     """
-    def __init__(self, salt_cloud_config_file):
+    def __init__(self, salt_cloud_config_file, wanted_slugs):
         log.debug("ImageIds(%s)", salt_cloud_config_file)
         self.cloud_cfg = salt_cloud_config_file
+        self.wanted_slugs = wanted_slugs
 
     def probe(self):
         log.debug("ImageIds.probe started")
@@ -82,6 +83,10 @@ class ImageIds(nagiosplugin.Resource):
             for prv_id, prv_id_data in providers.iteritems():
                 for prv_name, prv_data in prv_id_data.iteritems():
                     a_provider_images = all_images[prv_id][prv_name]
+                    for img_id, img in a_provider_images.iteritems():
+                        if img['slug'] in self.wanted_slugs:
+                            log.info("Newest ID for %s: %s",
+                                     img['slug'], img_id)
                     try:
                         ids.update(str(a_provider_images[inst]['id'])
                                    for inst in a_provider_images)
@@ -100,7 +105,7 @@ class ImageIds(nagiosplugin.Resource):
 
 def check_saltcloud_images(config):
     return (
-        ImageIds(config['cloud_config_file']),
+        ImageIds(config['cloud_config_file'], config['wanted_slugs']),
         MissingImageContext('missing'),
         Summary())
 
@@ -108,4 +113,5 @@ def check_saltcloud_images(config):
 if __name__ == '__main__':
     nrpe.check(check_saltcloud_images, {
         'cloud_config_file': '/etc/salt/cloud',
+        'wanted_slugs': ('ubuntu-14-04-x64', 'ubuntu-12-04-x64')
     })
