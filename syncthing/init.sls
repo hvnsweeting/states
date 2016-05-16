@@ -97,7 +97,6 @@ syncthing_index_dir_symlink:
     - symlink
     - name: /etc/syncthing/index-v0.11.0.db
     - target: /var/lib/syncthing/index.db
-    - mode: 444
     - user: syncthing
     - group: syncthing
     - require:
