@@ -171,6 +171,15 @@ Default: ``{}``.
 Conditional
 -----------
 
+.. _pillar-ssl-certs-name-selfsigned:
+
+ssl:certs:{{ name }}:selfsigned
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether cert is selfsigned.
+
+Used only if ``ssl:certs`` is defined.
+
 .. _pillar-ssl-expiry_days:
 
 ssl:expiry_days
