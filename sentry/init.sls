@@ -154,7 +154,7 @@ sentry-migrate:
     - stateful: False
     - user: www-data
     - group: www-data
-    - name: /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py django migrate --noinput
+    - name: /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py django migrate --noinput --changes
     - require:
       - postgres_database: sentry
       - user: web
