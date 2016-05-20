@@ -18,6 +18,7 @@ mailstack_functionality:
     - load_average
   timeout: 55
   arguments:
+    first_notification_delay: 30 {#- minutes #}
     freshness: 12 {#- minutes #}
     username: {{ username + '@' + mailname }}
     password: "{{ salt['pillar.get']('ldap:data', {})[mailname][username]['passwd'] }}"

@@ -74,14 +74,19 @@ class MailStackHealth(nap.Resource):
 
     def probe(self):
         log.debug("MailStackHealth.probe started")
-        inboxtest = self.test_send_and_receive_email_in_inbox_mailbox()
-        spamtest = self.test_send_and_receive_GTUBE_spam_in_spam_folder()
-        virustest = self.test_send_virus_email_and_discarded_by_amavis()
+        inboxtest = spamtest = virustest = False
+        try:
+            inboxtest = self.test_send_and_receive_email_in_inbox_mailbox()
+            spamtest = self.test_send_and_receive_GTUBE_spam_in_spam_folder()
+            virustest = self.test_send_virus_email_and_discarded_by_amavis()
+        except EmptyMailboxError as e:
+            pass
+
+        passed_checks = (spamtest, inboxtest, virustest).count(True)
+
         log.debug("MailStackHealth.probe finished")
         log.debug("returning all(%s)", str((spamtest, inboxtest, virustest)))
-        return [nap.Metric('mail_stack_health',
-                           all((spamtest, inboxtest, virustest)),
-                           context='null')]
+        return [nap.Metric('features', passed_checks, context='working')]
 
     def send_email(self, subject, rcpts, body, _from=None, wait=0):
         log.debug("Sending email to %s", rcpts)
@@ -150,10 +155,24 @@ Subject: %s
         return (not found)
 
 
+class MailFeatureContext(nap.Context):
+    def evaluate(self, metric, resource):
+        if metric.value == 3:
+            state = nap.state.Ok
+        elif metric.value == 1 or metric.value == 2:
+            state = nap.state.Warn
+        else:
+            state = nap.state.Critical
+
+        return nap.Result(state, metric=metric)
+
+
 def check_mail_stack(config):
     return [MailStackHealth(config['imap_server'], config['smtp_server'],
                             config['username'], config['password'],
-                            config['smtp_wait'], config['ssl'])]
+                            config['smtp_wait'], config['ssl']),
+                            MailFeatureContext("working")
+                            ]
 
 
 if __name__ == "__main__":
