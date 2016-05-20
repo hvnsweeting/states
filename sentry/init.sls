@@ -156,7 +156,6 @@ sentry-migrate:
     - group: www-data
     - name: /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py django migrate --noinput
     - require:
-      - module: sentry
       - postgres_database: sentry
       - user: web
     - watch:
