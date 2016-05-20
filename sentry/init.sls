@@ -156,13 +156,13 @@ sentry-migrate:
     - group: www-data
     - name: /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py django migrate --noinput
     - require:
-      - cmd: sentry-migrate-fake
       - module: sentry
       - postgres_database: sentry
       - user: web
     - watch:
       - module: sentry
       - file: sentry_settings
+      - cmd: sentry-syncdb-all
     - watch_in:
       - service: memcached
 
@@ -184,7 +184,7 @@ sentry_settings:
     - group: www-data
     - name: /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py upgrade --noinput
     - require:
-      - cmd: sentry-migrate-fake
+      - cmd: sentry-migrate
       - module: sentry
       - postgres_database: sentry
       - user: web
@@ -232,14 +232,6 @@ sentry_admin_user:
       - cmd: sentry-syncdb-all
     - watch:
       - postgres_database: sentry
-
-sentry-migrate-fake:
-  cmd:
-    - wait
-    - name: /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py django migrate --fake --noinput
-    - stateful: False
-    - watch:
-      - cmd: sentry-syncdb-all
 
 /etc/nginx/conf.d/sentry.conf:
   file:
