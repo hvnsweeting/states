@@ -214,7 +214,7 @@ sentry_settings:
 sentry-syncdb-all:
   cmd:
     - wait
-    - name: /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py django syncdb --all --noinput
+    - name: /usr/local/sentry/bin/sentry --config=/etc/sentry.conf.py django syncdb --noinput
     - stateful: False
     - require:
       - module: sentry
