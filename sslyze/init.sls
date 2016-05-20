@@ -34,15 +34,6 @@ sslyze:
     - require:
       - file: /usr/local/src
       - pkg: salt_minion_deps
-  file:
-    - managed
-    - name: /usr/local/src/sslyze-{{ version|replace(".", "_") }}-linux{{ bits }}/plugins/data/trust_stores/java.pem
-    - source: salt://sslyze/java.pem
-    - user: root
-    - group: root
-    - mode: 440
-    - require:
-      - archive: sslyze
   cmd:
     - wait
 {%- if grains['osarch'] == 'amd64' %}
@@ -53,7 +44,6 @@ sslyze:
     - name: /usr/local/nagios/bin/python setup.py install
     - watch:
       - archive: sslyze
-      - file: sslyze
       - virtualenv: nrpe-virtualenv
 
 {%- if salt['pillar.get']('__test__', False) -%}
