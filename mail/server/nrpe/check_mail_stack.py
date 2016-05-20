@@ -33,7 +33,7 @@ class EmptyMailboxError(Exception):
     pass
 
 
-class MailStackHealth(nap.Resource):
+class MailFeatures(nap.Resource):
     def __init__(self,
                  imap_server,
                  smtp_server,
@@ -41,7 +41,7 @@ class MailStackHealth(nap.Resource):
                  password,
                  smtp_wait,
                  ssl):
-        log.debug("MailStackHealth(%s, %s, %s, <password>, %s, %s)",
+        log.debug("MailFeatures(%s, %s, %s, <password>, %s, %s)",
                   imap_server, smtp_server, username, smtp_wait, ssl)
         if ssl:
             self.imap = imaplib.IMAP4_SSL(imap_server)
@@ -73,7 +73,7 @@ class MailStackHealth(nap.Resource):
         self.waittime = smtp_wait
 
     def probe(self):
-        log.debug("MailStackHealth.probe started")
+        log.debug("MailFeatures.probe started")
         inboxtest = spamtest = virustest = False
         try:
             inboxtest = self.test_send_and_receive_email_in_inbox_mailbox()
@@ -84,8 +84,11 @@ class MailStackHealth(nap.Resource):
 
         passed_checks = (spamtest, inboxtest, virustest).count(True)
 
-        log.debug("MailStackHealth.probe finished")
-        log.debug("returning all(%s)", str((spamtest, inboxtest, virustest)))
+        log.debug("MailFeatures.probe finished")
+        log.debug("Working features %d: "
+                  "spamfilter: %s send/receive: %s viruscheck: %s",
+                  passed_checks, spamtest, inboxtest, virustest
+                  )
         return [nap.Metric('features', passed_checks, context='working')]
 
     def send_email(self, subject, rcpts, body, _from=None, wait=0):
@@ -161,17 +164,25 @@ class MailFeatureContext(nap.Context):
             state = nap.state.Ok
         elif metric.value == 1 or metric.value == 2:
             state = nap.state.Warn
-        else:
+        elif metric.value == 0:
             state = nap.state.Critical
+        else:
+            state = nap.state.Unknown
 
         return nap.Result(state, metric=metric)
 
 
+class Summary(nap.Summary):
+    def problem(self, result):
+        return "%s/3 features is working" % (result.results[0].metric.value)
+
+
 def check_mail_stack(config):
-    return [MailStackHealth(config['imap_server'], config['smtp_server'],
+    return [MailFeatures(config['imap_server'], config['smtp_server'],
                             config['username'], config['password'],
                             config['smtp_wait'], config['ssl']),
-                            MailFeatureContext("working")
+                            MailFeatureContext("working"),
+                            Summary()
                             ]
 
 
