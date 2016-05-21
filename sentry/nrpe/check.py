@@ -27,7 +27,7 @@ requests.packages.urllib3.disable_warnings()
 
 class EventCountCheck(nagiosplugin.Resource):
 
-    def __init__(self, dsn_file, api_key_file):
+    def __init__(self, dsn_file, api_key_file, timeout=1):
         try:
             dsn_loaded = unserialize_yaml(dsn_file, critical=True)
             sentry_dsn = dsn_loaded["dsn"]
@@ -73,6 +73,8 @@ class EventCountCheck(nagiosplugin.Resource):
         api_key = api_key_loaded['key']
         self._api_key = api_key
 
+        self._timeout = timeout
+
     def probe(self):
         logger.debug("EventCountCheck.probe started")
         # send an event for testing
@@ -86,7 +88,9 @@ class EventCountCheck(nagiosplugin.Resource):
         try:
             r = requests.get(
                 self._url, auth=(self._api_key, ''),
-                verify=self._verify_ssl)
+                verify=self._verify_ssl,
+                timeout=self._timeout
+            )
             data = r.json()
             logger.debug("response: %s", data)
 

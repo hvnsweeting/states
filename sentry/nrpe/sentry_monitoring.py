@@ -15,6 +15,7 @@ import yaml
 import pysc
 
 import re
+from operator import or_
 
 # Bootstrap the Sentry environment
 from sentry.utils.runner import configure
@@ -60,9 +61,17 @@ class SentryMonitoring(pysc.Application):
         # get or create Monitoring organization
         organization, _ = Organization.objects.get_or_create(name="Monitoring")
 
+        DEFAULT_SCOPES = [
+            'project:read',
+            'event:read',
+            'team:read',
+            'org:read',
+            'member:read',
+        ]
         # Web API is now separated from client API
         api_key = ApiKey.objects.get_or_create(
             organization=organization,
+            scopes=reduce(or_, [getattr(ApiKey.scopes, s) for s in DEFAULT_SCOPES]),
             label='Monitoring'
         )
         api_key = re.search('[a-f0-9]{32}', str(api_key)).group()
