@@ -112,14 +112,14 @@ define contact {
     host_notification_commands notify-host-by-email
     host_notifications_enabled 1
     service_notification_period 24x7
-    service_notification_options c,r,u
+    service_notification_options c,w,r,u
     service_notification_commands notify-service-by-email
     service_notifications_enabled 1
     register 0
 }
 
 define contact {
-    name warning-contact
+    name critical-contact
     can_submit_commands 1
     is_admin 1
     host_notification_period 24x7
@@ -127,7 +127,7 @@ define contact {
     host_notification_commands notify-host-by-email
     host_notifications_enabled 1
     service_notification_period 24x7
-    service_notification_options c,w,r,u
+    service_notification_options c,r,u
     service_notification_commands notify-service-by-email
     service_notifications_enabled 1
     register 0
@@ -136,7 +136,7 @@ define contact {
 {%- if ro_users %}
 define contact {
     name read-only-contact
-    use salt-contact
+    use critical-contact
     can_submit_commands 0
     is_admin 0
 }
@@ -152,8 +152,8 @@ define contact {
     contact_name {{ user }}
     email {{ salt['pillar.get']('shinken:users:' + user + ':email') }}
     password {{ salt['pillar.get']('shinken:users:' + user + ':password') }}
-    {%- if salt['pillar.get']('shinken:users:' + user + ':warning_contact', False) %}
-    use warning-contact
+    {%- if salt['pillar.get']('shinken:users:' + user + ':critical_only', False) %}
+    use critical-contact
     {%- elif not salt['pillar.get']('shinken:users:' + user + ':notification', True) %}
     use read-only-contact
     host_notifications_enabled 0
