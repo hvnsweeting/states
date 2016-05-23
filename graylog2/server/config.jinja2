@@ -111,6 +111,8 @@ pay attention to the working directory of the server, maybe use an absolute path
 #}
 elasticsearch_config_file = /etc/graylog/server/elasticsearch.yml
 
+{%- set rotation_strategy = salt['pillar.get']('graylog2:rotation_strategy', 'count') %}
+
 {#-
 Graylog will use multiple indices to store documents in. You can configured the strategy it uses to determine
 when to rotate the currently active write index.
@@ -119,22 +121,25 @@ It supports multiple rotation strategies:
   - "size" per index, use elasticsearch_max_size_per_index below to configure
 valid values are "count", "size" and "time", default is "count"
 #}
-rotation_strategy = count
+rotation_strategy = {{ rotation_strategy }}
 
+{%- if rotation_strategy == 'count' %}
 {#-
 (Approximate) maximum number of documents in an Elasticsearch index before a new index
 is being created, also see no_retention and elasticsearch_max_number_of_indices.
 Configure this if you used 'rotation_strategy = count' above.
 #}
-elasticsearch_max_docs_per_index = {{ salt['pillar.get']('graylog2:max_docs', 20000000) }}
+elasticsearch_max_docs_per_index = {{ salt['pillar.get']('graylog2:max_docs_per_index', 20000000) }}
 
+{%- elif rotation_strategy == 'size' %}
 {#-
 (Approximate) maximum size in bytes per Elasticsearch index on disk before a new index is being created, also see
 no_retention and elasticsearch_max_number_of_indices. Default is 1GB.
 Configure this if you used 'rotation_strategy = size' above.
-elasticsearch_max_size_per_index = 1073741824
 #}
+elasticsearch_max_size_per_index = {{ salt['pillar.get']('graylog2:max_size_per_index', 1073741824) }}
 
+{%- elif rotation_strategy == 'time' %}
 {#-
 (Approximate) maximum time before a new Elasticsearch index is being created, also see
 no_retention and elasticsearch_max_number_of_indices. Default is 1 day.
@@ -146,8 +151,9 @@ Specify the time using a duration and a suffix indicating which unit you want:
  1d  = 1 day
  12h = 12 hours
 Permitted suffixes are: d for day, h for hour, m for minute, s for second.
-elasticsearch_max_time_per_index = 1d
 #}
+elasticsearch_max_time_per_index = {{ salt['pillar.get']('graylog2:max_time_per_index', '1d') }}
+{%- endif %}
 
 {#-
 Disable checking the version of Elasticsearch for being compatible with this Graylog release.
@@ -164,7 +170,7 @@ no_retention = false
 How many indices do you want to keep?
 elasticsearch_max_number_of_indices*elasticsearch_max_docs_per_index=total number of messages in your setup
 #}
-elasticsearch_max_number_of_indices = {{ salt['pillar.get']('graylog2:max_indices', 20) }}
+elasticsearch_max_number_of_indices = {{ salt['pillar.get']('graylog2:max_number_of_indices', 20) }}
 
 {#-
 Decide what happens with the oldest indices when the maximum number of indices is reached.

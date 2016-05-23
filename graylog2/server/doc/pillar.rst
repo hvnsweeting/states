@@ -74,19 +74,32 @@ REST API transport address. If not set, the value is same as
 
 Default: use same value as `graylog2:rest_listen_uri`_ (``None``).
 
-.. _pillar-graylog2-max_docs:
+.. _pillar-graylog2-rotation_strategy:
 
-graylog2:max_docs
-~~~~~~~~~~~~~~~~~
+graylog2:rotation_strategy
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-How many log messages to keep per index.
+Value of rotation strategy.
+The strategy is used to determine when to rotate the currently active
+write index.
 
-Default: keep ``20000000`` log messages per index.
+Valid values are "count", "size" and "time".
 
-.. _pillar-graylog2-max_indices:
+- If strategy is "count", you must use
+  :ref:`pillar-graylog2-max_docs_per_index` to configure.
 
-graylog2:max_indices
-~~~~~~~~~~~~~~~~~~~~
+- If strategy is "size", you must use
+  :ref:`pillar-graylog2-max_size_per_index` to configure.
+
+- If strategy is "time", you must
+  use :ref:`pillar-graylog2-max_time_per_index` to configure.
+
+Default: use ``count`` strategy.
+
+.. _pillar-graylog2-max_number_of_indices:
+
+graylog2:max_number_of_indices
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 How many indices to have in total.
 If this number is reached, the oldest index will be deleted.
@@ -209,3 +222,69 @@ Format::
 Only ``{{ stream_name }}`` is mandatory.
 
 Default: don't send alert emails (``{}``).
+
+Conditional
+-----------
+
+Example1::
+
+  graylog2:
+    rotation_strategy: count
+    max_docs_per_index: 2000000
+    max_number_of_indices: 5
+
+.. _pillar-graylog2-max_docs_per_index:
+
+graylog2:max_docs_per_index
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+How many log messages to keep per index.
+
+Default: keep ``20000000`` log messages per index.
+
+.. note::
+
+  Only used if the :ref:`pillar-graylog2-rotation_strategy` is set
+  to ``count``.
+
+Example2::
+
+  graylog2:
+    rotation_strategy: size
+    max_size_per_index: 1073741824
+    max_number_of_indices: 2
+
+.. _pillar-graylog2-max_size_per_index:
+
+graylog2:max_size_per_index
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Maximum size of a index.
+
+Default: ``1GB``.
+
+.. note::
+
+  Only used if the :ref:`pillar-graylog2-rotation_strategy` is set
+  to ``size``.
+
+Example3::
+
+  graylog2:
+    rotation_strategy: time
+    max_time_per_index: id
+    max_number_of_indices: 14
+
+.. _pillar-graylog2-max_time_per_index:
+
+graylog2:max_time_per_index
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Maximum time before a new index is being created.
+
+Default:  1 day ``1d``.
+
+.. note::
+
+  Only used if the :ref:`pillar-graylog2-rotation_strategy`
+  is set to ``time``.
