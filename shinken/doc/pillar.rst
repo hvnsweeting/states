@@ -349,11 +349,9 @@ Only used if :ref:`pillar-shinken-users-username-read_only` is True.
 shinken:users:{{ username }}:critical_only
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Whether to send a warning notification to user {{ username }} or not.
+Whether user {{ username }} should receive critical notification only or not.
 
-Default: send a warning notification to user {{ username }} (``False``).
-
-Only used if :ref:`pillar-shinken-users-username-critical_only` is True.
+Default: user {{ username }} can receive both of warning and critical notifications (``False``).
 
 .. _pillar-shinken-users-username-managed_hosts:
 
