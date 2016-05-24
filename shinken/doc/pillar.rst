@@ -134,6 +134,7 @@ Example::
         email: ro@example.com
         password: pass
         notification: False
+        critical_only: True
         managed_hosts:
           - foo
           - bar
@@ -342,6 +343,15 @@ Whether to send a notification to user {{ username }} or not.
 Default: send a notification to user {{ username }} (``True``).
 
 Only used if :ref:`pillar-shinken-users-username-read_only` is True.
+
+.. _pillar-shinken-users-username-warning_contact:
+
+shinken:users:{{ username }}:critical_only
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether user {{ username }} should receive critical notification only or not.
+
+Default: user {{ username }} can receive both of warning and critical notifications (``False``).
 
 .. _pillar-shinken-users-username-managed_hosts:
 
