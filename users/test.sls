@@ -1,11 +1,11 @@
 include:
   - doc
-  - user
+  - users
 
 test:
   qa:
     - test_pillar
-    - name: user
+    - name: users
     - doc: {{ opts['cachedir'] }}/doc/output
     - order: last
     - require:

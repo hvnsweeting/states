@@ -24,7 +24,7 @@ base-passwd:
     - require:
       - pkg: base-passwd
 
-{%- set users = salt["pillar.get"]("user", {}) %}
+{%- set users = salt["pillar.get"]("users", {}) %}
 {%- set reserved_keys = ("authorized_keys") %}
 {%- set local = {"auth_keys_contents": []} %}
 
