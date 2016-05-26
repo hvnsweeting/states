@@ -7,7 +7,7 @@
 {%- for instance in servers %}
 openvpn_server_{{ instance }}:
   description: OpenVPN Instance {{ instance }}
-  command: "/usr/lib/nagios/plugins/check_procs -C openvpn -c 1:1 -a '--config /etc/openvpn/{{ instance }}/config'"
+  command: "/usr/lib/nagios/plugins/check_procs -u nobody -C openvpn -c 1:1 -a '--config /etc/openvpn/{{ instance }}/config'"
 
   {%- set port = servers[instance]['port'] | default(1194) %}
   {%- set protocol = servers[instance]['protocol'] | default('udp') %}
@@ -32,4 +32,4 @@ openvpn_server_{{ instance }}_port_ipv6:
 
 openvpn_server_procs:
   description: OpenVPN Daemon
-  command: '/usr/lib/nagios/plugins/check_procs -c {{ servers|length }}:{{ servers|length }} -C openvpn --ereg-argument-array "--config /etc/openvpn/.*/config$"'
+  command: '/usr/lib/nagios/plugins/check_procs -c {{ servers|length }}:{{ servers|length }} -u nobody -C openvpn --ereg-argument-array "--config /etc/openvpn/.*/config$"'

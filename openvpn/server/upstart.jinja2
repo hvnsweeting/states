@@ -11,6 +11,8 @@ stop on runlevel [!2345]
 respawn
 respawn limit 6 60
 
+env PIDFILE="/var/run/openvpn/{{ instance }}.pid"
+
 pre-start script
     if [ ! -e /var/run/openvpn ]; then
         mkdir -m 0770 /var/run/openvpn
@@ -19,4 +21,15 @@ pre-start script
 end script
 
 exec /usr/sbin/openvpn --config /etc/openvpn/{{ instance }}/config
+
+pre-stop script
+    kill -15 $(cat $PIDFILE)
+    sleep 1
+    if [ "$?" -eq 0 ]; then
+        rm -f $PIDFILE
+    else
+        echo "Unable to stop openvpn-{{ instance }}"
+    fi
+end script
+
 post-stop exec sleep 5
