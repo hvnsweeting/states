@@ -31,7 +31,7 @@ mattermost:
     - password: "*"
     - enforce_password: True
 {%- set files_archive = salt['pillar.get']('files_archive', False) %}
-{%- set version = '2.1.0' %}
+{%- set version = '3.0.2' %}
   archive:
     - extracted
     - name: /usr/local
