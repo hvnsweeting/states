@@ -35,6 +35,8 @@ ifconfig-pool {{ vpn_instance['ifconfig-pool'] }} {{ server_netmask }}
 ifconfig {{ server_ip }} {{ server_octets[0] + "." + server_octets[1] + "." + server_octets[2] + "." + (server_last_octet + 1)|string }}
 ifconfig-pool {{ vpn_instance['ifconfig-pool'] }}
     {%- endif %}
+script-security 2
+plugin /usr/lib/openvpn/openvpn-plugin-down-root.so "/usr/share/openvpn/down.sh"
     {%- if first_ipv6 %}
       {%- if vpn_instance['device'].startswith('tun') %}
 tun-ipv6
