@@ -1,4 +1,4 @@
-{%- set users = salt["pillar.get"]("user", {}) %}
+{%- set users = salt["pillar.get"]("users", {}) %}
 {%- for user in users %}
 user_{{ user }}:
   user:
