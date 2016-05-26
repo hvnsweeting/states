@@ -17,7 +17,7 @@ base-passwd:
 /usr/share/base-passwd/passwd.master:
   file:
     - managed
-    - source: salt://user/config.jinja2
+    - source: salt://users/config.jinja2
     - user: root
     - group: root
     - mode: 440
