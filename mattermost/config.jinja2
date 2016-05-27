@@ -7,19 +7,35 @@
         "EnableOAuthServiceProvider": false,
         "EnableIncomingWebhooks": {% if salt['pillar.get']('mattermost:enable_incoming_webhook', True) %}true{% else %}false{% endif %},
         "EnableOutgoingWebhooks": false,
+        "EnableCommands": false,
+        "EnableOnlyAdminIntegrations": true,
         "EnablePostUsernameOverride": false,
         "EnablePostIconOverride": {% if salt['pillar.get']('mattermost:enable_post_icon_override', True) %}true{% else %}false{% endif %},
         "EnableTesting": false,
-        "EnableSecurityFixAlert": true
+        "EnableDeveloper": false,
+        "EnableSecurityFixAlert": true,
+        "EnableInsecureOutgoingConnections": false,
+        "EnableMultifactorAuthentication": false,
+        "AllowCorsFrom": "",
+        "SessionLengthWebInDays": 30,
+        "SessionLengthMobileInDays": 30,
+        "SessionLengthSSOInDays": 30,
+        "SessionCacheInMinutes": 10,
+        "WebsocketSecurePort": 443,
+        "WebsocketPort": 80,
+        "WebserverMode": "regular"
     },
     "TeamSettings": {
         "SiteName": "Mattermost",
         "MaxUsersPerTeam": 50,
         "EnableTeamCreation": {% if salt['pillar.get']('mattermost:enable_team_creation', True) %}true{% else %}false{% endif %},
         "EnableUserCreation": {% if salt['pillar.get']('mattermost:enable_user_creation', True) %}true{% else %}false{% endif %},
+        "EnableOpenServer": false,
         "RestrictCreationToDomains": "",
         "RestrictTeamNames": true,
-        "EnableTeamListing": false
+        "EnableCustomBrand": false,
+        "CustomBrandText": "",
+        "RestrictDirectMessage": "any"
     },
     "SqlSettings": {
         "DriverName": "postgres",
@@ -53,10 +69,16 @@
         "AmazonS3AccessKeyId": "",
         "AmazonS3SecretAccessKey": "",
         "AmazonS3Bucket": "",
-        "AmazonS3Region": ""
+        "AmazonS3Region": "",
+        "AmazonS3Endpoint": "",
+        "AmazonS3BucketEndpoint": "",
+        "AmazonS3LocationConstraint": false,
+        "AmazonS3LowercaseBucket": false
     },
     "EmailSettings": {
         "EnableSignUpWithEmail": true,
+        "EnableSignInWithEmail": true,
+        "EnableSignInWithUsername": true,
         "SendEmailNotifications": true,
         "RequireEmailVerification": true,
         "FeedbackName": "No Reply",
@@ -70,13 +92,14 @@
         "InviteSalt": "{{ salt['password.pillar']('mattermost:invite_salt', 32) }}",
         "PasswordResetSalt": "{{ salt['password.pillar']('mattermost:password_reset_salt', 32) }}",
         "SendPushNotifications": false,
-        "PushNotificationServer": ""
+        "PushNotificationServer": "",
+        "PushNotificationContents": "generic"
     },
     "RateLimitSettings": {
         "EnableRateLimiter": true,
         "PerSec": 10,
         "MemoryStoreSize": 10000,
-        "VaryByRemoteAddr": false,
+        "VaryByRemoteAddr": true,
         "VaryByHeader": "X-Real-IP"
     },
     "PrivacySettings": {
