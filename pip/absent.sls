@@ -23,6 +23,9 @@
   file:
     - absent
 
+/etc/pip.conf:
+  file:
+    - absent
 {#
   Can't uninstall the following as they're used elsewhere
 python-setuptools:
