@@ -32,15 +32,16 @@ mattermost:
     - enforce_password: True
 {%- set files_archive = salt['pillar.get']('files_archive', False) %}
 {%- set version = '3.0.2' %}
+{%- set md5_hash = '39ff24ee24cd8c1abd2cec782a2dffdb' %}
   archive:
     - extracted
     - name: /usr/local
 {%- if files_archive %}
     - source: {{ files_archive|replace('file://', '')|replace('https://', 'http://') }}/mirror/mattermost-{{ version }}.tar.gz
 {%- else %}
-    - source: https://github.com/mattermost/platform/releases/download/v{{ version }}/mattermost.tar.gz
+    - source: https://releases.mattermost.com/{{ version }}/mattermost-team-{{ version }}-linux-amd64.tar.gz
 {%- endif %}
-    - source_hash: md5=751f237d227db6c8da73a79e41a545b2
+    - source_hash: md5={{ md5_hash }}
     - archive_format: tar
     - tar_options: z
     - if_missing: /usr/local/mattermost/salt_mattermost_{{ version }}
