@@ -47,7 +47,7 @@ server {{ server }}
     {%- if first_ipv6 %}
 server-ipv6 {{ server_ipv6 }}
     {%- endif %}
-  {%- endif -%}
+  {%- endif %}
 ifconfig-noexec
 up /usr/share/openvpn/up.sh
 down-pre
