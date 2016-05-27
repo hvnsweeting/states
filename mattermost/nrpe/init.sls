@@ -4,6 +4,7 @@
 include:
   - nginx.nrpe
   - postgresql.server.nrpe
+  - rsyslog.nrpe
 {%- if salt['pillar.get']('mattermost:ssl', False) %}
   - ssl.nrpe
 {%- endif %}

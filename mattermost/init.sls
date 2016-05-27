@@ -1,8 +1,10 @@
 {%- set ssl = salt['pillar.get']('mattermost:ssl', False) %}
+{%- from 'upstart/rsyslog.jinja2' import manage_upstart_log with context -%}
 include:
   - local
   - nginx
   - postgresql.server
+  - rsyslog
 {% if ssl %}
   - ssl
 {% endif %}
@@ -142,6 +144,8 @@ mattermost_version_manage:
       - service: mattermost
     - watch_in:
       - service: nginx
+
+{{ manage_upstart_log('youtrack') }}
 
 {% if ssl %}
 extend:

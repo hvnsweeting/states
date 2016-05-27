@@ -4,6 +4,7 @@ include:
   - diamond
   - nginx.diamond
   - postgresql.server.diamond
+  - rsyslog.diamond
 
 mattermost_diamond_resources:
   file:
