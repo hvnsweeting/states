@@ -13,10 +13,7 @@ include:
 
 {{ root_user_home }}/.pip:
   file:
-    - directory
-    - user: root
-    - group: root
-    - mode: 700
+    - absent
 
 {%- set files_archive = salt['pillar.get']('files_archive', False) %}
 {%- if files_archive %}
@@ -35,7 +32,7 @@ include:
 pip-config:
   file:
     - managed
-    - name: {{ root_user_home }}/.pip/pip.conf
+    - name: /etc/pip.conf
     - template: jinja
     - source: salt://pip/config.jinja2
     - user: root
