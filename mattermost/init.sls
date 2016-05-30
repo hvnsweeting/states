@@ -33,8 +33,8 @@ mattermost:
     - password: "*"
     - enforce_password: True
 {%- set files_archive = salt['pillar.get']('files_archive', False) %}
-{%- set version = '3.0.2' %}
-{%- set md5_hash = '39ff24ee24cd8c1abd2cec782a2dffdb' %}
+{%- set version = '3.0.3' %}
+{%- set md5_hash = '7da313c8e802ff16d5ab358f04d9791f' %}
   archive:
     - extracted
     - name: /usr/local
