@@ -40,10 +40,25 @@ file_roots:
     - /srv/salt/states/{{ dirname }}
   {%- endfor %}
   {%- if 'windows' in envs %}
+    {%- set winrepo_remotes = salt['pillar.get']('salt_master:winrepo_remotes', False) %}
+    {% if winrepo_remotes %}
+      {%- set winrepo_option = 'win_gitrepos' if grains['saltversioninfo'] < (2015, 8, 0, 0) else 'winrepo_remotes' %}
+{{ winrepo_option }}:
+      {%- for winrepo_remote in winrepo_remotes %}
+  - {{ winrepo_remote }}
+      {%- endfor %}
+    {%- endif %}
     {% if grains['saltversioninfo'] < (2015, 8, 0, 0) %}
 win_repo: /srv/salt/states/{{ envs['windows'] }}/win/repo
 win_repo_mastercachefile: /srv/salt/states/{{ envs['windows'] }}/win/repo/winrepo.p
     {%- else %}
+      {%- set winrepo_remotes_ng = salt['pillar.get']('salt_master:winrepo_remotes_ng', False) %}
+      {%- if winrepo_remotes_ng %}
+winrepo_remotes_ng:
+        {%- for winrepo_remote_ng in winrepo_remotes_ng %}
+  - {{ winrepo_remote_ng }}
+        {%- endfor %}
+      {%- endif %}
 winrepo_dir: /srv/salt/states/{{ envs['windows'] }}/win/repo
 winrepo_dir_ng: /srv/salt/states/{{ envs['windows'] }}/win/repo-ng
     {%- endif %}

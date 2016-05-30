@@ -154,6 +154,14 @@ Default: uses number of CPU cores (``None``).
 Conditional
 -----------
 
+Example::
+
+    salt_master:
+      winrepo_remotes:
+        - git@git.example.com:namespace/salt-winrepo.git
+      winrepo_remotes_ng:
+        - git@git.example.com:namespace/salt-winrepo-ng.git
+
 .. _pillar-salt_master-highstate_days:
 
 salt_master:highstate_days
@@ -174,3 +182,23 @@ List of salt minions that will be ignore in :ref:`monitor-salt_master_mine`
 monitoring check.
 
 Default: ignore no minion (``[]``).
+
+.. _pillar-salt_master-winrepo_remotes:
+
+salt_master:winrepo_remotes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+List of git repositories to checkout and include in the winrepo for
+pre-2015.8.0 minions.
+
+Default: use `https://github.com/saltstack/salt-winrepo.git` (``False``).
+
+.. _pillar-salt_master-winrepo_remotes_ng:
+
+salt_master:winrepo_remotes_ng
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+List of git repositories to checkout and include in the winrepo for 2015.8.0
+and later minions.
+
+Default: use `https://github.com/saltstack/salt-winrepo-ng.git` (``False``).
