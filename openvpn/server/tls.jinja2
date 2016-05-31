@@ -48,11 +48,6 @@ server {{ server }}
 server-ipv6 {{ server_ipv6 }}
     {%- endif %}
   {%- endif %}
-ifconfig-noexec
-up /usr/share/openvpn/up.sh
-down-pre
-script-security 2
-plugin /usr/lib/openvpn/openvpn-plugin-down-root.so "/usr/share/openvpn/down.sh"
 {%- endblock topology %}
 
 {%- block authentication_mode %}

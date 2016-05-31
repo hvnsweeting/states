@@ -24,30 +24,11 @@ include:
 
 /usr/share/openvpn/up.sh:
   file:
-    - managed
-    - user: root
-    - group: root
-    - mode: 550
-    - contents: |
-        #!/bin/sh
-
-        /sbin/ip addr add dev $1 local $4 peer $5
-        /sbin/ip link set dev $1 up
-    - require:
-      - pkg: openvpn
+    - absent
 
 /usr/share/openvpn/down.sh:
   file:
-    - managed
-    - user: root
-    - group: root
-    - mode: 550
-    - contents: |
-        #!/bin/sh
-
-        /sbin/ip addr del dev $1 local $4 peer $5
-    - require:
-      - pkg: openvpn
+    - absent
 
 {%- for type in ('lib', 'run', 'log') %}
 /var/{{ type }}/openvpn:
@@ -546,8 +527,6 @@ openvpn_absent_old_client_{{ instance }}_{{ client }}:
       - module: openvpn_server_crt_{{ instance }}
       {%- endif %}
       - file: /etc/default/openvpn
-      - file: /usr/share/openvpn/up.sh
-      - file: /usr/share/openvpn/down.sh
 {%- endcall -%}
     {%- endif %}{# tls -#}
 {%- endfor -%}

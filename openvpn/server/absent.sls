@@ -20,14 +20,6 @@ openvpn_absent_{{ instance }}:
   file:
     - absent
 
-/usr/share/openvpn/up.sh:
-  file:
-    - absent
-
-/usr/share/openvpn/down.sh:
-  file:
-    - absent
-
 {%- for type in ('lib', 'run', 'log') %}
 /var/{{ type }}/openvpn:
   file:
