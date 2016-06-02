@@ -10,6 +10,7 @@ import datetime
 import logging
 
 import salt._compat
+from salt.ext.six.moves.urllib.parse import urlparse as salt_urlparse
 
 try:
     from IPy import IP
@@ -94,7 +95,7 @@ def global_roles():
 
 
 def urlparse(url):
-    return salt._compat.urlparse(url)
+    return salt_urlparse(url)
 
 
 def day_of_month(days):
