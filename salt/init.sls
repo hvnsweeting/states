@@ -37,9 +37,9 @@ salt:
     - managed
 {%- set files_archive = salt['pillar.get']('files_archive', False) %}
 {%- if files_archive %}
-    - name: deb {{ files_archive|replace('https://', 'http://') }}/mirror/salt/{{ version }} {{ grains['oscodename'] }} main
+    - name: deb http://repo.saltstack.com/apt/ubuntu/14.04/amd64/latest trusty main
 {%- else %}
-    - name: deb http://archive.robotinfra.com/mirror/salt/{{ version }} {{ grains['oscodename'] }} main
+    - name: deb http://repo.saltstack.com/apt/ubuntu/14.04/amd64/latest trusty main
 {%- endif %}
     - file: /etc/apt/sources.list.d/saltstack-salt.list
     - clean_file: True
