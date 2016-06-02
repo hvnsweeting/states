@@ -70,14 +70,14 @@ proftpd-mod-pgsql:
 {%- set username = salt['pillar.get']('proftpd:db:username', 'proftpd') %}
     - name: {{ username }}
     - password: {{ salt['password.pillar']('proftpd:db:password', 10) }}
-    - runas: postgres
+    - user: postgres
     - require:
       - service: postgresql
   postgres_database:
     - present
     - name: {{ salt['pillar.get']('proftpd:db:name', 'proftpd') }}
     - owner: {{ username }}
-    - runas: postgres
+    - user: postgres
     - require:
       - postgres_user: proftpd-mod-pgsql
 

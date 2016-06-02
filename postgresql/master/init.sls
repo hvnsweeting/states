@@ -38,7 +38,7 @@ replication_agent:
   postgres_user:
     - present
     - name: {{ salt['pillar.get']('postgresql:replication:username', 'replication_agent') }}
-    - runas: postgres
+    - user: postgres
     - superuser: True
     - require:
       - service: postgresql

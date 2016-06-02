@@ -15,7 +15,7 @@ pgbouncer_{{ db }}:
     - name: {{ values['username'] }}
     - password: {{ values['password'] }}
     - superuser: True
-    - runas: postgres
+    - user: postgres
     - require:
       - pkg: pgbouncer
       - service: postgresql
@@ -23,7 +23,7 @@ pgbouncer_{{ db }}:
     - present
     - name: {{ values['dbname']|default(db) }}
     - owner: {{ values['username'] }}
-    - runas: postgres
+    - user: postgres
     - require:
       - postgres_user: pgbouncer_{{ db }}
 {%- endfor %}

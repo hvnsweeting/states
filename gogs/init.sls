@@ -51,14 +51,14 @@ gogs:
     - present
     - name: gogs
     - password: {{ db_password }}
-    - runas: postgres
+    - user: postgres
     - require:
       - service: postgresql
   postgres_database:
     - present
     - name: gogs
     - owner: gogs
-    - runas: postgres
+    - user: postgres
     - require:
       - postgres_user: gogs
       - service: postgresql

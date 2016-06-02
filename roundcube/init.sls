@@ -59,14 +59,14 @@ roundcube:
     - present
     - name: {{ dbuser }}
     - password: {{ dbuserpass }}
-    - runas: postgres
+    - user: postgres
     - require:
       - service: postgresql
   postgres_database:
     - present
     - name: {{ dbname }}
     - owner: {{ dbuser }}
-    - runas: postgres
+    - user: postgres
     - require:
       - postgres_user: roundcube
 
@@ -192,7 +192,7 @@ roundcube_initial:
     - name: postgres.owner_to
     - dbname: roundcube
     - ownername: roundcube
-    - runas: postgres
+    - user: postgres
     - watch:
       - cmd: roundcube_initial
 

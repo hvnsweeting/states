@@ -83,14 +83,14 @@ sentry:
 {%- set username = salt['pillar.get']('sentry:db:username', 'sentry') %}
     - name: {{ username }}
     - password: {{ salt['password.pillar']('sentry:db:password', 10) }}
-    - runas: postgres
+    - user: postgres
     - require:
       - service: postgresql
   postgres_database:
     - present
     - name: {{ salt['pillar.get']('sentry:db:name', 'sentry') }}
     - owner: {{ username }}
-    - runas: postgres
+    - user: postgres
     - require:
       - postgres_user: sentry
       - service: postgresql

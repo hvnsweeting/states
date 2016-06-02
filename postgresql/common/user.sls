@@ -8,11 +8,11 @@ postgresql_monitoring:
     - name: monitoring
     - password: {{ salt['password.pillar']('postgresql:monitoring:password') }}
     - superuser: True
-    - runas: postgres
+    - user: postgres
   postgres_database:
     - present
     - name: monitoring
     - owner: monitoring
-    - runas: postgres
+    - user: postgres
     - require:
       - postgres_user: postgresql_monitoring

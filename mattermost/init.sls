@@ -54,14 +54,14 @@ mattermost:
     - present
     - name: mattermost
     - password: {{ salt['password.pillar']('mattermost:db:password', 10) }}
-    - runas: postgres
+    - user: postgres
     - require:
       - service: postgresql
   postgres_database:
     - present
     - name: mattermost
     - owner: mattermost
-    - runas: postgres
+    - user: postgres
     - require:
       - postgres_user: mattermost
       - service: postgresql

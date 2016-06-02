@@ -220,14 +220,14 @@ graphite_settings:
 {%- set username = salt['pillar.get']('graphite:db:username', 'graphite') %}
     - name: {{ username }}
     - password: {{ salt['password.pillar']('graphite:db:password', 10) }}
-    - runas: postgres
+    - user: postgres
     - require:
       - service: postgresql
   postgres_database:
     - present
     - name: {{ salt['pillar.get']('graphite:db:name', 'graphite') }}
     - owner: {{ username }}
-    - runas: postgres
+    - user: postgres
     - require:
       - postgres_user: graphite_settings
       - service: postgresql
