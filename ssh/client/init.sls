@@ -44,6 +44,8 @@ ssh_systemwide_config:
 ssh_known_host_{{ domain }}:
   ssh_known_hosts:
     - present
+    {# we need to set port, it does not work with hash_known_hosts #}
+    - hash_known_hosts: False
     - name: {{ domain }}
   {%- set port = salt['pillar.get']('ssh:hosts:' ~ domain ~ ':port', 22) %}
   {%- if port %}
