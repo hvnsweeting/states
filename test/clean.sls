@@ -91,7 +91,9 @@ clean_pkg:
       - libclass-accessor-perl
       - libclass-isa-perl
       - libcurl3
+{# required by python-pycurl, salt-common 2016.3.0 dependency
       - libcurl3-gnutls
+#}
       - libdpkg-perl
       - liberror-perl
       - libio-string-perl
@@ -157,7 +159,9 @@ clean_pkg:
       - python-pam
       - python-paramiko
       - python-problem-report
+{# Required by  python-tornado, salt-common 2016.3.0 dependency
       - python-pycurl
+#}
       - python-serial
       - python-simplejson
       - python-software-properties
@@ -230,7 +234,7 @@ clean_pkg:
 {%- endfor -%}
 
 {%- if salt['cmd.has_exec']('deborphan') -%}
-    {%- for pkg in salt['cmd.run']('deborphan').split("\n") -%}
+    {%- for pkg in salt['cmd.run']('deborphan').split("\n") if ':' not in pkg -%}
         {%- if pkg != '' -%}
             {%- if loop.first %}
 orphans:
