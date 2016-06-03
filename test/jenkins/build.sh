@@ -176,6 +176,8 @@ run_and_check_return_code 600 "salt-call -c $CUSTOM_CONFIG_DIR state.sls test.sy
 run_and_check_return_code 600 "salt-call -c $CUSTOM_CONFIG_DIR state.sls salt >> $PREPARE_STDOUT_LOG 2>> $PREPARE_STDERR_LOG"
 sudo salt -t 60 "$BUILD_IDENTITY" cmd.run "$CUSTOM_CONFIG_DIR/jenkins/upgrade_salt.sh"
 sudo salt -t 5 "$BUILD_IDENTITY" --output json cmd.run "salt-call test.ping"
+sudo salt -t 5 "$BUILD_IDENTITY" --output json cmd.run "salt-call test.ping"
+sudo salt -t 5 "$BUILD_IDENTITY" --output json cmd.run "salt-call test.ping"
 echo '------------ From here, salt with version supported by salt-common is running ------------'
 run_and_check_return_code 10 "salt-call -c $CUSTOM_CONFIG_DIR state.sls salt.patch_salt >> $PREPARE_STDOUT_LOG 2>> $PREPARE_STDERR_LOG"
 sudo salt -t 20 "$BUILD_IDENTITY" --output json cmd.run "restart salt-minion"
