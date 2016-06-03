@@ -48,7 +48,9 @@ def managed(name, source=None, template='jinja',
             backup=False,
             dir_mode=755,
             contents=None,
-            defaults=None, **kwargs):
+            defaults=None,
+            skip_verify=False,
+            **kwargs):
     """
     Make sure a monitoring check is present in the system
 
@@ -77,6 +79,7 @@ def managed(name, source=None, template='jinja',
             __env__,
             context,
             defaults,
+            skip_verify,
             **kwargs
         )
     except Exception as exc:
