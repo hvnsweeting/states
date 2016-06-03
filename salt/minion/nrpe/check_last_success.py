@@ -32,7 +32,7 @@ class LastSuccess(nap.Resource):
             __opts__ = salt.config.minion_config('/etc/salt/minion',
                                                  defaults=default_config)
             datamod = salt.loader.raw_mod(__opts__, 'data', None)
-            ts = datamod['data.getval'](TS_KEY)
+            ts = datamod['data.get'](TS_KEY)
         except Exception as e:
             log.critical('Cannot get value of %s. Error: %s',
                          TS_KEY, e, exc_info=True)

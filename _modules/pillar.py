@@ -85,7 +85,7 @@ def get_calls(value=Exception, *args, **kwargs):
     global _cached_calls
 
     if _cached_calls is None:
-        _cached_calls = __salt__['data.getval'](DATA_KEY)
+        _cached_calls = __salt__['data.get'](DATA_KEY)
         if _cached_calls is None:
             _cached_calls = collections.defaultdict(list)
         else:

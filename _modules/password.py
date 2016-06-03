@@ -49,7 +49,7 @@ def generate(name, length=20):
           password: {{ salt['password.generate']('monitoring_user', 30) }}
     '''
     key_name = '-'.join((__virtual__(), name))
-    existing_passwd = __salt__['data.getval'](key_name)
+    existing_passwd = __salt__['data.get'](key_name)
     if existing_passwd is None:
         password = _generate_random_password(length)
         __salt__['data.update'](key_name, password)

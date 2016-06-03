@@ -25,7 +25,7 @@ sudo_salt_minion_nrpe:
     - require:
       - pkg: sudo
 
-{%- if not salt['data.getval']('returner_timestamps_last_success') %}
+{%- if not salt['data.get']('returner_timestamps_last_success') %}
 set_last_success_timestamp:
   module:
     - run

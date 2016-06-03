@@ -43,7 +43,7 @@ def exists():
     Return True/False if there is a frozen state.
     '''
     try:
-        saved = __salt__['data.getval'](__virtual__())
+        saved = __salt__['data.get'](__virtual__())
         if saved:
             return True
     except KeyError:
@@ -89,7 +89,7 @@ def revert(only_uninstall=False):
     }
 
     try:
-        saved = set(__salt__['data.getval'](__virtual__()))
+        saved = set(__salt__['data.get'](__virtual__()))
         log.debug("Found %d packages", len(saved))
     except KeyError:
         ret['comment'] = "You need to call {0}.snapshot first!".format(
