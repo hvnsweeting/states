@@ -13,6 +13,7 @@ __author__ = 'Quan Tong Anh'
 __maintainer__ = 'Quan Tong Anh'
 __email__ = 'quanta@robotinfra.com'
 
+import logging
 import socket
 import re
 from datetime import datetime
@@ -22,6 +23,8 @@ from plugins import PluginCertInfo, PluginOpenSSLCipherSuites
 from utils.SSLyzeSSLConnection import SSLHandshakeRejected
 
 from pysc import nrpe
+
+log = logging.getLogger('nagiosplugin.salt.master.mine')
 
 
 class SslConfiguration(nap.Resource):
@@ -65,15 +68,24 @@ class SslConfiguration(nap.Resource):
         cert_plugin = PluginCertInfo.PluginCertInfo()
         cert_plugin._shared_settings = shared_settings
 
+        cert_result = None
+        excs = set()
         for p in reversed(range(1, 6)):
             target = (self.host, socket.gethostbyname(self.host), self.port, p)
             try:
                 cert_result = cert_plugin.process_task(target, 'certinfo',
                                                        'basic')
-            except SSLHandshakeRejected:
-                pass
+            except SSLHandshakeRejected as e:
+                excs.add(e)
             else:
                 break
+
+        if not cert_result:
+            log.critical("Failed to get cert result")
+            for ex in excs:
+                log.critical("Exception: %s", ex)
+            if excs:
+                raise excs[0]
 
         is_trusted = 'OK'
         cert_result_list = cert_result.get_txt_result()
