@@ -333,7 +333,12 @@ def render_state_template(state):
     state_path = state.replace('.', '/')
     for path_template in ('salt://{0}.sls', 'salt://{0}/init.sls'):
         source = path_template.format(state_path)
-        client('cp.get_template', source, tmp.name)
+        try:
+            client('cp.get_template', source, tmp.name)
+        except TypeError:
+            # source does not exists, try the other
+            continue
+
         with open(tmp.name) as yaml_fh:
             try:
                 data = yaml.safe_load(yaml_fh)
