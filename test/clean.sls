@@ -50,7 +50,9 @@ clean_pkg:
       - cron
       - curl
       - dbus
+{# Required for dmidecode grains
       - dmidecode
+#}
       - dnsutils
       - dosfstools
       - dpkg-dev
