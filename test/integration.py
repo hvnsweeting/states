@@ -77,6 +77,7 @@ def _get_salt_client(config_file='/root/salt/states/test/minion'):
 
 client = _get_salt_client()
 all_states = client('cp.list_states')
+all_states.sort()
 ran_states_cntr = collections.Counter()
 
 
