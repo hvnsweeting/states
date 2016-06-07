@@ -47,7 +47,7 @@ class SslConfiguration(nap.Resource):
             'https_tunnel': None,
             'nb_retries': 4,
             'heartbleed': True,
-            'sni': None,
+            'sni': self.host,
             'https_tunnel_host': None,
             'regular': False,
             'key': None,
