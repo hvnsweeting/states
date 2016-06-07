@@ -203,7 +203,6 @@ class InfluxdbHandler(Handler):
             self._throttle_error(
                 "InfluxdbHandler: Error sending metrics, waiting for %ds.",
                 2**self.time_multiplier)
-            raise
 
     def _connect(self):
         """
