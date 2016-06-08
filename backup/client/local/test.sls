@@ -37,10 +37,12 @@ clean_test_check_backup:
     - name: {{ salt["pillar.get"]("backup:local:path") }}
     - require:
       - monitoring: test_check_backup
-
-/etc/nagios/nsca.d/backup.client.local.yml:
-  file:
-    - absent
+  {#- Do not use file.absent --> nsca_passive will be restarted
+  which caused recursive requisite #}
+  module:
+    - run
+    - name: file.remove
+    - path: /etc/nagios/nsca.d/backup.client.local.yml
     - require:
       - monitoring: test_check_backup
 
