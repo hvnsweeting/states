@@ -49,9 +49,12 @@ cleanup_s3lite:
     - require:
       - file: /root/.s3cfg
       - monitoring: test_s3lite
-  file:
-    - absent
-    - name: /etc/nagios/nsca.d/backup.client.s3lite.yml
+  {#- Do not use file.absent --> nsca_passive will be restarted
+  which caused recursive requisite #}
+  module:
+    - run
+    - name: file.remove
+    - path: /etc/nagios/nsca.d/backup.client.s3lite.yml
     - require:
       - monitoring: test_s3lite
 
