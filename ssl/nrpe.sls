@@ -3,4 +3,4 @@
 include:
   - apt.nrpe
   - openssl.nrpe
-  - sslyze
+  - sslyze.nrpe
