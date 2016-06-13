@@ -735,7 +735,7 @@ class States(unittest.TestCase):
         #     result: true
         global ran_states_cntr
 
-        logger.debug('Processes with high memory usages: %s', self.get_rss())
+        logger.info('Processes with high memory usages: %s', self.get_rss())
 
         ran_states_cntr.update(sid.split('|')[0] for sid in output)
         for state in output:
