@@ -54,3 +54,46 @@ gobench2plot:
         GOPATH: "/var/lib/go"
     - require:
       - cmd: go_state_api
+
+go_protobuf_lint:
+  cmd:
+    - run
+    - name: go get github.com/ckaznocha/protoc-gen-lint
+    - env:
+        GOPATH: "/var/lib/go"
+    - require:
+      - cmd: go_state_api
+
+go_protoc:
+  file:
+    - directory
+    - name: /usr/local/protoc
+    - require:
+      - file: /usr/local
+  archive:
+    - extracted
+{# TODO: mirror when it is not beta #}
+    - source: https://github.com/google/protobuf/releases/download/v3.0.0-beta-3/protoc-3.0.0-beta-3-linux-x86_64.zip
+    - source_hash: md5=d1c68dbef61c44b3e2708f79429a9daa
+    - name: /usr/local/protoc
+    - archive_format: zip
+    - if_missing: /usr/local/protoc/protoc
+    - require:
+      - file: go_protoc
+
+go_protoc_binary:
+  file:
+    - managed
+    - name: /usr/local/protoc/protoc
+    - mode: 755
+    - replace: False
+    - require:
+      - archive: go_protoc
+
+go_protoc_symlink:
+  file:
+    - symlink
+    - name: /usr/local/bin/protoc
+    - target: /usr/local/protoc/protoc
+    - require:
+      - file: go_protoc_binary
