@@ -86,6 +86,8 @@ go_protoc_binary:
     - managed
     - name: /usr/local/protoc/protoc
     - mode: 755
+    - user: root
+    - group: root
     - replace: False
     - require:
       - archive: go_protoc
