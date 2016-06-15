@@ -99,3 +99,19 @@ go_protoc_symlink:
     - target: /usr/local/protoc/protoc
     - require:
       - file: go_protoc_binary
+
+protoc_gen_doc:
+  pkgrepo:
+    - managed
+    - name: 'deb http://download.opensuse.org/repositories/home:/estan:/protoc-gen-doc/xUbuntu_14.04/ /'
+    - key_url: salt://go/protoc_gen_doc.gpg
+    - file: /etc/apt/sources.list.d/protoc-gen-doc.list
+    - clean_file: True
+    - require:
+      - pkg: apt_sources
+  pkg:
+    - installed
+    - name: protoc-gen-doc
+    - require:
+      - pkgrepo: protoc_gen_doc
+      - cmd: apt_sources
