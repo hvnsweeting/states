@@ -5,7 +5,7 @@ go:
     - absent
     - name: /usr/local/go
 
-go_protoc:
+go_protoc_dir:
   file:
     - absent
     - name: /usr/local/protoc
