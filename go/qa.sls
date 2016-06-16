@@ -115,3 +115,30 @@ protoc_gen_doc:
     - require:
       - pkgrepo: protoc_gen_doc
       - cmd: apt_sources
+
+go_protobuf:
+  cmd:
+    - run
+    - name: go get -u github.com/golang/protobuf/proto
+    - env:
+        GOPATH: "/var/lib/go"
+    - require:
+      - cmd: go_state_api
+
+go_protoc_gen_go:
+  cmd:
+    - run
+    - name: go get -u github.com/golang/protobuf/protoc-gen-go
+    - env:
+        GOPATH: "/var/lib/go"
+    - require:
+      - cmd: go_state_api
+
+go_protoc_inject_tag_go:
+  cmd:
+    - run
+    - name: go get -u github.com/favadi/protoc-go-inject-tag
+    - env:
+        GOPATH: "/var/lib/go"
+    - require:
+      - cmd: go_state_api
