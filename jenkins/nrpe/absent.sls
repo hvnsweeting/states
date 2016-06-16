@@ -4,5 +4,9 @@
   file:
     - absent
 
+/usr/lib/nagios/plugins/check_jenkins_slaves.py:
+  file:
+    - absent
+
 {%- from 'nrpe/passive.jinja2' import passive_absent with context %}
 {{ passive_absent('jenkins') }}

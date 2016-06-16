@@ -24,3 +24,12 @@ jenkins_http:
   timeout: {{ timeout }}
   dependencies:
     - jenkins_port
+
+jenkins_slaves:
+  description: Jenkins Slaves
+  command: /usr/lib/nagios/plugins/check_jenkins_slaves.py --formula=jenkins --check=jenkins_slaves
+  timeout: {{ timeout }}
+  arguments:
+    url: https://ci.devcats.io
+    username: {{ salt['pillar.get']('jenkins:manage_slaves:username', False) }}
+    token: {{ salt['pillar.get']('jenkins:manage_slaves:token', False) }}
