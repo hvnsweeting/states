@@ -12,14 +12,15 @@ $TTL    {{ salt['pillar.get']('bind:zones:' ~ zonename ~ ':ttl', 2560) }}
                                             {{ zonedata['negative_cache_ttl']|default(2560) }});
         IN      NS      ns1
 ;
-{%- set myip = salt['pillar.get']('bind:public_ip', None)|default(grains['ip_interfaces']['eth0'][0], boolean=True) %}
-        IN      A       {{ myip }}
-ns1     IN      A       {{ myip }}
+        IN      MX      5 {{ zonedata['mx'] }}
 {%- for slave_ip in zonedata['slaves']|default([]) %}
   {%- set nsindex = loop.index + 1 %}
 @       IN      NS      ns{{ nsindex }}
 ns{{ nsindex }}       IN     A      {{ slave_ip }}
 {%- endfor %}
+{%- set myip = salt['pillar.get']('bind:public_ip', None)|default(grains['ip_interfaces']['eth0'][0], boolean=True) %}
+        IN      A       {{ myip }}
+ns1     IN      A       {{ myip }}
 {%- set resource_records = zonedata['resource_records']|default([]) %}
 {%- for rr in resource_records %}
 {{ rr }}
