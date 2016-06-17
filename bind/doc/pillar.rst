@@ -153,6 +153,11 @@ bind:zones:{{ zone_name }}:admin_email
 
 Email of administrator of this zone.
 
+bind:zones:{{ zone_name }}:mx
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+MX record for this zone.
+
 .. _pillar-bind-zones-{{ zone_name }}-serial:
 
 bind:zones:{{ zone_name }}:serial
