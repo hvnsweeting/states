@@ -11,3 +11,7 @@
 /usr/local/bin/backup-validate:
   file:
     - absent
+
+/usr/local/bin/grandfather-father-son.py:
+  file:
+    - absent
