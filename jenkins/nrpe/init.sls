@@ -14,4 +14,15 @@ include:
   - ssl.nrpe
 {%- endif %}
 
+/usr/lib/nagios/plugins/check_jenkins_slaves.py:
+  file:
+    - managed
+    - source: salt://jenkins/nrpe/check_slaves.py
+    - user: root
+    - group: nagios
+    - mode: 550
+    - require:
+      - module: nrpe-virtualenv
+      - pkg: nagios-nrpe-server
+
 {{ passive_check('jenkins', check_ssl_score=True) }}

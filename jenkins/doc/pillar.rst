@@ -33,6 +33,9 @@ Example::
     job_cleaner:
       username: cleaner
       token: JENKINS_APITOKEN_FOR_CLEANER
+    manage_slaves:
+      username: manage_slaves
+      token: JENKINS_APITOKEN_FOR_MANAGING_SLAVES
     gitconfig:
       git.example.com: gitlab
       github.com: git
@@ -100,6 +103,34 @@ jenkins:job_cleaner:username
 
 jenkins:job_cleaner:token
 ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:doc:`index` user's API token. Visit ``/user/USERNAME/configure`` to
+get this value.
+
+.. _pillar-jenkins-manage_slaves:
+
+jenkins:manage_slaves
+~~~~~~~~~~~~~~~~~~~~~
+
+:doc:`index` user used for managing slaves.
+
+.. note::
+
+  this user must have enough permission to manage slaves.
+
+Default: does not use ``False``.
+
+.. _pillar-jenkins-manage_slaves-username:
+
+jenkins:manage_slaves:username
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:doc:`index` user's username
+
+.. _pillar-jenkins-manage_slaves-token:
+
+jenkins:manage_slaves:token
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :doc:`index` user's API token. Visit ``/user/USERNAME/configure`` to
 get this value.
