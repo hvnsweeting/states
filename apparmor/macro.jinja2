@@ -1,0 +1,48 @@
+{#- Usage of this is governed by a license that can be found in doc/license.rst -#}
+# {{ salt['pillar.get']('message_do_not_modify') }}
+{%- macro gen_profile(formula, binary, services=[]) %}
+  {%- if not services %}
+    {%- do services.append(formula) %}
+  {%- endif %}
+include:
+  - apparmor
+  - {{ formula }}
+
+/etc/apparmor.d/disable/{{ binary }}:
+  file:
+    - absent
+
+{{ formula }}_apparmor:
+  file:
+    - managed
+    - name: /etc/apparmor.d/{{ binary }}
+    - source: salt://{{ formula }}/apparmor/profile.jinja2
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: 400
+  cmd:
+    - wait
+    - name: apparmor_parser -r /etc/apparmor.d/{{ binary }}
+    - require:
+      - pkg: apparmor
+    - watch:
+      - file: /etc/apparmor.d/disable/{{ binary }}
+      - file: {{ formula }}_apparmor
+    - watch_in:
+  {%- for service in services %}
+      - service: {{ service }}
+  {%- endfor %}
+{%- endmacro %}
+
+{%- macro profile_absent(formula, binary) %}
+{{ formula }}_apparmor:
+  cmd:
+    - run
+    - name: apparmor_parser -R /etc/apparmor.d/{{ binary }}
+  file:
+    - absent
+    - name: /etc/apparmor.d/{{ binary }}
+    - require:
+      - cmd: {{ formula }}_apparmor
+{%- endmacro %}
