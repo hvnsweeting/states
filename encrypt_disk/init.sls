@@ -47,7 +47,9 @@ mkfs_disk_{{ disk }}:
     - watch_in:
       - cmd: disk_encryption
 
-    {%- if mount_point %}
+  {%- endif %}
+
+  {%- if mount_point %}
 mount_disk_{{ disk }}:
   mount:
     - mounted
@@ -56,6 +58,7 @@ mount_disk_{{ disk }}:
     - fstype: {{ fstype }}
     - mkmnt: True
     - persist: True
+    - onlyif: test -b /dev/mapper/{{ device_name }}
     - opts:
       - nobootwait
     - require:
@@ -74,6 +77,7 @@ encrypt_disk_bind_{{ dir }}:
     - mode: 755
     - makedirs: True
     - unless: test -d {{ src }}
+    - onlyif: test -b /dev/mapper/{{ device_name }}
     - require:
       - mount: mount_disk_{{ disk }}
   mount:
@@ -83,6 +87,7 @@ encrypt_disk_bind_{{ dir }}:
     - fstype: {{ fstype }}
     - mkmnt: True
     - persist: True
+    - onlyif: test -b /dev/mapper/{{ device_name }}
     - opts:
       - bind
       - nobootwait
@@ -91,7 +96,6 @@ encrypt_disk_bind_{{ dir }}:
     - watch_in:
       - cmd: disk_encryption
       {%- endfor %}
-    {%- endif %}
   {%- endif %}
 {%- endfor %}
 
