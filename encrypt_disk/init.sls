@@ -46,7 +46,8 @@ mkfs_disk_{{ disk }}:
       - cmd: luksFormat_disk_{{ disk }}
     - watch_in:
       - cmd: disk_encryption
-
+    - require_in:
+      - mount: mount_disk_{{ disk }}
   {%- endif %}
 
   {%- if mount_point %}
@@ -60,8 +61,6 @@ mount_disk_{{ disk }}:
     - persist: True
     - opts:
       - nobootwait
-    - require:
-      - cmd: mkfs_disk_{{ disk }}
     - watch_in:
       - cmd: disk_encryption
 
