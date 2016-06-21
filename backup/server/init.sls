@@ -3,8 +3,6 @@
 include:
   - apt
   - cron
-  - pip
-  - pysc
   - rsyslog
   - ssh.server
 
@@ -37,11 +35,7 @@ backup-archiver-dependency:
 
 /etc/cron.weekly/backup-archiver:
   file:
-    - managed
-    - source: salt://backup/server/archive.py
-    - mode: 500
-    - user: root
-    - group: root
+    - absent
     - require:
       - module: pysc
       - pkg: cron
