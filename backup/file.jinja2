@@ -26,8 +26,8 @@ shift
 working_directory=$1
 shift
 
-NOW=`/bin/date "+%Y-%m-%d-%H_%M_%S"`
-OUTPUT="/tmp/$software-$NOW.tar.xz"
+SUFFIX="$(/usr/local/bin/grandfather-father-son.py)"
+OUTPUT="/tmp/$software-$SUFFIX.tar.xz"
 
 if [ -z "$logfile" ]; then
     tar --xz -cf $OUTPUT -C $working_directory $*
