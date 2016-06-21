@@ -45,4 +45,5 @@ Formulas Document:
     :maxdepth: 1
 
     /doc/publish/doc/index
+    /backup/*/doc/index
     /*/doc/index

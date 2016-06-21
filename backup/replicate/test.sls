@@ -11,7 +11,7 @@ test:
     - run_all_checks
     - order: last
   qa:
-    - test
+    - test_pillar
     - name: backup.replicate
     - doc: {{ opts['cachedir'] }}/doc/output
     - require:
