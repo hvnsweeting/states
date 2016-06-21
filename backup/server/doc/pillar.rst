@@ -15,4 +15,4 @@ backup:ssh:retention
 
 Days to keep backup files on :doc:`index` before they get deleted.
 
-Default: ``30`` days.
+Default: ``90`` days.

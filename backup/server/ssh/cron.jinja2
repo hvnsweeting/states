@@ -7,5 +7,5 @@ export TERM=dumb
 
 for i in *.xz *.gz *.tar
 do
-    find /var/lib/backup -maxdepth 2 -type f -name "$i" -mtime +{{ salt['pillar.get']('backup:ssh:retention', 30) }} -delete
+    find /var/lib/backup -maxdepth 2 -type f -name "$i" -mtime +{{ salt['pillar.get']('backup:ssh:retention', 90) }} -delete
 done
