@@ -7,4 +7,6 @@ export TERM=dumb
 
 {#- Do not preserve permission as it also change the permission of /var/lib/backup
 which need to be in 775 for the monitoring check (run as non-root) to read some files #}
-rsync --archive --no-owner --no-group --no-perms --quiet --exclude ".*" root@{{ salt['pillar.get']('backup:replicate:source') }}:/var/lib/backup /var/lib/backup
+{%- set ip_port = salt['pillar.get']('backup:replicate:source').split(':') %}
+{%- set port = ip_port[1] if ip_port|count == 2 else 22 %}
+rsync 'ssh -p {{ port }}' --archive --no-owner --no-group --no-perms --quiet --exclude ".*" root@{{ ip_port[0] }}:/var/lib/backup /var/lib/backup
