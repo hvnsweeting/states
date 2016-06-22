@@ -52,7 +52,7 @@ class SlavesContext(nap.Context):
         if len(offline_slaves) > 0:
             state = nap.state.Critical
         else:
-            state = nap.state.OK
+            state = nap.state.Ok
         return nap.Result(state, metric=metric)
 
 
