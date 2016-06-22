@@ -83,7 +83,7 @@ class BackupFile(nagiosplugin.Resource):
                 }
             }
         else:
-            log.warn("Filename didn't match regexp."
+            log.info("Filename didn't match regexp."
                      "This file shouldn't be here: '%s'", filename)
 
         return {}
