@@ -33,3 +33,6 @@ protoc_gen_doc:
     - run
     - name: apt-key del 066C0892
     - onlyif: apt-key list | grep -q 066C0892
+  file:
+    - absent
+    - name: /etc/apt/sources.list.d/protoc-gen-doc.list
