@@ -76,4 +76,6 @@ def check_jenkins_slaves(config):
 
 
 if __name__ == "__main__":
+    # disable urllib3 warnings
+    requests.packages.urllib3.disable_warnings()
     nrpe.check(check_jenkins_slaves, {'timeout': 100})
