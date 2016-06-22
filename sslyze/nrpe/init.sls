@@ -3,6 +3,7 @@
 include:
   - cron.nrpe
   - nrpe
+  - sslyze
   - virtualenv.nrpe
 
 check_ssl_configuration.py:
@@ -17,6 +18,7 @@ check_ssl_configuration.py:
       - host: hostname
       - pkg: nagios-nrpe-server
       - module: nrpe-virtualenv
+      - cmd: sslyze
 {#- consumers of sslyze check use cron, make them only require sslyze check script #}
       - pkg: cron
     - require_in:
