@@ -13,6 +13,9 @@ import pysc
 
 log = logging.getLogger('nagiosplugin.backup.client.base')
 CACHE_TIMEOUT = 15
+# GFS is grand-father-father-son backup suffix
+GFS_PATTERN = ('<gfs>monday|tuesday|wednesday|thursday|friday|sunday|'
+               'month[1-2]|week[1-4]')
 
 
 class BackupFile(nagiosplugin.Resource):
@@ -65,21 +68,18 @@ class BackupFile(nagiosplugin.Resource):
 
     def make_file(self, filename, size):
         log.debug("Creating file dict for: %s(%sB)", filename, size)
-        match = re.match(r'(?P<facility>.+)-(?P<date>[0-9\-_]{19})',
+        match = re.match(r'(?P<facility>.+)-(?P{0})'.format(GFS_PATTERN),
                          filename)
         if match:
             match = match.groupdict()
-            log.debug("Key matched regexp, facility: %s, date: %s",
-                      match['facility'], match['date'])
+            log.debug("Key matched regexp, facility: %s, gfs suffix: %s",
+                      match['facility'], match['gfs'])
             name = match['facility']
-            date = datetime.datetime.strptime(match['date'],
-                                              "%Y-%m-%d-%H_%M_%S")
 
             return {
                 name: {
                     'name': name,
                     'size': size,
-                    'date': date,
                 }
             }
         else:

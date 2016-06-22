@@ -11,7 +11,7 @@ ionice -c idle -p $$
 XZ_DEFAULTS=--memlimit={{ salt['pillar.get']('backup:xz_memlimit', 64) }}MiB
 
 dbname=$1
-NOW=`date '+%Y-%m-%d-%H_%M_%S'`
+SUFFIX="$(/usr/local/bin/backup-gen-name.py)"
 export TERM=dumb
-/usr/bin/mysqldump -p{{ salt['password.pillar']('mysql:password') }} -uroot --single-transaction $dbname | xz > /tmp/mysql-$dbname-$NOW.sql.xz
-/usr/local/bin/backup-store /tmp/mysql-$dbname-$NOW.sql.xz
+/usr/bin/mysqldump -p{{ salt['password.pillar']('mysql:password') }} -uroot --single-transaction $dbname | xz > /tmp/mysql-$dbname-$SUFFIX.sql.xz
+/usr/local/bin/backup-store /tmp/mysql-$dbname-$SUFFIX.sql.xz

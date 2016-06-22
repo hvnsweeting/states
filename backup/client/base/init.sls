@@ -6,7 +6,7 @@ include:
   - hostname
   - salt.minion.deps
 
-/usr/local/bin/grandfather-father-son.py:
+/usr/local/bin/backup-gen-suffix.py:
   file:
     - managed
     - user: root
@@ -30,7 +30,7 @@ include:
       - host: hostname
       - file: /usr/local
       - file: bash
-      - file: /usr/local/bin/grandfather-father-son.py
+      - file: /usr/local/bin/backup-gen-suffix.py
 
 /usr/local/bin/backup-validate:
   file:

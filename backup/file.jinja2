@@ -26,7 +26,7 @@ shift
 working_directory=$1
 shift
 
-SUFFIX="$(/usr/local/bin/grandfather-father-son.py)"
+SUFFIX="$(/usr/local/bin/backup-gen-name.py)"
 OUTPUT="/tmp/$software-$SUFFIX.tar.xz"
 
 if [ -z "$logfile" ]; then
