@@ -2,4 +2,4 @@
 
 {%- from 'apparmor/macro.jinja2' import profile_absent with context %}
 
-{{ profile_absent('nginx', 'usr.sbin.pptpd') }}
+{{ profile_absent('pptpd', '/usr/sbin/pptpd') }}

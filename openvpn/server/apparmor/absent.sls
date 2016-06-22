@@ -2,4 +2,4 @@
 
 {%- from 'apparmor/macro.jinja2' import profile_absent with context %}
 
-{{ profile_absent('openvpn', 'usr.sbin.openvpn') }}
+{{ profile_absent('openvpn', '/usr/sbin/openvpn') }}
