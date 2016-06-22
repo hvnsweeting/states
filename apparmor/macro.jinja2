@@ -38,12 +38,7 @@ apparmor_{{ formula }}:
 {%- macro profile_absent(formula, binary_path) %}
   {%- set filename = binary_path.split('/')[1:] | join('.') %}
 apparmor_{{ formula }}:
-  cmd:
-    - run
-    - name: apparmor_parser -R /etc/apparmor.d/{{ filename }}
   file:
     - absent
     - name: /etc/apparmor.d/{{ filename }}
-    - require:
-      - cmd: apparmor_{{ formula }}
 {%- endmacro %}
