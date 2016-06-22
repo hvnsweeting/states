@@ -12,6 +12,6 @@
   file:
     - absent
 
-/usr/local/bin/grandfather-father-son.py:
+/usr/local/bin/backup-gen-suffix.py:
   file:
     - absent

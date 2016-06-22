@@ -11,7 +11,7 @@ ionice -c idle -p $$
 XZ_DEFAULTS=--memlimit={{ salt['pillar.get']('backup:xz_memlimit', 64) }}MiB
 
 dbname=all
-NOW=`date '+%Y-%m-%d-%H_%M_%S'`
+SUFFIX="$(/usr/local/bin/backup-gen-name.py)"
 export TERM=dumb
 workdir=`mktemp -d`
 cd $workdir
@@ -21,8 +21,8 @@ if [ ! -d dump ]; then
         backup except empty directory.
     mkdir dump
 fi
-tar --xz -cf mongodb-$dbname-$NOW.tar.xz dump
-mv mongodb-$dbname-$NOW.tar.xz /tmp
+tar --xz -cf mongodb-$dbname-$SUFFIX.tar.xz dump
+mv mongodb-$dbname-$SUFFIX.tar.xz /tmp
 cd /tmp
 rm -rf $workdir
-/usr/local/bin/backup-store mongodb-$dbname-$NOW.tar.xz
+/usr/local/bin/backup-store mongodb-$dbname-$SUFFIX.tar.xz

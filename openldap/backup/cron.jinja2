@@ -17,8 +17,8 @@ renice -n 19 -p $$ > /dev/null
 ionice -c idle -p $$
 XZ_DEFAULTS=--memlimit={{ salt['pillar.get']('backup:xz_memlimit', 64) }}MiB
 
-NOW=`date '+%Y-%m-%d-%H_%M_%S'`
-OUTPUT="/tmp/openldap-$NOW.ldif"
+SUFFIX="$(/usr/local/bin/backup-gen-name.py)"
+OUTPUT="/tmp/openldap-$SUFFIX.ldif"
 
 slapcat | xz > $OUTPUT.xz
 /usr/local/bin/backup-store $OUTPUT.xz

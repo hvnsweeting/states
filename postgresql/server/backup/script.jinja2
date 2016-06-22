@@ -9,14 +9,14 @@ set -e
 renice -n 19 -p $$ > /dev/null
 ionice -c idle -p $$
 XZ_DEFAULTS=--memlimit={{ salt['pillar.get']('backup:xz_memlimit', 64) }}MiB
-NOW=`date '+%Y-%m-%d-%H_%M_%S'`
+SUFFIX="$(/usr/local/bin/backup-gen-name.py)"
 export TERM=dumb
 
 if [ "$1" = '--prefix' ]; then
-  temp_path=/tmp/postgresql-$2-$3-$NOW.sql.xz
+  temp_path=/tmp/postgresql-$2-$3-$SUFFIX.sql.xz
   dbname=$3
 else
-  temp_path=/tmp/postgresql-$1-$NOW.sql.xz
+  temp_path=/tmp/postgresql-$1-$SUFFIX.sql.xz
   dbname=$1
 fi
 

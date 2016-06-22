@@ -10,6 +10,6 @@ locking_script
 log_start_script "$@"
 trap "log_stop_script \$?" EXIT
 
-now=$(date '+%Y-%m-%d-%H_%M_%S')
-/opt/influxdb/influxd backup /var/lib/influxdb/backup/influxdb-"$now" 2>/dev/null
-/usr/local/bin/backup-file influxdb /var/lib/influxdb/backup influxdb-"$now"
+SUFFIX="$(/usr/local/bin/backup-gen-name.py)"
+/opt/influxdb/influxd backup /var/lib/influxdb/backup/influxdb-"$SUFFIX" 2>/dev/null
+/usr/local/bin/backup-file influxdb /var/lib/influxdb/backup influxdb-"$SUFFIX"
