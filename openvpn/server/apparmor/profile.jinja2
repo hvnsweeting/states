@@ -1,0 +1,26 @@
+{#- Usage of this is governed by a license that can be found in doc/license.rst -#}
+# {{ salt['pillar.get']('message_do_not_modify') }}
+#include <tunables/global>
+
+/usr/sbin/openvpn flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/dovecot-common>
+  #include <abstractions/nameservice>
+
+
+  capability dac_override,
+  capability net_admin,
+  capability setgid,
+  capability setuid,
+
+  /bin/ip r,
+  /dev/net/tun rw,
+  /etc/openvpn/* r,
+  /etc/openvpn/dh.pem r,
+  /proc/*/net/route r,
+  /run/openvpn/*.pid w,
+  /usr/sbin/openvpn mr,
+  /var/lib/openvpn/* rw,
+  /var/log/openvpn/* w,
+
+}

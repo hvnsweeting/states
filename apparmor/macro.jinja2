@@ -1,0 +1,49 @@
+{#- Usage of this is governed by a license that can be found in doc/license.rst -#}
+{%- macro profile_managed(formula, binary_path, services=[]) %}
+  {%- if not services %}
+    {%- do services.append(formula) %}
+  {%- endif %}
+include:
+  - apparmor
+  - {{ formula }}
+
+  {%- set filename = binary_path.split('/')[1:] | join('.') %}
+/etc/apparmor.d/disable/{{ filename }}:
+  file:
+    - absent
+
+apparmor_{{ formula }}:
+  file:
+    - managed
+    - name: /etc/apparmor.d/{{ filename }}
+    - source: salt://{{ formula }}/apparmor/profile.jinja2
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: 400
+    - require:
+      - pkg: apparmor
+  cmd:
+    - wait
+    - name: apparmor_parser -r /etc/apparmor.d/{{ filename }}
+    - watch:
+      - file: /etc/apparmor.d/disable/{{ filename }}
+      - file: apparmor_{{ formula }}
+    - watch_in:
+  {%- for service in services %}
+      - service: {{ service }}
+  {%- endfor %}
+{%- endmacro %}
+
+{%- macro profile_absent(formula, binary_path) %}
+  {%- set filename = binary_path.split('/')[1:] | join('.') %}
+apparmor_{{ formula }}:
+  cmd:
+    - run
+    - name: apparmor_parser -R /etc/apparmor.d/{{ filename }}
+  file:
+    - absent
+    - name: /etc/apparmor.d/{{ filename }}
+    - require:
+      - cmd: apparmor_{{ formula }}
+{%- endmacro %}
