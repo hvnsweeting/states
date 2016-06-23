@@ -9,7 +9,7 @@ set -e
 renice -n 19 -p $$ > /dev/null
 ionice -c idle -p $$
 XZ_DEFAULTS=--memlimit={{ salt['pillar.get']('backup:xz_memlimit', 64) }}MiB
-SUFFIX="$(/usr/local/bin/backup-gen-name.py)"
+SUFFIX="$(/usr/local/bin/backup-gen-suffix.py)"
 export TERM=dumb
 
 if [ "$1" = '--prefix' ]; then
