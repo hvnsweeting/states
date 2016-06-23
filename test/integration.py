@@ -42,7 +42,7 @@ except ImportError:
 
 # until https://github.com/saltstack/salt/issues/4994 is fixed, logger must
 # be configured before importing salt.client
-logging.basicConfig(stream=sys.stdout, level=logging.INFO,
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG,
                     format="%(asctime)s %(name)s (%(module)s.%(funcName)s:"
                            "%(lineno)d) %(message)s")
 
@@ -77,7 +77,6 @@ def _get_salt_client(config_file='/root/salt/states/test/minion'):
 
 client = _get_salt_client()
 all_states = client('cp.list_states')
-all_states.sort()
 ran_states_cntr = collections.Counter()
 
 
@@ -99,9 +98,9 @@ def if_change(result):
 
 
 def tearDownModule():
-    global client
+    client = _get_salt_client()
     global ran_states_cntr
-    logger.info("Running tearDownModule")
+    logger.debug("Running tearDownModule")
     logger.info('COUNTER: Ran totally: %d States',
                 (sum(ran_states_cntr.values())))
     logger.info('COUNTER: By state declaration: %s', ran_states_cntr)
@@ -114,7 +113,7 @@ def setUpModule():
     """
     Prepare minion for tests, this is executed only once time.
     """
-    global client
+    client = _get_salt_client()
     logger.debug("Running setUpModule")
 
     # force HOME to be root directory
@@ -222,7 +221,7 @@ def list_user_space_processes():
     """
     return all running processes on minion
     """
-    global client
+    client = _get_salt_client()
     result = client('status.procs')
     output = {}
 
@@ -277,12 +276,12 @@ def get_groups():
     """
     return a set of groups
     """
-    global client
+    client = _get_salt_client()
     return set(group['name'] for group in client('group.getent', True))
 
 
 def get_users():
-    global client
+    client = _get_salt_client()
     return set(user['name'] for user in client('user.getent'))
 
 
@@ -334,12 +333,7 @@ def render_state_template(state):
     state_path = state.replace('.', '/')
     for path_template in ('salt://{0}.sls', 'salt://{0}/init.sls'):
         source = path_template.format(state_path)
-        try:
-            client('cp.get_template', source, tmp.name)
-        except TypeError:
-            # source does not exists, try the other
-            continue
-
+        client('cp.get_template', source, tmp.name)
         with open(tmp.name) as yaml_fh:
             try:
                 data = yaml.safe_load(yaml_fh)
@@ -354,6 +348,15 @@ def render_state_template(state):
     logger.error("Couldn't get content of %s", state)
     os.unlink(tmp.name)
     return {}
+
+
+def run_salt_module(module_name, *args, **kwargs):
+    try:
+        output = client(module_name, *args, **kwargs)
+    except Exception as err:
+        logger.error("Catch error: %s", err, exc_info=True)
+        raise Exception('Module:{0} error: {1}'.format(module_name, err))
+    return output
 
 
 class TestStateMeta(type):
@@ -472,17 +475,17 @@ class TestStateMeta(type):
                 try:
                     logger.debug(('Trying to get content '
                                   'of salt://{0}.sls').format(spath))
-                    content = client(
+                    content = run_salt_module(
                         'cp.get_file_str',
                         'salt://{0}.sls'.format(spath))
                     # NOTICE if above module running raises an exception,
                     # Salt will log it out. Therefore, no need to worry
                     # about that exception output.
-                except TypeError as err:
+                except Exception as err:
                     logger.debug(('salt://{0}.sls does not exist. '
                                   'Try salt://{0}/init.sls').format(spath))
                     try:
-                        content = client(
+                        content = run_salt_module(
                             'cp.get_file_str',
                             'salt://{0}/init.sls'.format(spath)
                         )
@@ -709,11 +712,7 @@ class States(unittest.TestCase):
         """
         Apply specified list of states.
         """
-        global client
-        old_client = client
-        del old_client
-        client = _get_salt_client()
-        logger.info("Running SLS: %s", ', '.join(states))
+        logger.debug("Run states: %s", ', '.join(states))
         try:
             output = client('state.sls', ','.join(states))
         except Exception, err:
@@ -735,7 +734,7 @@ class States(unittest.TestCase):
         #     result: true
         global ran_states_cntr
 
-        logger.info('Processes with high memory usages: %s', self.get_rss())
+        logger.debug('Processes with high memory usages: %s', self.get_rss())
 
         ran_states_cntr.update(sid.split('|')[0] for sid in output)
         for state in output:
