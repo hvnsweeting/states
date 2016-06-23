@@ -9,7 +9,7 @@ renice -n 19 -p $$ > /dev/null
 ionice -c idle -p $$
 XZ_DEFAULTS=--memlimit={{ salt['pillar.get']('backup:xz_memlimit', 64) }}MiB
 
-NOW="$(/usr/local/bin/backup-gen-name.py)"
+NOW="$(/usr/local/bin/backup-gen-suffix.py)"
 export TERM=dumb
 
 echo "created by create_dumb, for testing backup.client SLSs" | xz > /tmp/backup-client-test-$NOW.txt.xz

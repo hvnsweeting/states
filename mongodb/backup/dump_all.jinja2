@@ -11,7 +11,7 @@ ionice -c idle -p $$
 XZ_DEFAULTS=--memlimit={{ salt['pillar.get']('backup:xz_memlimit', 64) }}MiB
 
 dbname=all
-SUFFIX="$(/usr/local/bin/backup-gen-name.py)"
+SUFFIX="$(/usr/local/bin/backup-gen-suffix.py)"
 export TERM=dumb
 workdir=`mktemp -d`
 cd $workdir

@@ -10,6 +10,6 @@ locking_script
 log_start_script "$@"
 trap "log_stop_script \$?" EXIT
 
-SUFFIX="$(/usr/local/bin/backup-gen-name.py)"
+SUFFIX="$(/usr/local/bin/backup-gen-suffix.py)"
 /opt/influxdb/influxd backup /var/lib/influxdb/backup/influxdb-"$SUFFIX" 2>/dev/null
 /usr/local/bin/backup-file influxdb /var/lib/influxdb/backup influxdb-"$SUFFIX"

@@ -9,7 +9,7 @@ renice -n 19 -p $$ > /dev/null
 ionice -c idle -p $$
 XZ_DEFAULTS=--memlimit={{ salt['pillar.get']('backup:xz_memlimit', 64) }}MiB
 
-SUFFIX="$(/usr/local/bin/backup-gen-name.py)"
+SUFFIX="$(/usr/local/bin/backup-gen-suffix.py)"
 export TERM=dumb
 /usr/bin/mysqldump -p{{ salt['password.pillar']('mysql:password') }} -uroot --single-transaction --all-databases | xz > /tmp/mysql-all-$SUFFIX.sql.xz
 /usr/local/bin/backup-store /tmp/mysql-all-$SUFFIX.sql.xz
