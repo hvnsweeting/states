@@ -5,7 +5,7 @@
 Common code for backup file checking nrpe plugins
 """
 
-import datetime
+from datetime import datetime
 import logging
 import re
 import nagiosplugin
@@ -44,13 +44,14 @@ class BackupFile(nagiosplugin.Resource):
                   str(not files.get(self.facility, None) is None))
 
         backup_file = files.get(self.facility, {
-            'date': datetime.datetime.fromtimestamp(0),
+            'date': 0,
             'size': 0,
         })
+        backup_file['date'] = datetime.fromtimestamp(backup_file['date'])
 
         age_metric = nagiosplugin.Metric(
             'age',
-            (datetime.datetime.now() - backup_file['date']).total_seconds() /
+            (datetime.now() - backup_file['date']).total_seconds() /
             (60*60),
             min=0)
         size_metric = nagiosplugin.Metric('size', backup_file['size'], min=0)
