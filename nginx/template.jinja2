@@ -28,17 +28,17 @@ upstream {{ name }} {
 server {
     listen 80;
     listen [::]:80;
-{% if ssl %}
-  {% if ssl_redirect %}
+{%- if ssl -%}
+  {%- if ssl_redirect %}
     {# if https, redirect http port 80 to https port 443 #}
     server_name {% for hostname in hostnames %}{{ hostname }}{% if not loop.last %} {% endif %}{% endfor %};
     return 301 https://{{ hostnames[0] }}$request_uri;
 }
 {#- https server #}
 server {
-  {% endif %}{# redirect http to https #}
+  {%- endif %}{# redirect http to https #}
     {{ ssl_config(ssl) }}
-{% endif %}
+{%- endif %}
 {#- web app logic #}
     server_name {% for hostname in hostnames %}{{ hostname }}{% if not loop.last %} {% endif %}{% endfor %};
 {%- if root_path %}
