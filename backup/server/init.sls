@@ -3,6 +3,7 @@
 include:
   - apt
   - cron
+  - pysc
   - rsyslog
   - ssh.server
 

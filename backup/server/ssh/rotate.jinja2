@@ -1,0 +1,8 @@
+#!/bin/bash
+# {{ salt['pillar.get']('message_do_not_modify') }}
+# Use of this is governed by a license that can be found in doc/license.rst.
+
+set -e
+export TERM=dumb
+
+find /var/lib/backup/ -mindepth 1 -maxdepth 1 -type d -exec /usr/local/bin/backup-rotator {}/{{ from_dir }} {}/{{ to_dir }} \;

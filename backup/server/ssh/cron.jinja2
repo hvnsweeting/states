@@ -5,7 +5,6 @@
 set -e
 export TERM=dumb
 
-for i in *.xz *.gz *.tar
-do
-    find /var/lib/backup -maxdepth 2 -type f -name "$i" -mtime +{{ salt['pillar.get']('backup:ssh:retention', 90) }} -delete
-done
+find /var/lib/backup/ -maxdepth 2 -type f \( -name '*.xz' -or -name '*.gz' -or -name '*.tar' \) -mtime +{{ salt['pillar.get']('backup:ssh:daily_max_age', 7) }} -delete
+find /var/lib/backup/ -path '/var/lib/backup/*/weekly/*' -type f \( -name '*.xz' -or -name '*.gz' -or -name '*.tar' \) -mtime +{{ salt['pillar.get']('backup:ssh:weekly_max_age', 30) }} -delete
+find /var/lib/backup/ -path '/var/lib/backup/*/monthly/*' -type f \( -name '*.xz' -or -name '*.gz' -or -name '*.tar' \) -mtime +{{ salt['pillar.get']('backup:ssh:monthly_max_age', 90) }} -delete
