@@ -3,6 +3,7 @@
 # {{ salt['pillar.get']('message_do_not_modify') }}
 
 {%- set daemon_ip_ports = {
+    'zebra': ['127.0.0.1', '2601'],
     'ospfd': ['127.0.0.1', '2604'],
     'ospf6d': ['::1', '2606']
 } %}
