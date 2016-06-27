@@ -39,8 +39,12 @@ def get_grandfather_father_son_name():
     return suffix
 
 
+def get_backup_datetime_suffix():
+    return datetime.now().strftime('%Y-%m-%d-%H_%M_%S')
+
+
 def main():
-    print get_grandfather_father_son_name()
+    print get_backup_datetime_suffix()
 
 
 if __name__ == "__main__":
