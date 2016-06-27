@@ -37,11 +37,9 @@ bikeshed:
     - require:
       - pkg: bikeshed
 
-{%- if grains.get('digitalocean', False) %}
 kernel_metapkgs:
   pkg:
     - purged
     - pkgs:
       - linux-headers-generic
       - linux-image-generic
-{%- endif %}
