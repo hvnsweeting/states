@@ -8,3 +8,18 @@ cleanup-old-archive:
 /etc/cron.daily/cleanup-old-archive:
   file:
     - absent
+
+backup_rotator:
+  file:
+    - absent
+    - name: /usr/local/bin/backup-rotator
+
+backup_rotate_weekly:
+  file:
+    - absent
+    - name: /etc/cron.weekly/backup-rotate
+
+backup_rotate_monthly:
+  file:
+    - absent
+    - name: /etc/cron.monthly/backup-rotate
