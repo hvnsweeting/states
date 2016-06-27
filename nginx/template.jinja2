@@ -6,22 +6,22 @@
 {%- from 'nginx/macro.jinja2' import ssl_config with context %}
 
 {#- var passed by context #}
-{%- set name = appname %}
+{%- set pillar_prefix = pillar_prefix|default(appname) %}
 {%- set root_path = root|default(False) %}
 {%- set static_dirs = statics|default([]) %}
 
-{%- set ssl = salt['pillar.get'](name + ':ssl', False) %}
+{%- set ssl = salt['pillar.get'](pillar_prefix + ':ssl', False) %}
 {%- if hostnames is not defined %}
-  {%- set hostnames = salt['pillar.get'](name + ':hostnames') %}
+  {%- set hostnames = salt['pillar.get'](pillar_prefix + ':hostnames') %}
 {%- endif %}
-{%- set ssl_redirect = salt['pillar.get'](name + ':ssl_redirect', False) %}
+{%- set ssl_redirect = salt['pillar.get'](pillar_prefix + ':ssl_redirect', False) %}
 
 {%- block header %}
 {%- endblock %}
 
 {%- block upstream %}
-upstream {{ name }} {
-    server unix:///var/lib/uwsgi/{{ name }}.sock;
+upstream {{ appname }} {
+    server unix:///var/lib/uwsgi/{{ appname }}.sock;
 }
 {%- endblock %}
 
@@ -61,14 +61,14 @@ server {
 {%- endblock %}
 
 {%- block root_location -%}
-{%- set timeout = salt['pillar.get'](name ~ ':timeout', 60) %}
+{%- set timeout = salt['pillar.get'](pillar_prefix ~ ':timeout', 60) %}
 {#- magic number: php(14), ruby(7) #}
     location / {
         gzip off;
         include uwsgi_params;
         uwsgi_read_timeout {{ timeout }};
         uwsgi_send_timeout {{ timeout }};
-        uwsgi_pass {{ name }};
+        uwsgi_pass {{ appname }};
         {%- if uwsgi|default(False) %}
         uwsgi_modifier1 {{ uwsgi }};
         {%- endif %}
