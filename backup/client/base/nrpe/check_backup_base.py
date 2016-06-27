@@ -5,7 +5,7 @@
 Common code for backup file checking nrpe plugins
 """
 
-from datetime import datetime
+import datetime
 import logging
 import re
 import nagiosplugin
@@ -13,9 +13,6 @@ import pysc
 
 log = logging.getLogger('nagiosplugin.backup.client.base')
 CACHE_TIMEOUT = 15
-# GFS is grand-father-father-son backup suffix
-GFS_PATTERN = ('<gfs>monday|tuesday|wednesday|thursday|friday|sunday|'
-               'month[1-2]|week[1-4]')
 
 
 class BackupFile(nagiosplugin.Resource):
@@ -44,14 +41,13 @@ class BackupFile(nagiosplugin.Resource):
                   str(not files.get(self.facility, None) is None))
 
         backup_file = files.get(self.facility, {
-            'date': 0,
+            'date': datetime.datetime.fromtimestamp(0),
             'size': 0,
         })
-        backup_file['date'] = datetime.fromtimestamp(backup_file['date'])
 
         age_metric = nagiosplugin.Metric(
             'age',
-            (datetime.now() - backup_file['date']).total_seconds() /
+            (datetime.datetime.now() - backup_file['date']).total_seconds() /
             (60*60),
             min=0)
         size_metric = nagiosplugin.Metric('size', backup_file['size'], min=0)
@@ -69,22 +65,25 @@ class BackupFile(nagiosplugin.Resource):
 
     def make_file(self, filename, size):
         log.debug("Creating file dict for: %s(%sB)", filename, size)
-        match = re.match(r'(?P<facility>.+)-(?P{0})'.format(GFS_PATTERN),
+        match = re.match(r'(?P<facility>.+)-(?P<date>[0-9\-_]{19})',
                          filename)
         if match:
             match = match.groupdict()
-            log.debug("Key matched regexp, facility: %s, gfs suffix: %s",
-                      match['facility'], match['gfs'])
+            log.debug("Key matched regexp, facility: %s, date: %s",
+                      match['facility'], match['date'])
             name = match['facility']
+            date = datetime.datetime.strptime(match['date'],
+                                              "%Y-%m-%d-%H_%M_%S")
 
             return {
                 name: {
                     'name': name,
                     'size': size,
+                    'date': date,
                 }
             }
         else:
-            log.info("Filename didn't match regexp."
+            log.warn("Filename didn't match regexp."
                      "This file shouldn't be here: '%s'", filename)
 
         return {}

@@ -118,11 +118,8 @@ class SCPBackupFile(BackupFile):
                 log.debug('skipping')
                 continue
             key, value = f.items()[0]
+            # we may want to run fstat on this filename later on
             f[key]['filename'] = filename
-            log.debug('getting fstat for %s', filename)
-            filestat = ftp.stat(filename)
-            f[key]['size'] = filestat.st_size
-            f[key]['date'] = filestat.st_mtime
             # keeps only the newest file for each facility
             if (key not in files) or (value['date'] > files[key]['date']):
                 log.debug('first or newer.')
@@ -131,7 +128,10 @@ class SCPBackupFile(BackupFile):
                 log.debug('was old')
 
         # now fetch fstat for each file, and yield them
-        for k, f in files.iteritems():
+        for k, f in files.items():
+            log.debug('getting fstat for %s', f['filename'])
+            filestat = ftp.stat(f['filename'])
+            f['size'] = filestat.st_size
             yield {k: f}
 
 
