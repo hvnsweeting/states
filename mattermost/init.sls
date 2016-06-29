@@ -145,7 +145,7 @@ mattermost_version_manage:
     - watch_in:
       - service: nginx
 
-{{ manage_upstart_log('youtrack') }}
+{{ manage_upstart_log('mattermost') }}
 
 {% if ssl %}
 extend:
