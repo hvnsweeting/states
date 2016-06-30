@@ -110,7 +110,14 @@ class SCPBackupFile(BackupFile):
         # out to only test the newest backup for each facility
         files = {}
         log.debug("running ls")
-        for filename in ftp.listdir():
+        for fattr in ftp.listdir_attr():
+            # a longname looks like:
+            # -rw-r--r--    1 radvd    quagga    5586928 Jun 22 06:35
+            # postgresql-roundcube-2016-06-22-06_34_47.sql.xz
+            if fattr.longname.startswith('d'):  # is a directory
+                log.debug("Skipping directory %s", fattr.longname)
+                continue
+            filename = fattr.longname.split()[-1]
             log.debug('processing %s', filename)
 
             f = self.make_file(filename, None)
