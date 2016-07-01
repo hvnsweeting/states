@@ -1,0 +1,22 @@
+{#- Usage of this is governed by a license that can be found in doc/license.rst -#}
+{%- set timeout = 45 -%}
+# {{ salt['pillar.get']('message_do_not_modify') }}
+
+webdav_procs:
+  description: WebDAV Process
+  command: "/usr/lib/nagios/plugins/check_procs -c 1:1 -u webdav -C webdav"
+
+webdav_port:
+  description: WebDAV Port
+  command: /usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 443 -t {{ timeout }}
+  timeout: {{ timeout }}
+  dependencies:
+    - webdav_procs
+
+{%- set domain_name = salt['pillar.get']('webdav:server_name') %}
+webdav_https:
+  description: WebDAV HTTPS
+  command: /usr/lib/nagios/plugins/check_http -S -H {{ domain_name }} -u '/' -e 'HTTP/1.1 401 Unauthorized' -t {{ timeout }}
+  timeout: {{ timeout }}
+  dependencies:
+    - webdav_port
