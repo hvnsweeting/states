@@ -1,0 +1,16 @@
+{#- Usage of this is governed by a license that can be found in doc/license.rst -#}
+{%- from 'nrpe/passive.jinja2' import passive_interval with context -%}
+
+# {{ salt['pillar.get']('message_do_not_modify') }}
+
+webdav_backup:
+  description: WebDAV Backup Age And Size
+  command: /usr/lib/nagios/plugins/check_backup.py --formula=webdav.backup --check=webdav_backup
+  {{ passive_interval(12 * 60) }} {#- 12 hours #}
+  arguments:
+    facility: webdav
+    warning: {{ salt['pillar.get']('backup:age', 48) }}
+  timeout: 55
+  dependencies:
+    {#- no alert if load is too high #}
+    - load_average
