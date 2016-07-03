@@ -12,7 +12,7 @@ import os
 import argparse
 
 
-IGNORED_EXTS = ['patch']
+IGNORED_EXTS = ['patch', 'Makefile']
 
 
 class LintCheck(object):
