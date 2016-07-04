@@ -13,11 +13,11 @@ __author__ = 'Viet Hung Nguyen <hvn@unblockapp.com>'
 __maintainer__ = 'Viet Hung Nguyen <hvn@unblockapp.com>'
 __email__ = 'hvn@unblockapp.com'
 
-import argparse
 import os
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
+import pysc
+
 logger = logging.getLogger('backup.rotator')
 
 
@@ -36,7 +36,14 @@ def qualified_files(daily_path, criteria):
 def create_hardlink(src_files, dst_dir):
     for src_file in src_files:
         dest_file = os.path.join(dst_dir, os.path.basename(src_file))
-        os.link(src_file, dest_file)
+        try:
+            os.link(src_file, dest_file)
+        except OSError as e:
+            logger.warn(
+                'Cannot create link %s --> %s. Reason: %s.'
+                'This might caused by running the script multiple times.',
+                dest_file, src_file, e
+            )
         logger.debug('Created link: %s --> %s', dest_file, src_file)
 
 
@@ -56,26 +63,35 @@ def newest_files(files):
         yield data['path']
 
 
-def main():
-    argp = argparse.ArgumentParser(description=__doc__)
-    argp.add_argument('source_dir', help='source dir for getting list of files'
-                      ' to create link')
-    argp.add_argument('dest_dir', help='dir to create links')
-    args = argp.parse_args()
+class Rotator(pysc.Application):
+    logger = logger
 
-    criteria = [os.path.isfile]
+    def get_argument_parser(self):
+        argp = super(Rotator, self).get_argument_parser()
+        argp.add_argument(
+            'source_dir',
+            help='source dir for getting list of files to create link'
+        )
+        argp.add_argument('dest_dir', help='dir to create links')
+        return argp
 
-    logger.info('Getting list of newest backup files in %s', args.source_dir)
-    files = newest_files(qualified_files(args.source_dir, criteria))
-    logger.info('Creating hardlink to dir %s', args.dest_dir)
-    try:
-        os.mkdir(args.dest_dir)
-        logger.info('Created target directory %s as it does not exist',
-                    args.dest_dir)
-    except OSError:
-        pass
-    create_hardlink(files, args.dest_dir)
+    def main(self):
+        criteria = [os.path.isfile]
+
+        logger.info('Getting list of newest backup files in %s',
+                    self.config['source_dir'])
+        files = newest_files(
+            qualified_files(self.config['source_dir'], criteria)
+        )
+        logger.info('Creating hardlink to dir %s', self.config['dest_dir'])
+        try:
+            os.mkdir(self.config['dest_dir'])
+            logger.info('Created target directory %s as it does not exist',
+                        self.config['dest_dir'])
+        except OSError:
+            pass
+        create_hardlink(files, self.config['dest_dir'])
 
 
 if __name__ == "__main__":
-    main()
+    Rotator().run()
