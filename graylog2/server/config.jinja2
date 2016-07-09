@@ -460,3 +460,15 @@ telemetry_service_write_timeout = 5s
 Read timeout for HTTP connections
 telemetry_service_read_timeout = 5s
 #}
+
+{#-
+The directory which contains content packs which should be loaded on the first start of Graylog.
+#}
+content_packs_dir = /usr/share/graylog-server/contentpacks
+
+{#-
+# A comma-separated list of content packs (files in "content_packs_dir") which should be applied on
+# the first start of Graylog.
+# Default: empty
+#}
+content_packs_auto_load = grok-patterns.json
