@@ -127,11 +127,14 @@ webdav_config:
           go_interval: 60000000000
           hostname: {{ grains['id'] }}
         logging:
+         {%- set sentry_dsn = salt['pillar.get']('sentry_dsn', False) %}
+         {%- if sentry_dsn %}
           sentry:
-            dsn: "{{ salt["pillar.get"]("sentry_dsn") }}"
+            dsn: "{{ sentry_dsn }}"
             tags:
               application: webdav
             level: {{ salt['pillar.get']('webdav:logging_level', 'warning') }}
+         {%- endif %}
           syslog:
             tag: webdav
           tags:
