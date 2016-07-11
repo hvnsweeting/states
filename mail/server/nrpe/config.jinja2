@@ -16,7 +16,7 @@ mailstack_functionality:
     - dovecot_{% if ssl and grains['oscodename'] != 'precise' %}s{% endif %}imap
     {#- no alert if load is too high #}
     - load_average
-  timeout: 55
+  timeout: 100
   arguments:
     first_notification_delay: 30 {#- minutes #}
     freshness: 12 {#- minutes #}
@@ -25,7 +25,7 @@ mailstack_functionality:
     imap_server: localhost
     smtp_server: {{ salt['pillar.get']('mail:check_mail_stack:smtp_server') }}
     {#- wait N seconds after sending mail #}
-    smtp_wait: {{ salt['pillar.get']('mail:check_mail_stack:smtp_wait', 10) }}
+    smtp_wait: {{ salt['pillar.get']('mail:check_mail_stack:smtp_wait', 25) }}
     {#- Assuming that if dovecot is configured to use SSL,
         means all the stack uses SSL #}
     ssl: {{ ssl }}
