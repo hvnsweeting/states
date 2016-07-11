@@ -45,6 +45,11 @@ Set plugin directory here (relative or absolute)
 plugin_dir = /usr/share/graylog-server/plugin
 
 {#-
+Disable usage-statistics plugin.
+#}
+usage_statistics_enabled = false
+
+{#-
 REST API listen URI. Must be reachable by other graylog2-server nodes if you run a cluster.
 #}
 rest_listen_uri = {{ salt['pillar.get']('graylog2:rest_listen_uri', 'http://127.0.0.1:12900') }}
