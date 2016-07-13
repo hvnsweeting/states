@@ -12,7 +12,7 @@ include:
   {#- If backup_server address set to localhost (mainly in CI testing), install backup.server first #}
   - backup.server
 
-{%- set port = salt['pillar.get']('backup_server:port') %}
+{%- set port = salt['pillar.get']('backup_server:port', 22) %}
 
 backup-client:
   ssh_known_hosts:
