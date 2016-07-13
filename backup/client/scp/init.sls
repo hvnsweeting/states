@@ -12,11 +12,14 @@ include:
   {#- If backup_server address set to localhost (mainly in CI testing), install backup.server first #}
   - backup.server
 
+{%- set port = salt['pillar.get']('backup_server:port') %}
+
 backup-client:
   ssh_known_hosts:
     - present
     - name: {{ address }}
     - user: root
+    - port: {{ port }}
     - require:
       - pkg: openssh-client
     {#- when backup server on the same host, make sure ssh service is running, or ssh_known_hosts can not get its host key. #}
