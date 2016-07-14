@@ -176,7 +176,8 @@ def test_pillar(name, doc):
                 (multiple_defaults,
                     "pillars with multiple default value calls"),
                 (bad_defaults,
-                    "pillars with defaults different than documented"),
+                 "pillars with defaults different than documented."
+                 "KeyError means it was called without default value"),
                 (errors, "errors"),
                 (all_documented, "total documented pillars"),
                 (__salt__['pillar.get_call_desc'](), "calls")
