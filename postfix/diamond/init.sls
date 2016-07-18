@@ -45,6 +45,7 @@ postfix_diamond_queue_length:
     - managed
     - name: /usr/local/diamond/share/diamond/user_scripts/postfix_queue_length.sh
     - template: jinja
+    - makedirs: True
     - user: root
     - group: root
     - mode: 550

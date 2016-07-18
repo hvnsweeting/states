@@ -1,0 +1,14 @@
+{#- Usage of this is governed by a license that can be found in doc/license.rst -#}
+# {{ salt['pillar.get']('message_do_not_modify') }}
+
+postfix_stats_procs:
+  description: Postfix Stats Process
+  command: "/usr/lib/nagios/plugins/check_procs -a '/usr/local/diamond/bin/python /usr/local/diamond/bin/postfix_stats.py -d' -u root -c 1:1"
+
+postfix_stats_port:
+  description: Postfix Stats port
+  command: "/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 7777"
+  timeout: 15
+  dependencies:
+    - postfix_stats_procs
+

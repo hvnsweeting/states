@@ -44,7 +44,7 @@ nrpe_check_procs:
   first_notification_delay: 10
   notification_options: c,u,r
 
-{# As check_procs ``-s`` option does not support exactly process state
+{#- As check_procs ``-s`` option does not support exactly process state
     matching, this check will use state ``Ss`` which also matches ``S``.#}
 nrpe_procs:
   description: NRPE Daemon Processes
