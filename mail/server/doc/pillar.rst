@@ -26,7 +26,7 @@ Example::
 
   mail:
     check_mail_stack:
-      smtp_wait: 10
+      smtp_wait: 25
 
 .. _pillar-mail-check_mail_stack:
 
@@ -85,4 +85,4 @@ mail:check_mail_stack:smtp_wait
 Time (in seconds) to wait after send an email. As the mail processing may take
 time to scan and transport the email.
 
-Default: ``10`` seconds.
+Default: ``25`` seconds.
