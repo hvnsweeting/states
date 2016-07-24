@@ -13,6 +13,7 @@ __maintainer__ = 'Viet Hung Nguyen'
 __email__ = 'hvn@robotinfra.com'
 
 import logging
+import requests
 
 import nagiosplugin
 
@@ -111,6 +112,8 @@ def check_saltcloud_images(config):
 
 
 if __name__ == '__main__':
+    # disable urllib3 warnings
+    requests.packages.urllib3.disable_warnings()
     nrpe.check(check_saltcloud_images, {
         'cloud_config_file': '/etc/salt/cloud',
         'wanted_slugs': ('ubuntu-14-04-x64', 'ubuntu-12-04-x64')
