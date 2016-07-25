@@ -23,6 +23,14 @@ salt_api_procs
 
 .. include:: /nginx/doc/monitor.inc
 
+.. _monitor-salt_api_port:
+
+salt_api_port
+~~~~~~~~~~~~~
+
+Check if the port `glossary-TCP` ``8000`` which
+:doc:`/salt/api/doc/index` runs on is open.
+
 Optional
 --------
 

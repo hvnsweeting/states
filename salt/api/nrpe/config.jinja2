@@ -6,6 +6,13 @@ salt_api_procs:
   description: Salt API Daemon
   command: '/usr/lib/nagios/plugins/check_procs -c 1:1 -C python -a salt-api -u root -c 1:10'
 
+salt_api_port:
+  description: Salt API Port
+  command: "/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 8000"
+  timeout: 15
+  dependencies:
+    - salt_api_procs
+
 {%- set expected = 'HTTP/1.1 200 OK' %}
 {%- from 'nginx/nrpe/instance.jinja2' import nginx_instance with context -%}
 {{ nginx_instance('salt.api', pillar_prefix='salt_api', https_result=expected, http_result=expected, deployment='salt_api', extra_dependencies=('salt_api_procs',)) }}

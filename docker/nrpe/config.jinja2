@@ -4,3 +4,11 @@
 docker_procs:
   description: Docker Daemon
   command: '/usr/lib/nagios/plugins/check_procs -C docker -u root -w 1:1'
+
+{#- Docker runs on port 4243 as default #}
+docker_port:
+  description: Docker Port
+  command: "/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 4243"
+  timeout: 15
+  dependencies:
+    - docker_procs
