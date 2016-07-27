@@ -32,6 +32,8 @@ influxdb:
       - pkg: influxdb
   service:
     - running
+    - require:
+      - file: /var/run/influxdb
     - watch:
       - pkg: influxdb
       - file: influxdb
@@ -49,7 +51,8 @@ influxdb:
     - require:
       - pkg: influxdb
 
-/var/lib/influxdb:
+{%- for dir in ('lib', 'run') %}
+/var/{{ dir }}/influxdb:
   file:
     - directory
     - user: influxdb
@@ -57,6 +60,7 @@ influxdb:
     - mod: 755
     - require:
       - pkg: influxdb
+{%- endfor %}
 
 /var/opt/influxdb:
   file:
