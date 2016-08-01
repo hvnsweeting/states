@@ -2,5 +2,5 @@
 {% extends "openvpn/server/baseinit.sls" %}
 
 {%- block openvpn_instance %}
-{{ service_openvpn(instance, service_running=False) }}
+{{ service_openvpn(instance, service_running=True) }}
 {%- endblock openvpn_instance %}
