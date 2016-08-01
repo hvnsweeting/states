@@ -139,7 +139,7 @@ openvpn_{{ instance }}_config:
 
         {%- endif %}
 
-{%- block openvpn_instance %}
+{%- block openvpn_instance scoped %}
 {{ service_openvpn(instance) }}
 {%- endblock openvpn_instance %}
 
