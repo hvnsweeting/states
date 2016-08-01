@@ -31,14 +31,6 @@ openvpn-{{ instance }}:
 {{ line|trim|indent(6, indentfirst=True) }}
                 {%- endfor -%}
             {%- endif %}
-  process:
-    - wait
-    - name: '/usr/sbin/openvpn --config /etc/openvpn/{{ instance }}/config'
-    - user: 'nobody'
-    - timeout: 10
-    - require:
-      - pkg: salt_minion_deps
-      - service: openvpn-{{ instance }}
 
 {{ manage_upstart_log('openvpn-' + instance) }}
 
