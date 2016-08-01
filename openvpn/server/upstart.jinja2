@@ -2,14 +2,15 @@
 
 # {{ salt['pillar.get']('message_do_not_modify') }}
 
+{% block start_stop_on %}
 start on (net-device-up
           and local-filesystems
           and runlevel [2345]
           and started rsyslog)
 stop on runlevel [!2345]
+{%- endblock start_stop_on %}
 
 respawn
-respawn limit 6 60
 
 env PIDFILE="/var/run/openvpn/{{ instance }}.pid"
 
@@ -31,5 +32,3 @@ pre-stop script
         echo "Unable to stop openvpn-{{ instance }}"
     fi
 end script
-
-post-stop exec sleep 5
