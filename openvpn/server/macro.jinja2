@@ -1,6 +1,6 @@
 {#- Usage of this is governed by a license that can be found in doc/license.rst -#}
 
-{%- macro service_openvpn(instance) %}
+{%- macro service_openvpn(instance, service_running=True) %}
 {%- from 'upstart/rsyslog.jinja2' import manage_upstart_log with context %}
 openvpn-{{ instance }}:
   file:
@@ -20,11 +20,23 @@ openvpn-{{ instance }}:
       - file: /var/log/openvpn
     - context:
         instance: {{ instance }}
+{%- if service_running %}
   service:
     - running
     - enable: True
     - order: 50
+{%- else %}
+{# we are not managing service state as it is delegated to upstart to do
+the job, managing it here will cause conflict with upstart as it be managed
+by two entities #}
+  service: {# keep same exposed API #}
+    - enabled
+  module:
+    - wait
+    - name: service.restart {# need restart if config changed #}
+{%- endif %}
     - watch:
+      - service: openvpn-{{ instance }}
       - file: openvpn-{{ instance }}
             {%- if caller is defined -%}
                 {%- for line in caller().split("\n") %}

@@ -139,7 +139,9 @@ openvpn_{{ instance }}_config:
 
         {%- endif %}
 
+{%- macro openvpn_instance %}
 {{ service_openvpn(instance) }}
+{%- endmacro openvpn_instance %}
 
 openvpn_{{ instance }}_client:
   file:
