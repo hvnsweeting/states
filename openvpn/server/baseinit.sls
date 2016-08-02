@@ -102,6 +102,10 @@ openvpn_absent_old_{{ instance }}:
     - require:
       - file: {{ config_dir }}
 
+{%- block openvpn_instance scoped %}
+{{ service_openvpn(instance) }}
+{%- endblock openvpn_instance %}
+
 openvpn_{{ instance }}_config:
   file:
     - managed
@@ -138,10 +142,6 @@ openvpn_{{ instance }}_config:
       - service: openvpn-{{ instance }}
 
         {%- endif %}
-
-{%- block openvpn_instance scoped %}
-{{ service_openvpn(instance) }}
-{%- endblock openvpn_instance %}
 
 openvpn_{{ instance }}_client:
   file:
@@ -209,6 +209,8 @@ openvpn_ca_crt_{{ instance }}:
     - require:
       - pkg: salt_minion_deps
       - file: {{ config_dir }}
+    - watch_in:
+      - service: openvpn-{{ instance }}
 
       {%- set ca_key = servers[instance]['ca_key'] | default(None) %}
 openvpn_ca_key_{{ instance }}:
@@ -228,6 +230,8 @@ openvpn_ca_key_{{ instance }}:
       {%- if not ca_crt %}
       - module: openvpn_ca_crt_{{ instance }}
       {%- endif %}
+    - watch_in:
+      - service: openvpn-{{ instance }}
 
 openvpn_create_empty_crl_{{ instance }}:
   module:
@@ -513,22 +517,5 @@ openvpn_absent_old_client_{{ instance }}_{{ client }}:
       - /etc/openvpn/{{ instance }}/clients/{{ client }}.{{ ext }}
             {%- endfor %}
         {%- endfor %}
-
-{%- call service_openvpn(instance) %}
-      - cmd: openvpn_dh
-      - file: openvpn_{{ instance }}_config
-      {%- if ca_crt %}
-      - file: openvpn_ca_crt_{{ instance }}
-      {%- else %}
-      - module: openvpn_ca_crt_{{ instance }}
-      {%- endif %}
-      - file: openvpn_ca_key_{{ instance }}
-      {%- if server_crt %}
-      - file: openvpn_server_crt_{{ instance }}
-      {%- else %}
-      - module: openvpn_server_crt_{{ instance }}
-      {%- endif %}
-      - file: /etc/default/openvpn
-{%- endcall -%}
     {%- endif %}{# tls -#}
 {%- endfor -%}
