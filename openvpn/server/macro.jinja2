@@ -25,19 +25,19 @@ openvpn-{{ instance }}:
     - running
     - enable: True
     - order: 50
+    - watch:
 {%- else %}
 {# we are not managing service state as it is delegated to upstart to do
 the job, managing it here will cause conflict with upstart as it be managed
 by two entities #}
+  service: {# keep same exposed API #}
+    - enabled
   module:
     - wait
     - name: service.restart {# need restart if config changed #}
     - watch:
       - service: openvpn-{{ instance }}
-  service: {# keep same exposed API #}
-    - enabled
 {%- endif %}
-    - watch:
       - file: openvpn-{{ instance }}
       - cmd: openvpn_dh
       - file: /etc/default/openvpn
