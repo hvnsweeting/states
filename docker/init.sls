@@ -8,6 +8,12 @@ include:
   - apt
   - pip
 
+
+docker_prequisites:
+  pkg:
+    - latest
+    - name: linux-image-extra-{{ grains['kernelrelease'] }}
+
 docker:
   pkgrepo:
     - managed
@@ -20,9 +26,8 @@ docker:
       - pkg: apt_sources
   pkg:
     - installed
-    - pkgs:
-      - docker-engine
-      - linux-image-extra-{{ grains['kernelrelease'] }}
+    - sources:
+      - docker-engine: {{ files_archive|replace('https://', 'http://') }}/mirror/docker-engine_1.12.0-0~{{ grains['oscodename'] }}_amd64.deb
     - require:
       - cmd: apt_sources
       - pkgrepo: docker
