@@ -15,6 +15,7 @@ __email__ = 'hvn@unblockapp.com'
 
 import os
 import logging
+import requests
 
 import pysc
 
@@ -94,4 +95,6 @@ class Rotator(pysc.Application):
 
 
 if __name__ == "__main__":
+    # disable urllib3 warnings
+    requests.packages.urllib3.disable_warnings()
     Rotator().run()
