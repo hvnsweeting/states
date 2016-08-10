@@ -259,9 +259,11 @@ extend:
         - service: gitlab-sidekiq
   nsca_passive:
     service:
+      - order: first
       - require_in: {{ local.requisites|yaml }}
   nagios-nrpe-server:
     service:
+      - order: first
       - require_in: {{ local.requisites|yaml }}
   diamond:
     service:

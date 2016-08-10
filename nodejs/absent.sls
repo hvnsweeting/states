@@ -4,5 +4,10 @@ nodejs:
   pkg:
     - purged
   file:
-    - name: /etc/apt/sources.list.d/nodejs.list
     - absent
+    - names:
+      - /etc/apt/sources.list.d/nodejs.list
+      - /usr/share/man/man1/js.1.gz
+      - /etc/alternatives/js
+      - /etc/alternatives/js.1.gz
+      - /usr/bin/js
