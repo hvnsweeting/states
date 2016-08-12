@@ -1,0 +1,142 @@
+{#- Usage of this is governed by a license that can be found in doc/license.rst -#}
+# {{ salt['pillar.get']('message_do_not_modify') }}
+
+app_mode = production
+instance_name = ${HOSTNAME}
+
+[paths]
+data = /var/lib/grafana
+logs = /var/log/grafana
+plugins = /var/lib/grafana/plugins
+
+[server]
+protocol = http
+http_addr = 127.0.0.1
+http_port = 3000
+
+domain = {{ salt['pillar.get']('grafana:hostnames')[0] }}
+enforce_domain = false {# let NGINX handle it #}
+
+root_url = %(protocol)s://%(domain)s:%(http_port)s/
+
+router_logging = true
+
+static_root_path = public
+enable_gzip = false {# let NGINX handle it #}
+
+[database]
+type = postgres
+host = 127.0.0.1:5432
+name = grafana
+user = grafana
+password = {{ salt['password.pillar']('grafana:db:password') }}
+
+[session]
+# Either "memory", "file", "redis", "mysql", "postgres", default is "file"
+;provider = file
+
+# Provider config options
+# memory: not have any config yet
+# file: session dir path, is relative to grafana data_path
+# redis: config like redis server e.g. `addr=127.0.0.1:6379,pool_size=100,db=grafana`
+# mysql: go-sql-driver/mysql dsn config string, e.g. `user:password@tcp(127.0.0.1:3306)/database_name`
+# postgres: user=a password=b host=localhost port=5432 dbname=c sslmode=disable
+;provider_config = sessions
+
+cookie_name = grafana_sess
+# If you use session in https only, default is false
+;cookie_secure = false
+session_life_time = 86400
+
+[analytics]
+reporting_enabled = false
+
+check_for_updates = true
+
+[security]
+admin_user = admin
+admin_password = {{ salt['password.pillar']('grafana:admin_password', 20) }}
+secret_key = {{ salt['password.generate']('grafana_secret_key', 20) }}
+
+login_remember_days = 7
+cookie_username = grafana_user
+cookie_remember_name = grafana_remember
+
+disable_gravatar = true
+
+# data source proxy whitelist (ip_or_domain:port separated by spaces)
+;data_source_proxy_whitelist =
+
+[snapshots]
+external_enabled = false
+
+[users]
+allow_sign_up = false
+allow_org_create = true
+auto_assign_org = true
+auto_assign_org_role = Viewer
+default_theme = light
+
+[auth.anonymous]
+enabled = false
+
+[auth.github]
+enabled = false
+
+[auth.google]
+enabled = false
+
+[auth.proxy]
+;enabled = false
+;header_name = X-WEBAUTH-USER
+;header_property = username
+;auto_sign_up = true
+
+[auth.basic]
+enabled = true
+
+[auth.ldap]
+enabled = false
+
+[smtp]
+enabled = false
+;host = localhost:25
+;user =
+;password =
+;cert_file =
+;key_file =
+;skip_verify = false
+;from_address = admin@grafana.localhost
+
+[emails]
+welcome_email_on_sign_up = false
+
+[log]
+mode = syslog
+level = "warn"
+
+[log.syslog]
+level = "info"
+format = text
+facility = daemon
+tag = grafana
+
+[event_publisher]
+enabled = false
+
+[dashboards.json]
+enabled = false
+
+[metrics]
+enabled           = true
+interval_seconds  = 10
+
+{%- set graphite_address = salt['pillar.get']('graphite_address', False) %}
+{%- if graphite_address %}
+[metrics.graphite]
+address = {{ graphite_address }}:2003
+prefix = %(instance_name)s.grafana.
+{%- endif %}
+
+[grafana_net]
+url = https://grafana.net

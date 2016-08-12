@@ -1,0 +1,31 @@
+{#- Usage of this is governed by a license that can be found in doc/license.rst -#}
+
+{%- set timeout = 45 -%}
+{%- from 'nginx/nrpe/instance.jinja2' import nginx_instance with context -%}
+{%- from 'postgresql/server/nrpe/instance.jinja2' import postgresql_instance with context -%}
+
+# {{ salt['pillar.get']('message_do_not_modify') }}
+
+{{ nginx_instance('grafana',
+                  http_result='HTTP/1.1 302 Found',
+                  https_result='HTTP/1.1 302 Found',
+                  extra_dependencies=('grafana_http',)) }}
+{{ postgresql_instance('grafana', 'grafana', salt['password.pillar']('grafana:db:password', 10)) }}
+
+grafana_procs:
+  description: grafana Process
+  command: "/usr/lib/nagios/plugins/check_procs -c 1:1 -u grafana -C grafana-server"
+
+grafana_port:
+  description: grafana Port
+  command: /usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 3000 -t {{ timeout }}
+  timeout: {{ timeout }}
+  dependencies:
+    - grafana_procs
+
+grafana_http:
+  description: grafana HTTP
+  command: /usr/lib/nagios/plugins/check_http -I 127.0.0.1 -p 3000 -u '/' -e 'HTTP/1.0 302 Found' -t {{ timeout }}
+  timeout: {{ timeout }}
+  dependencies:
+    - grafana_port
