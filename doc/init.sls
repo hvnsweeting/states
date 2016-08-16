@@ -20,6 +20,7 @@ And run::
   doc/build.py /var/cache/salt/minion/doc/output
 -#}
 include:
+  - python.dev {# installing reportlab requires GCC #}
   - git
   - locale
   - pip
@@ -35,6 +36,7 @@ doc_root:
     - watch:
       - file: doc_root
       - pkg: git
+      - pkg: python-dev
     - reload_modules: True
   file:
     - managed
