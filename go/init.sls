@@ -8,18 +8,18 @@ include:
   - local
 
 {%- set files_archive = salt['pillar.get']('files_archive', False) %}
-{%- set version = '1.6.2' %}
+{%- set version = '1.7' %}
 
 go:
   archive:
     - extracted
     - name: /usr/local
 {%- if files_archive %}
-    - source: {{ files_archive|replace('https://', 'http://') }}/mirror/go/{{ version }}/go{{ version }}.{{ grains['kernel'] | lower }}-{{ grains['osarch'] }}.tar.gz
+    - source: {{ files_archive|replace('https://', 'http://') }}/mirror/go{{ version }}.{{ grains['kernel'] | lower }}-{{ grains['osarch'] }}.tar.gz
 {%- else %}
     - source: https://storage.googleapis.com/golang/go{{ version }}.{{ grains['kernel'] | lower }}-{{ grains['osarch'] }}.tar.gz
 {%- endif %}
-    - source_hash: sha256=e40c36ae71756198478624ed1bb4ce17597b3c19d243f3f0899bb5740d56212a
+    - source_hash: sha256=702ad90f705365227e902b42d91dd1a40e48ca7f67a2f4b2fd052aaa4295cd95
     - source_hash_update: true
     - tar_options: z
     - if_missing: /usr/local/go
