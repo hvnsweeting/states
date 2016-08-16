@@ -4,7 +4,7 @@ include:
 
 {%- set files_archive = salt['pillar.get']('files_archive', False) %}
 {%- set graphite_address = salt['pillar.get']('graphite_address', False) %}
-{%- set version = "0.9.1" %}
+{%- set version = "1.0.0-beta3" %}
 {%- set mirror = files_archive|replace('file://', '')|replace('https://', 'http://') ~ "/mirror"
   if files_archive else "http://influxdb.s3.amazonaws.com"
 %}
@@ -20,7 +20,7 @@ influxdb:
       - cmd: apt_sources
   file:
     - managed
-    - name: /etc/opt/influxdb/influxdb.conf
+    - name: /etc/influxdb/influxdb.conf
     - template: jinja
     - source: salt://influxdb/config.jinja2
     - user: root
@@ -43,13 +43,6 @@ influxdb:
     - port: 8086
     - require:
       - service: influxdb
-
-/etc/influxdb:
-  file:
-    - symlink
-    - target: /etc/opt/influxdb
-    - require:
-      - pkg: influxdb
 
 {%- for dir in ('lib', 'run') %}
 /var/{{ dir }}/influxdb:
@@ -106,9 +99,9 @@ influxdb_admin:
 {%- if admin %}
     - run
     - name: |
-        /opt/influxdb/influx -execute "CREATE USER {{ admin["user"] }} WITH PASSWORD '{{ admin["password"] }}' WITH ALL PRIVILEGES"
+        /usr/bin/influx -execute "CREATE USER {{ admin["user"] }} WITH PASSWORD '{{ admin["password"] }}' WITH ALL PRIVILEGES"
     - onlyif: |
-        /opt/influxdb/influx -execute 'SHOW USERS' {# can query without authentication #}
+        /usr/bin/influx -execute 'SHOW USERS' {# can query without authentication #}
 {%- else %}
     - wait
     - name: echo 'influxdb authentication is disable'
@@ -121,13 +114,13 @@ influxdb_database_{{ db }}:
   cmd:
     - run
     - name: >
-        /opt/influxdb/influx -execute "CREATE DATABASE {{ db }}"
+        /usr/bin/influx -execute "CREATE DATABASE {{ db }}"
   {%- if admin %}
         -username '{{ admin["user"] }}'
         -password '{{ admin["password"] }}'
   {%- endif %}
     - unless: >
-        /opt/influxdb/influx -execute "SHOW DATABASES"
+        /usr/bin/influx -execute "SHOW DATABASES"
   {%- if admin %}
         -username '{{ admin["user"] }}'
         -password '{{ admin["password"] }}'

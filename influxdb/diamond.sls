@@ -11,4 +11,4 @@ influxdb_diamond_resources:
     - text:
       - |
         [[influxdb]]
-        cmdline = ^/opt/influxdb/influxd
+        cmdline = ^/usr/bin/influxd
