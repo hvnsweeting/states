@@ -3,7 +3,7 @@
 
 influxdb_procs:
   description: InfluxDB processes
-  command: /usr/lib/nagios/plugins/check_procs -c 1:1 -u influxdb -a '/opt/influxdb/influxd -pidfile /var/run/influxdb/influxd.pid -config /etc/opt/influxdb/influxdb.conf'
+  command: /usr/lib/nagios/plugins/check_procs -c 1:1 -u influxdb -a '/usr/bin/influxd -pidfile /var/run/influxdb/influxd.pid -config /etc/influxdb/influxdb.conf'
 
 influxdb_admin_port:
   description: InfluxDB admin TCP port
