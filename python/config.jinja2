@@ -30,7 +30,7 @@ logging:
   handlers:
     {%- block logging_handlers %}
     syslog:
-      level: {% if salt['pillar.get']('debug', False) %}DEBUG{% else %}{{ log_level|default("INFO") }}{% endif %}
+      level: {% if salt['pillar.get']('debug', False) %}DEBUG{% else %}{{ log_level|default("WARNING") }}{% endif %}
       class: logging.handlers.SysLogHandler
       address: /dev/log
       facility: daemon
