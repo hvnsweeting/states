@@ -109,6 +109,17 @@ diamond:
     - watch:
       - module: diamond
 
+/usr/local/diamond/share/diamond/user_scripts:
+  file:
+    - directory
+    - user: root
+    - group: root
+    - mode: 750
+    - require:
+      - module: diamond
+    - require_in:
+      - service: diamond
+
 {{ manage_upstart_log('diamond') }}
 
 /etc/diamond/collectors/ProcessResourcesCollector.conf:

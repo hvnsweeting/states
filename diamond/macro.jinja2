@@ -67,7 +67,7 @@ set zmempct=False to fail the test if that happens.
     - group: root
     - mode: 550
     - require:
-      - module: diamond
+      - file: /usr/local/diamond/share/diamond/user_scripts
       - file: diamond.conf
   {%- if salt['pillar.get']('fail2ban:banaction', 'hostsdeny').startswith('iptables') %}
       - pkg: iptables
