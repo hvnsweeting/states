@@ -1,46 +1,51 @@
 {#- Usage of this is governed by a license that can be found in doc/license.rst #}
 # {{ salt['pillar.get']('message_do_not_modify') }}
 
+{%- set timeout = 15 %}
+
 influxdb_procs:
   description: InfluxDB processes
   command: /usr/lib/nagios/plugins/check_procs -c 1:1 -u influxdb -C influxd
+  timeout: {{ timeout }}
 
 influxdb_admin_port:
   description: InfluxDB admin TCP port
   command: /usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 8083
+  timeout: {{ timeout }}
+  dependencies:
+    - influxdb_procs
 
 influxdb_admin_port_ipv6:
   description: InfluxDB admin TCP port IPv6
   command: /usr/lib/nagios/plugins/check_tcp -H ::1 -p 8083
-
-influxdb_admin_http:
-  description: InfluxDB admin TCP port
-  command: /usr/lib/nagios/plugins/check_http -H 127.0.0.1 -p 8083
-
-influxdb_admin_http_ipv6:
-  description: InfluxDB admin TCP port IPv6
-  command: /usr/lib/nagios/plugins/check_http -H ::1 -p 8083
+  timeout: {{ timeout }}
+  dependencies:
+    - influxdb_procs
 
 influxdb_data_port:
   description: InfluxDB data TCP port
   command: /usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 8086
+  timeout: {{ timeout }}
+  dependencies:
+    - influxdb_procs
 
 influxdb_data_port_ipv6:
   description: InfluxDB data TCP port IPv6
   command: /usr/lib/nagios/plugins/check_tcp -H ::1 -p 8086
-
-influxdb_data_http:
-  description: InfluxDB data TCP port
-  command: /usr/lib/nagios/plugins/check_http -H 127.0.0.1 -p 8086 -e '404 Not Found'
-
-influxdb_data_http_ipv6:
-  description: InfluxDB data TCP port IPv6
-  command: /usr/lib/nagios/plugins/check_http -H ::1 -p 8086 -e '404 Not Found'
+  timeout: {{ timeout }}
+  dependencies:
+    - influxdb_procs
 
 influxdb_meta_port:
   description: InfluxDB meta TCP port
   command: /usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 8088
+  timeout: {{ timeout }}
+  dependencies:
+    - influxdb_procs
 
 influxdb_meta_port_ipv6:
   description: InfluxDB meta TCP port IPv6
   command: /usr/lib/nagios/plugins/check_tcp -H ::1 -p 8088
+  timeout: {{ timeout }}
+  dependencies:
+    - influxdb_procs
