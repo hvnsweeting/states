@@ -44,6 +44,15 @@ influxdb:
     - require:
       - service: influxdb
 
+{%- if salt['pkg.version']('influxdb') != version) %}
+influxdb_old_version:
+  pkg:
+    - removed
+    - name: influxdb
+    - require_in:
+      - pkg: influxdb
+{%- endif %}
+
 /etc/influxdb:
   file:
     - symlink
