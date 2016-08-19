@@ -44,7 +44,7 @@ influxdb:
     - require:
       - service: influxdb
 
-{%- if salt['pkg.version']('influxdb') != version) %}
+{%- if salt['pkg.version']('influxdb') != version %}
 influxdb_old_version:
   pkg:
     - removed
