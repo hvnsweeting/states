@@ -29,7 +29,7 @@ influxdb:
     - context:
         auth_enabled: "{{ "true" if admin else "false" }}"
     - require:
-      - file: /etc/influxdb
+      - pkg: influxdb
   service:
     - running
     - require:
@@ -43,22 +43,6 @@ influxdb:
     - port: 8086
     - require:
       - service: influxdb
-
-{%- if salt['pkg.version']('influxdb') not in ('', version) %}
-influxdb_old_version:
-  pkg:
-    - removed
-    - name: influxdb
-    - require_in:
-      - pkg: influxdb
-{%- endif %}
-
-/etc/influxdb:
-  file:
-    - symlink
-    - target: /etc/opt/influxdb
-    - require:
-      - pkg: influxdb
 
 {%- for dir in ('lib', 'run') %}
 /var/{{ dir }}/influxdb:
