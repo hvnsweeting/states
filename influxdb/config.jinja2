@@ -14,13 +14,15 @@ reporting-disabled = true
   commit-timeout = "50ms"
 
 [data]
+  enabled = true
   dir = "/var/lib/influxdb/data"
+  wal-dir = "/var/lib/influxdb/wal"
   MaxWALSize = 104857600
   WALFlushInterval = "10m"
   WALPartitionFlushDelay = "2s"
 
-[cluster]
-  shard-writer-timeout = "5s"
+[coordinator]
+  write-timeout = "5s"
 
 [retention]
   enabled = true
@@ -41,13 +43,13 @@ reporting-disabled = true
 [[graphite]]
   enabled = false
 
-[collectd]
+[[collectd]]
   enabled = false
 
-[opentsdb]
+[[opentsdb]]
   enabled = false
 
-[udp]
+[[udp]]
   enabled = false
 
 [monitoring]
