@@ -1,5 +1,6 @@
 include:
   - apt
+  - logrotate
   - pip
 
 {%- set files_archive = salt['pillar.get']('files_archive', False) %}
@@ -130,3 +131,14 @@ influxdb_database_{{ db }}:
       - cmd: influxdb_admin
       - module: python-influxdb
 {%- endfor %}
+
+/etc/logrotate.d/influxdb:
+  file:
+    - managed
+    - source: salt://influxdb/logrotate.jinja2
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: 440
+    - require:
+      - pkg: logrotate
