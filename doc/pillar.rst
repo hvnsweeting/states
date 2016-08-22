@@ -174,6 +174,15 @@ in roles.
 
 Default: do not send metric to :doc:`/carbon/doc/index` server (``False``).
 
+.. _pillar-metric_server:
+
+metric_server
+~~~~~~~~~~~~~
+
+IP/Hostname of :doc:`/influxdb/doc/index` server.
+
+Default: do not send metric to :doc:`/influxdb/doc/index` server (``False``).
+
 .. _pillar-shinken_pollers:
 
 shinken_pollers
