@@ -33,21 +33,6 @@ influxdb_admin_port_ipv6
 
 Same as :ref:`monitor-influxdb_admin_port` but for :ref:`glossary-IPv6`.
 
-.. _monitor-influxdb_admin_http:
-
-influxdb_admin_http
-~~~~~~~~~~~~~~~~~~~
-
-Monitor :doc:`index` admin interface HTTP connection port :ref:`glossary-TCP`
-``8083``.
-
-.. _monitor-influxdb_admin_http_ipv6:
-
-influxdb_admin_http_ipv6
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-Same as :ref:`monitor-influxdb_admin_http` but for :ref:`glossary-IPv6`.
-
 .. _monitor-influxdb_data_port:
 
 influxdb_data_port
@@ -62,20 +47,6 @@ influxdb_data_port_ipv6
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Same as :ref:`monitor-influxdb_data_port` but for :ref:`glossary-IPv6`.
-
-.. _monitor-influxdb_data_http:
-
-influxdb_data_http
-~~~~~~~~~~~~~~~~~~
-
-Monitor :doc:`index` data HTTP connection port :ref:`glossary-TCP` ``8086``.
-
-.. _monitor-influxdb_data_http_ipv6:
-
-influxdb_data_http_ipv6
-~~~~~~~~~~~~~~~~~~~~~~~
-
-Same as :ref:`monitor-influxdb_data_http` but for :ref:`glossary-IPv6`.
 
 .. _monitor-influxdb_meta_port:
 
