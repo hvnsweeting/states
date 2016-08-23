@@ -1,7 +1,5 @@
 {#- Usage of this is governed by a license that can be found in doc/license.rst -#}
 
-# {{ salt['pillar.get']('message_do_not_modify') }}
-
 {% extends "nginx/template.jinja2" %}
 {%- block upstream %}
 upstream apt_cache {

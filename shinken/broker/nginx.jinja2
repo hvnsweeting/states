@@ -1,7 +1,5 @@
 {#- Usage of this is governed by a license that can be found in doc/license.rst -#}
 
-# {{ salt['pillar.get']('message_do_not_modify') }}
-
 {%- set mine = salt['mine.get']('*', 'monitoring.data') -%}
 
 {% extends "nginx/template.jinja2" %}

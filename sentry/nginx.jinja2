@@ -1,6 +1,5 @@
 {#- Usage of this is governed by a license that can be found in doc/license.rst -#}
 
-# {{ salt['pillar.get']('message_do_not_modify') }}
 {%- set python_version = '%d.%d' % (grains['pythonversion'][0], grains['pythonversion'][1]) %}
 
 {% extends "nginx/template.jinja2" %}
