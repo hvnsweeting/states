@@ -3,6 +3,7 @@
 {%- from 'nrpe/passive.jinja2' import passive_check with context %}
 include:
   - apt.nrpe
+  - logrotate.nrpe
   - pip.nrpe
 
 {{ passive_check('influxdb') }}
