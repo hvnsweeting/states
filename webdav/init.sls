@@ -109,70 +109,13 @@ webdav_version_manage:
 
 webdav_config:
   file:
-    - serialize
-    - mode: 440
-    - formatter: JSON
-    - dataset:
-        metrics:
-          disable: false
-          carbon:
-          {%- set graphite_address = salt['pillar.get']('graphite_address', False) %}
-          {%- if graphite_address %}
-            address: {{ salt['dig.A'](graphite_address) }}
-            port: "2003"
-            interval: 60000000000
-            hostname: {{ grains['id'] }}
-          {%- endif %}
-          go: true
-          go_interval: 60000000000
-          hostname: {{ grains['id'] }}
-        logging:
-         {%- set sentry_dsn = salt['pillar.get']('sentry_dsn', False) %}
-         {%- if sentry_dsn %}
-          sentry:
-            dsn: "{{ sentry_dsn }}"
-            tags:
-              application: webdav
-            level: {{ salt['pillar.get']('webdav:logging_level', 'warning') }}
-         {%- endif %}
-          syslog:
-            tag: webdav
-          tags:
-            application: webdav
-          level: {{ salt['pillar.get']('webdav:logging_level', 'warning') }}
-       {%- set graylog2_address = salt['pillar.get']('graylog2_address', False) %}
-       {%- if graylog2_address %}
-          graylog:
-            address: {{ graylog2_address }}
-            port: "12201"
-            facility: webdav
-       {%- endif %}
-          runmode: prod
-        daemon:
-          root: /var/lib/webdav
-          realm: devcats
-          server:
-            https:
-              address: 0.0.0.0
-              port: "443"
-              certificate: |-
-                {{ salt['pillar.get']('ssl:certs:' + ssl + ':server_crt')|indent(16, indentfirst=False) }}
-                {{ salt['pillar.get']('ssl:certs:' + ssl + ':ca_crt')|indent(16, indentfirst=False) }}
-              key: |-
-                {{ salt['pillar.get']('ssl:certs:' + ssl + ':server_key')|indent(16, indentfirst=False) }}
-              server_name: {{ salt["pillar.get"]("webdav:server_name") }}
-              timeout: 0
-          {%- for username, hash in salt['pillar.get']('webdav:users', {}).iteritems() %}
-            {%- if loop.index0 == 0 %}
-          users:
-            {%- endif %}
-            - username: {{ username }}
-              hash: {{ hash }}
-          {%- endfor %}
-
+    - managed
     - name: /etc/webdav/config.json
+    - source: salt://webdav/config.jinja2
+    - template: jinja
     - user: root
     - group: webdav
+    - mode: 440
     - require:
       - user: webdav
       - file: /etc/webdav
