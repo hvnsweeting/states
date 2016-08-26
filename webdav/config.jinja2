@@ -1,12 +1,17 @@
 {%- set ssl = salt["pillar.get"]("webdav:ssl", False) %}
+{%- set sentry = salt["pillar.get"]("sentry_dsn", False) %}
 {
     {% block logging %}
     "logging": {
+        {%- if sentry %}
         "sentry": {
-            "dsn": "{{ salt["pillar.get"]("sentry_dsn") }}",
+            "dsn": "{{ sentry }}",
             "tags": {"application": "webdav"},
             "level": "warning"
         },
+        {% else %}
+        "sentry": null,
+        {%- endif %}
         "syslog": {"tag": "webdav"},
         {%- set graylog2_address = salt['pillar.get']('graylog2_address', False) %}
         {%- if graylog2_address %}
@@ -46,7 +51,7 @@
                 "address": "{{ metric_server }}",
                 "port": "8086",
                 "protocol": {
-                    "database": "{{ salt['pillar.get']('metric_database', False) }}",
+                    "database": "{{ salt['pillar.get']('metric_database') }}",
                     "interval": 60000000000,
                     "precision": "s",
                     "hostname": "{{ grains['id'] }}"
