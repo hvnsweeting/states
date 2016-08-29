@@ -40,7 +40,7 @@ go_errcheck:
 go2xunit:
   cmd:
     - run
-    - name: go get -u bitbucket.org/tebeka/go2xunit
+    - name: go get -u github.com/tebeka/go2xunit
     - env:
         GOPATH: "/var/lib/go"
     - require:
