@@ -8,7 +8,6 @@ include:
   - nrpe
   - python.dev.nrpe
   - rsyslog.nrpe
-  - ruby.nrpe
   - sudo
   - sudo.nrpe
   - web
