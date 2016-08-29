@@ -262,3 +262,15 @@ When all its parents are down or unreachable, the host will be unreachable
 instead of down.
 
 Default: no parent hosts (``[]``).
+
+Conditional
+-----------
+
+.. _pillar-metric_database:
+
+metric_database
+~~~~~~~~~~~~~~~
+
+:doc:`/influxdb/doc/index` database name to send metric to.
+
+Must set if :ref:`pillar-metric_server` set.

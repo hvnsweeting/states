@@ -12,6 +12,8 @@ Mandatory
    In this document, when refer to a pillar key ``pillar_prefix``
    means ``webdav``.
 
+.. include:: /backup/doc/monitor.inc
+
 .. _monitor-webdav_procs:
 
 webdav_procs

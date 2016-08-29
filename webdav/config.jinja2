@@ -1,23 +1,102 @@
 {%- set ssl = salt["pillar.get"]("webdav:ssl", False) %}
+{%- set sentry = salt["pillar.get"]("sentry_dsn", False) %}
+{
+    {% block logging %}
+    "logging": {
+        {%- if sentry %}
+        "sentry": {
+            "dsn": "{{ sentry }}",
+            "tags": {"application": "webdav"},
+            "level": "warning"
+        },
+        {% else %}
+        "sentry": null,
+        {%- endif %}
+        "syslog": {"tag": "webdav"},
+        {%- set graylog2_address = salt['pillar.get']('graylog2_address', False) %}
+        {%- if graylog2_address %}
+        "graylog": {
+            "address" : "{{ graylog2_address }}",
+            "port": "12201",
+            "facility": "webdav"
+        },
+        {%- endif %}
+        "console": {
+            "disable": true
+        },
+        {%- block log_level %}
+        "level": "{{ salt['pillar.get']('webdav:logging_level', 'warning') }}"
+        {%- endblock log_level %}
+    },
+    {%- endblock %}
 
-daemon:
-  root: /var/lib/webdav
-  realm: devcats
-  server:
-    https:
-      address: 0.0.0.0
-      port: "1443"
-      certificate: |-
-        {{ salt['pillar.get']('ssl:certs:' + ssl + ':server_crt')|indent(8, indentfirst=False) }}
-        {{ salt['pillar.get']('ssl:certs:' + ssl + ':ca_crt')|indent(8, indentfirst=False) }}
-      key: |-
-        {{ salt['pillar.get']('ssl:certs:' + ssl + ':server_key')|indent(8, indentfirst=False) }}
-      server_name: {{ salt["pillar.get"]("webdav:server_name") }}
-      timeout: 0
-  {%- for username, hash in salt['pillar.get']('webdav:users', {}).iteritems() %}
-    {%- if loop.index0 == 0 %}
-  users:
-    {%- endif %}
-    - username: {{ username }}
-      hash: {{ hash }}
-  {%- endfor %}
+    {%- block metric %}
+    "metric": {
+        "go_internal": null,
+        "log": null,
+        {%- set graphite_address = salt['pillar.get']('graphite_address', False) %}
+        {%- if graphite_address %}
+        "carbon": [{
+            "address": "{{ salt['dig.A'](graphite_address)[0] }}",
+            "port": "2003",
+            "interval": 60000000000,
+            "hostname": "{{ grains['id'] }}"
+        }],
+        {%- endif %}
+
+        {%- set metric_server = salt['pillar.get']('metric_server', False) %}
+        {%- if metric_server %}
+        "influx": {
+            "http": [{
+                "address": "{{ metric_server }}",
+                "port": "8086",
+                "protocol": {
+                    "database": "{{ salt['pillar.get']('metric_database') }}",
+                    "interval": 60000000000,
+                    "precision": "s",
+                    "hostname": "{{ grains['id'] }}"
+                },
+                "https": false
+            }]
+        },
+        {% endif %}
+        "disable": false
+    },
+    {%- endblock %}
+
+    "delay_client": {
+        "timeout": 5000000000,
+        "wait_step": 500000000
+    },
+
+    "daemon": {
+        "root": "/var/lib/webdav",
+        "realm": "{{ salt['pillar.get']('webdav:server_name') }}",
+        "server": {
+            "https": {
+                "address": "0.0.0.0",
+                "port": "443",
+                "timeout": 0,
+                "certificate": {{ (salt['pillar.get']('ssl:certs:' ~ ssl ~ ':server_crt') ~ '\n' ~ salt['pillar.get']('ssl:certs:' ~ ssl ~ ':ca_crt'))|json }},
+                "key": {{ salt['pillar.get']('ssl:certs:' + ssl + ':server_key')|json }},
+                "server_name": "{{ salt["pillar.get"]("webdav:server_name") }}"
+            },
+            "http": null,
+            "disable_recover": false
+        },
+        {%- for username, hash in salt['pillar.get']('webdav:users', {}).iteritems() %}
+        {%- if loop.index0 == 0 %}
+        "users": [
+            {%- endif %}
+            {
+                "username": "{{ username }}",
+                    "hash": "{{ hash }}"
+            }
+            {%- if not loop.last -%}
+            ,
+                {%- else %}
+        ]
+        {%- endif %}
+        {%- endfor %}
+    }
+}
