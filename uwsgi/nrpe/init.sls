@@ -6,6 +6,7 @@ include:
   - bash.nrpe
   - git.nrpe
   - nrpe
+  - pip.nrpe
   - python.dev.nrpe
   - rsyslog.nrpe
   - sudo
