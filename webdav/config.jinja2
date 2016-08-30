@@ -39,7 +39,7 @@
         "carbon": [{
             "address": "{{ salt['dig.A'](graphite_address)[0] }}",
             "port": "2003",
-            "interval": 60000000000,
+            "interval": "60s",
             "hostname": "{{ grains['id'] }}"
         }],
         {%- endif %}
@@ -52,7 +52,7 @@
                 "port": "8086",
                 "protocol": {
                     "database": "{{ salt['pillar.get']('metric_database') }}",
-                    "interval": 60000000000,
+                    "interval": "60s",
                     "precision": "s",
                     "hostname": "{{ grains['id'] }}"
                 },
@@ -65,28 +65,29 @@
     {%- endblock %}
 
     "delay_client": {
-        "timeout": 5000000000,
-        "wait_step": 500000000
+        "timeout": "5s",
+        "wait_step": "0.5s"
     },
 
-    "daemon": {
+    "app": {
         "root": "/var/lib/webdav",
-        "realm": "{{ salt['pillar.get']('webdav:server_name') }}",
-        "server": {
-            "https": {
-                "address": "0.0.0.0",
-                "port": "443",
-                "timeout": 0,
-                "certificate": {{ (salt['pillar.get']('ssl:certs:' ~ ssl ~ ':server_crt') ~ '\n' ~ salt['pillar.get']('ssl:certs:' ~ ssl ~ ':ca_crt'))|json }},
-                "key": {{ salt['pillar.get']('ssl:certs:' + ssl + ':server_key')|json }},
-                "server_name": "{{ salt["pillar.get"]("webdav:server_name") }}"
+        "webdav": {
+            "realm": "{{ salt['pillar.get']('webdav:server_name') }}",
+            "server": {
+                "https": {
+                    "address": "0.0.0.0",
+                    "port": "443",
+                    "timeout": "0s",
+                    "certificate": {{ (salt['pillar.get']('ssl:certs:' ~ ssl ~ ':server_crt') ~ '\n' ~ salt['pillar.get']('ssl:certs:' ~ ssl ~ ':ca_crt'))|json }},
+                    "key": {{ salt['pillar.get']('ssl:certs:' + ssl + ':server_key')|json }},
+                    "server_name": "{{ salt["pillar.get"]("webdav:server_name") }}"
+                },
+                "http": null,
+                "disable_recover": false
             },
-            "http": null,
-            "disable_recover": false
-        },
-        {%- for username, hash in salt['pillar.get']('webdav:users', {}).iteritems() %}
-        {%- if loop.index0 == 0 %}
-        "users": [
+            {%- for username, hash in salt['pillar.get']('webdav:users', {}).iteritems() %}
+            {%- if loop.index0 == 0 %}
+            "users": [
             {%- endif %}
             {
                 "username": "{{ username }}",
@@ -95,8 +96,9 @@
             {%- if not loop.last -%}
             ,
                 {%- else %}
-        ]
-        {%- endif %}
-        {%- endfor %}
+            ]
+            {%- endif %}
+            {%- endfor %}
+        }
     }
 }

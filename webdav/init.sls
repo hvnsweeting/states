@@ -9,8 +9,8 @@ include:
 {% endif %}
 
 {%- set files_archive = salt['pillar.get']('files_archive', False) %}
-{%- set version = '1.0.0' %}
-{%- set md5_hash = '2ba01e8776df002138600378e01bd25c' %}
+{%- set version = '1.1.0' %}
+{%- set md5_hash = '1e5ed5dfa7cc088910aac63790beb84c' %}
 
 /usr/local/webdav:
   file:
