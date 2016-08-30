@@ -7,7 +7,7 @@ include:
   - nginx
   - php.dev
   - postgresql.server
-  - uwsgi.php
+  - php_fpm
 {%- if ssl %}
   - ssl
 {%- endif %}
@@ -39,7 +39,7 @@ roundcube:
     - require:
       - user: web
     - require_in:
-      - file: roundcube-uwsgi
+      - service: php-fpm
   archive:
     - extracted
     - name: /usr/local/
@@ -75,8 +75,8 @@ roundcube:
     - directory
     - user: root
     - group: www-data
-    - mode: 550
-    - dir_mode: 550
+    - mode: 555
+    - dir_mode: 555
     - file_mode: 440
     - recurse:
       - mode
@@ -84,6 +84,22 @@ roundcube:
       - group
     - require:
       - archive: roundcube
+      - user: web
+
+{{ roundcubedir }}/SQL:
+  file:
+    - directory
+    - user: root
+    - group: www-data
+    - mode: 555
+    - dir_mode: 555
+    - file_mode: 444
+    - recurse:
+      - mode
+      - user
+      - group
+    - require:
+      - file: {{ roundcubedir }}
       - user: web
 
 {{ roundcubedir }}/installer:
@@ -169,7 +185,7 @@ roundcube_password_plugin_ldap_driver_dependency:
     - require:
       - pkg: nginx
       - user: web
-      - file: roundcube-uwsgi
+      - service: php-fpm
     - context:
         appname: roundcube
         root: {{ roundcubedir }}
@@ -195,30 +211,6 @@ roundcube_initial:
     - runas: postgres
     - watch:
       - cmd: roundcube_initial
-
-roundcube-uwsgi:
-  file:
-    - managed
-    - name: /etc/uwsgi/roundcube.yml
-    - source: salt://uwsgi/template.jinja2
-    - template: jinja
-    - user: root
-    - group: root
-    - mode: 440
-    - context:
-        appname: roundcube
-        chdir: {{ roundcubedir }}
-        uid: roundcube
-    - require:
-      - service: uwsgi
-      - module: roundcube_initial
-  module:
-    - wait
-    - name: file.touch
-    - m_name: /etc/uwsgi/roundcube.yml
-    - require:
-      - file: /etc/uwsgi/roundcube.yml
-    - watch:
       - file: {{ roundcubedir }}/config/config.inc.php
       - file: {{ roundcubedir }}
       - pkg: php5-pgsql
@@ -226,6 +218,10 @@ roundcube-uwsgi:
 
 {%- if ssl %}
 extend:
+  php-fpm:
+    service:
+      - watch:
+        - module: roundcube_initial
   nginx.conf:
     file:
       - context:

@@ -6,7 +6,6 @@ include:
   - uwsgi
   - uwsgi.diamond
   - uwsgi.nrpe
-  - uwsgi.php
   - uwsgi.top
 
 test:
