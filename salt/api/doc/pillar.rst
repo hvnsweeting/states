@@ -19,6 +19,15 @@ salt_api:hostnames
 
 .. include:: /nginx/doc/hostnames.inc
 
+.. _pillar-salt_api-allow_ips:
+
+salt_api:allow_ips
+~~~~~~~~~~~~~~~~~~
+
+List of IPs those are allowed to access :doc:`index`.
+As :doc:`index` is a security sensitive service. It should not expose
+on internet.
+
 Optional
 --------
 

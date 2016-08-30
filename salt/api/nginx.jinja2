@@ -9,6 +9,11 @@
     expires max;
     autoindex off;
 
+    {%- for ip in salt['pillar.get']('salt_api:allow_ips') %}
+    allow {{ ip }};
+    {%- endfor %}
+    deny all;
+
     location / {
         proxy_pass http://127.0.0.1:8000;
         proxy_read_timeout 300s;
