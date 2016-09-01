@@ -32,7 +32,7 @@ fi
 
 apt-get update
 apt-get install -y --no-install-recommends python-software-properties python-pip
-pip install --upgrade pip==6.0.8
+pip install --upgrade pip==8.1.2
 /usr/local/bin/pip install requests==2.4.3 raven==4.1.1
 echo "deb http://archive.robotinfra.com/mirror/salt/2014.7.5+ds-1/ `lsb_release -c -s` main" > /etc/apt/sources.list.d/saltstack-salt-`lsb_release -c -s`.list
 apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0E27C0A6
