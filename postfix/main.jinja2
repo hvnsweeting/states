@@ -2,6 +2,7 @@
 
 # {{ salt['pillar.get']('message_do_not_modify') }}
 inet_protocols = ipv4{% if salt['monitoring.data']()['ip_addrs6']['public'] %}, ipv6{% endif %}
+myhostname = {{ salt['pillar.get']('postfix:myhostname') }}.{{ salt['pillar.get']('mail:mailname') }}
 mydomain = {{ salt['pillar.get']('mail:mailname') }}
 smtpd_banner = $myhostname ESMTP $mail_name
 biff = no

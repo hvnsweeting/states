@@ -25,6 +25,19 @@ Example::
   mail:
     mailname: domain.ltd
 
+.. _pillar-postfix-myhostname:
+
+postfix:myhostname
+~~~~~~~~~~~~~~~~~~
+
+Hostname of this SMTP server, which is used for A record for mail server.
+Appended by a dot ``.`` then :ref:`pillar-mail-mailname`. This often should set
+to "mail".
+Be mandatory pillar here to make sure administrator not making mistake (i.e
+wrongly named host, that makes :doc:`index` auto use default
+WRONG-HOSTNAME.domain.ltd as address for outgoing emails), which can badly lead
+to email will end in spam box.
+
 Optional
 --------
 
