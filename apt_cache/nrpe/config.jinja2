@@ -23,19 +23,5 @@ apt_cache_port_ipv6:
   dependencies:
     - apt_cache_procs
 
-{#-
-curl -I http://localhost:3142
-
-Precise:
-  HTTP/1.1 404 OK
-  Connection: close
-  Content-Type: text/html
-  Content-Length: 4144
-
-Trusty:
-  HTTP/1.1 404 Usage Information
-  Connection: close
-  Content-Type: text/html
-  Content-Length: 4145
-  #}
-{{ nginx_instance('apt_cache', extra_dependencies=('apt_cache_port',), http_result="404", https_result="404") }}
+{#- this does not check against / as it will return 404 (by designed), coz we don't want those messages in log #}
+{{ nginx_instance('apt_cache', http_uri='/style.css', extra_dependencies=('apt_cache_port',), http_result="200 OK", https_result="200 OK") }}
