@@ -12,6 +12,11 @@
     {%- for ip in salt['pillar.get']('salt_api:allow_ips') %}
     allow {{ ip }};
     {%- endfor %}
+    allow 127.0.0.1;
+    allow ::1;
+    {%- for ip in salt['network.ip_addrs']() + salt['network.ip_addrs6']() %}
+    allow {{ ip }};
+    {%- endfor %}
     deny all;
 
     location / {
