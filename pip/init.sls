@@ -67,7 +67,7 @@ python-setuptools:
     - group: root
     - mode: 550
 
-{%- set version='8.1.2' %}
+{%- set version='8.1.1' %}
 
 pip:
   file:
@@ -82,7 +82,7 @@ pip:
 {%- else %}
     - source: https://pypi.python.org/packages/source/p/pip/pip-{{ version }}.tar.gz
 {%- endif %}
-    - source_hash: md5=87083c0b9867963b29f7aba3613e8f4a
+    - source_hash: md5=6b86f11841e89c8241d689956ba99ed7
     - archive_format: tar
     - tar_options: z
     - if_missing: {{ opts['cachedir'] }}/pip/pip-{{ version }}
