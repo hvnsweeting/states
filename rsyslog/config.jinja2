@@ -85,6 +85,8 @@ auth,authpriv.* /var/log/auth.log
 :msg, isequal, " PING" stop
 {#- discard ssh monitoring check msg #}
 :msg, contains, "Did not receive identification string from 127.0.0.1" stop
+{#- discard influxdb monitoring check msg #}
+:msg, contains, "tcp.Mux: cannot read header byte: EOF" stop
 {#- discard graylog2 health check msg #}
 if ($programname == "uwsgi-graylog2" or $programname == "nginx" and $msg contains "GET /health/currentthroughput") then stop
 {# discard nginx response buffer msg #}
@@ -92,6 +94,7 @@ if ($programname == "nginx" and $msg contains "an upstream response is buffered 
 {#- discard notice/info/debug sshd msg #}
 if ($programname == 'sshd' and $syslogseverity > '4') then stop
 {%- endif %}
+
 {#-
 kern.* -/var/log/kern.log
 mail.* -/var/log/mail.log
