@@ -22,6 +22,9 @@ olcAccess: {1}to attrs=userPassword,shadowLastChange by self write by anonymou
 olcAccess: {2}to dn.base="" by * read
 olcAccess: {3}to * by self write by dn="{{ rootdn }}" write
   by * read
+-
+add: olcDbIndex
+olcDbIndex: uid eq
 
 dn: cn=config
 changetype: modify
