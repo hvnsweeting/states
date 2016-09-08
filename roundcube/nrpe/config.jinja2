@@ -7,4 +7,4 @@
 # {{ salt['pillar.get']('message_do_not_modify') }}
 
 {{ postgresql_instance_prefix(deployment) }}
-{{ nginx_instance(deployment, extra_dependencies=('roundcube_postgresql')) }}
+{{ nginx_instance(deployment, extra_dependencies=('roundcube_postgresql',)) }}

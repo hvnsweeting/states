@@ -11,8 +11,6 @@ Mandatory
    In this document, when refer to a pillar key ``pillar_prefix``
    means ``roundcube``.
 
-.. include:: /uwsgi/doc/monitor.inc
-
 .. include:: /postgresql/doc/monitor.inc
 
 .. include:: /nginx/doc/monitor.inc

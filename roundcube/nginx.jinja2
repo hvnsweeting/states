@@ -8,7 +8,6 @@ upstream php {
 {%- endblock %}
 
 {%- block root_location %}
-{%- set timeout = salt['pillar.get']('roundcube:timeout', 60) %}
 {%- for dir in ('skins',) %}
     location /{{ dir }}/ {
         expires max;

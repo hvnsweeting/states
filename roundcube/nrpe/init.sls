@@ -8,8 +8,8 @@ include:
   - nrpe
   - nginx.nrpe
   - postgresql.server.nrpe
+  - php_fpm.nrpe
   - rsyslog.nrpe
-  - uwsgi.nrpe
 {%- if salt['pillar.get'](formula + ':ssl', False) %}
   - ssl.nrpe
 {%- endif %}

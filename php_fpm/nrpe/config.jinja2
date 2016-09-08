@@ -1,0 +1,7 @@
+{#- Usage of this is governed by a license that can be found in doc/license.rst -#}
+
+# {{ salt['pillar.get']('message_do_not_modify') }}
+
+php_fpm_procs:
+  description: PHP FPM Daemon
+  command: /usr/lib/nagios/plugins/check_procs -c 1:1 -C php5-fpm -u root

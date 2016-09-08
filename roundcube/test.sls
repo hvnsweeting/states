@@ -54,8 +54,6 @@ test:
   diamond:
     - test
     - map:
-        ProcessResources:
-          {{ diamond_process_test('uwsgi-roundcube', zmempct=False) }}
         UserScripts:
           fail2ban.roundcube-auth: True
     - require:
