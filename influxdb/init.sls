@@ -5,7 +5,7 @@ include:
 
 {%- set files_archive = salt['pillar.get']('files_archive', False) %}
 {%- set graphite_address = salt['pillar.get']('graphite_address', False) %}
-{%- set version = "1.0.0-beta3" %}
+{%- set version = "1.0.0" %}
 {%- set mirror = files_archive|replace('file://', '')|replace('https://', 'http://') ~ "/mirror"
   if files_archive else "http://influxdb.s3.amazonaws.com"
 %}
@@ -44,6 +44,16 @@ influxdb:
     - port: 8086
     - require:
       - service: influxdb
+
+{%- set pkg_version = version ~ "-1" %}
+{%- if salt['pkg.version']('influxdb') != pkg_version %}
+remove_influxdb_old_version:
+  pkg:
+    - removed
+    - name: influxdb
+    - require_in:
+      - pkg: influxdb
+{%- endif %}
 
 {%- for dir in ('lib', 'run') %}
 /var/{{ dir }}/influxdb:
