@@ -33,3 +33,9 @@ openvpn_server_{{ instance }}_port_ipv6:
 openvpn_server_procs:
   description: OpenVPN Daemon
   command: '/usr/lib/nagios/plugins/check_procs -c {{ servers|length }}:{{ servers|length }} -u nobody -C openvpn --ereg-argument-array "--config /etc/openvpn/.*/config$"'
+{%- for instance in servers %}
+  {%- if loop.first %}
+  dependencies:
+  {% endif %}
+    - openvpn_server_{{ instance }}
+{%- endfor %}
