@@ -33,10 +33,8 @@ SENTRY_CACHE = 'sentry.cache.django.DjangoCache'
 # Set this to false to require authentication
 SENTRY_PUBLIC = False
 # disable account register
-SENTRY_FEATURES = {
-  'auth:register': False,
-  'social-auth:register': False,
-}
+SENTRY_FEATURES['auth:register'] = False
+SENTRY_FEATURES['social-auth:register'] = False
 
 # You should configure the absolute URI to Sentry. It will attempt to guess it if you don't
 # but proxies may interfere with this.
@@ -143,8 +141,6 @@ STATIC_ROOT = '/var/lib/deployments/sentry/static'
 STATIC_URL = '/_static/'
 
 {#- upgrade: 6.4.4 - 7.40 #}
-
-SENTRY_FEATURES["auth:register"] = False
 
 # You should not change this setting after your database has been created
 # unless you have altered all schemas first
