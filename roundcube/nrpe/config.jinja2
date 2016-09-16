@@ -1,12 +1,10 @@
 {#- Usage of this is governed by a license that can be found in doc/license.rst -#}
 
-{%- from 'uwsgi/nrpe/instance.jinja2' import uwsgi_instance with context -%}
 {%- from 'nginx/nrpe/instance.jinja2' import nginx_instance with context -%}
 {%- from 'postgresql/server/nrpe/instance.jinja2' import postgresql_instance_prefix with context -%}
 {%- set deployment = 'roundcube' -%}
 
 # {{ salt['pillar.get']('message_do_not_modify') }}
 
-{{ uwsgi_instance(deployment) }}
 {{ postgresql_instance_prefix(deployment) }}
-{{ nginx_instance(deployment, extra_dependencies=('roundcube_uwsgi_worker', 'roundcube_postgresql')) }}
+{{ nginx_instance(deployment, extra_dependencies=('roundcube_postgresql',)) }}

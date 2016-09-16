@@ -2,13 +2,12 @@
 
 {% extends "nginx/template.jinja2" %}
 {%- block upstream %}
-upstream roundcube {
-    server unix:///var/lib/uwsgi/roundcube.sock;
+upstream php {
+    server unix:/var/run/php5-fpm.sock;
 }
 {%- endblock %}
 
 {%- block root_location %}
-{%- set timeout = salt['pillar.get']('roundcube:timeout', 60) %}
 {%- for dir in ('skins',) %}
     location /{{ dir }}/ {
         expires max;
@@ -21,13 +20,13 @@ upstream roundcube {
         try_files $uri $uri/ /index.html;
     }
 
-    location ~ .php$ {
+    location ~ \.php$ {
         gzip off;
-        include uwsgi_params;
-        uwsgi_read_timeout {{ timeout }};
-        uwsgi_send_timeout {{ timeout }};
-        uwsgi_modifier1 14;
-        uwsgi_pass roundcube;
+
+        fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include        fastcgi_params;
+        fastcgi_index index.php;
+        fastcgi_pass   php;
     }
 
     location ~ ^/?(\.git|\.tx|SQL|bin|config|logs|temp|tests|program\/(include|lib|localization|steps)) {

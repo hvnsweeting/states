@@ -1,7 +1,13 @@
 {#- Usage of this is governed by a license that can be found in doc/license.rst -#}
+include:
+  - diamond
+  - nginx.diamond
+  - php_fpm.diamond
+  - postgresql.server.diamond
+  - rsyslog.diamond
 
-{%- from 'diamond/macro.jinja2' import uwsgi_diamond with context %}
-{%- call uwsgi_diamond('roundcube') %}
-- postgresql.server.diamond
-- rsyslog.diamond
-{%- endcall %}
+roundcube_diamond_just_avoid_empty_sls:
+  module:
+    - run
+    - name: test.echo
+    - text: test

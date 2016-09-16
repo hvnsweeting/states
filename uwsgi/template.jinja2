@@ -65,6 +65,7 @@ uwsgi:
 {%- set graphite_address = salt['pillar.get']('graphite_address', False) %}
 {%- if graphite_address %}
   carbon-id: {{ appname }}
+  carbon-root: {{ grains['id'] }}.uwsgi
   {%- if salt['dig.check_ip'](graphite_address) %}
   carbon: {{ graphite_address }}:2003
   {%- else %}
@@ -80,9 +81,6 @@ uwsgi:
 {%- endif %}
   chmod-socket: 660
   chown-socket: {{ uid|default('www-data') }}:www-data
-{%- if php_settings|default(False) %}
-{{ php_settings }}
-{%- endif %}
 {%- set file_max = salt['pillar.get']('sysctl:fs.file-max', False) -%}
 {%- if file_max %}
   max-fd: {{ file_max }}

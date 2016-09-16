@@ -6,9 +6,9 @@ include:
   - bash.nrpe
   - git.nrpe
   - nrpe
+  - pip.nrpe
   - python.dev.nrpe
   - rsyslog.nrpe
-  - ruby.nrpe
   - sudo
   - sudo.nrpe
   - web
