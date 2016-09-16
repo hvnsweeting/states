@@ -21,6 +21,7 @@ Example::
       username: joe
       password: test
       email: joe@test.com
+    monitoring_timeout: 3
 
 Mandatory
 ---------
@@ -45,6 +46,15 @@ sentry:initial_admin_user:email
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Email address of initial administrative user created at installation.
+
+.. _pillar-sentry-monitoring_timeout:
+
+sentry:monitoring_timeout
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Timeout of sentry_monitoring_events check.
+
+Default: ``3`` seconds.
 
 .. _pillar-sentry-hostnames:
 

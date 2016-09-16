@@ -118,8 +118,4 @@ def count_events(config):
 
 
 if __name__ == '__main__':
-    nrpe.check(count_events, {
-        "dsn_file": "/var/lib/deployments/sentry/monitoring_dsn.yml",
-        "api_key_file": "/var/lib/deployments/sentry/monitoring_api_key.yml",
-        "timeout": 3,
-    })
+    nrpe.check(count_events, {})
