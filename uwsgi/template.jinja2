@@ -65,6 +65,7 @@ uwsgi:
 {%- set graphite_address = salt['pillar.get']('graphite_address', False) %}
 {%- if graphite_address %}
   carbon-id: {{ appname }}
+  carbon-root: {{ grains['id'] }}.uwsgi
   {%- if salt['dig.check_ip'](graphite_address) %}
   carbon: {{ graphite_address }}:2003
   {%- else %}
