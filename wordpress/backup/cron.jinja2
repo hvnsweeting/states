@@ -1,8 +1,0 @@
-{#- Usage of this is governed by a license that can be found in doc/license.rst -#}
-
-#!/bin/bash
-# {{ salt['pillar.get']('message_do_not_modify') }}
-set -e
-
-/usr/local/bin/backup-mysql {{ salt['pillar.get']('wordpress:db:name', 'wordpress') }}
-/usr/local/bin/backup-file wordpress /usr/local/wordpress/wp-content uploads
