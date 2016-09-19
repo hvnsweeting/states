@@ -75,6 +75,7 @@ uwsgi:
       - file: uwsgi
       - file: /etc/uwsgi.yml
       - user: web
+      - pip: uwsgi_build
 {#- does not use PID, no need to manage #}
 
 {{ manage_upstart_log('uwsgi') }}
