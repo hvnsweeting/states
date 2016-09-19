@@ -2,6 +2,7 @@
 
 {%- set first_ip = salt['monitoring.data']()['ip_addrs']['public'] -%}
 {%- set first_ipv6 = salt['monitoring.data']()['ip_addrs6']['public'] %}
+{%- set default_uri = '/' -%}
 {%- set default_status = '301 Moved Permanently' -%}
 
 # {{ salt['pillar.get']('message_do_not_modify') }}
@@ -10,14 +11,14 @@
   {%- for hostname in map['hostnames'] %}
 redirect_nginx_http_{{ hostname|replace('.', '_') }}:
   description: Redirect NGINX HTTP Protocol
-  command: /usr/lib/nagios/plugins/check_http -H {{ hostname }} -u / -p 80 -e '{{ status | default(default_status) }}' -I {{ first_ip }}
+  command: /usr/lib/nagios/plugins/check_http -H {{ hostname }} -u {{ uri | default(default_uri) }} -p 80 -e '{{ status | default(default_status) }}' -I {{ first_ip }}
   dependencies:
     - nginx_master
 
     {%- if first_ipv6 %}
 redirect_nginx_http_{{ hostname|replace('.', '_') }}_ipv6:
   description: Redirect NGINX HTTP Protocol with IPv6
-  command: /usr/lib/nagios/plugins/check_http -6 -H {{ hostname }} -u / -p 80 -e '{{ status | default(default_status) }}' -I [{{ first_ipv6 }}]
+  command: /usr/lib/nagios/plugins/check_http -6 -H {{ hostname }} -u {{ uri | default(default_uri) }} -p 80 -e '{{ status | default(default_status) }}' -I [{{ first_ipv6 }}]
   dependencies:
     - nginx_master
     {%- endif %}
@@ -33,14 +34,14 @@ redirect_remote_http_{{ hostname|replace('.', '_') }}:
     {%- if map.get('ssl', False) %}
 redirect_nginx_https_{{ hostname|replace('.', '_') }}:
   description: Redirect NGINX HTTPS Protocol
-  command: /usr/lib/nagios/plugins/check_http -S -H {{ hostname }} -u / -p 443 -e '{{ status | default(default_status) }}' -I {{ first_ip }}
+  command: /usr/lib/nagios/plugins/check_http -S -H {{ hostname }} -u {{ uri | default(default_uri) }} -p 443 -e '{{ status | default(default_status) }}' -I {{ first_ip }}
   dependencies:
     - nginx_master
 
       {%- if first_ipv6 %}
 redirect_nginx_https_{{ hostname|replace('.', '_') }}_ipv6:
   description: Redirect NGINX HTTPS Protocol with IPv6
-  command: /usr/lib/nagios/plugins/check_http -6 -S -H {{ hostname }} -u / -p 443 -e '{{ status | default(default_status) }}' -I {{ first_ipv6 }}
+  command: /usr/lib/nagios/plugins/check_http -6 -S -H {{ hostname }} -u {{ uri | default(default_uri) }} -p 443 -e '{{ status | default(default_status) }}' -I {{ first_ipv6 }}
   dependencies:
     - nginx_master
       {%- endif %}
