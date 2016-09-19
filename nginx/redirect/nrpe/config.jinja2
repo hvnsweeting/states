@@ -25,7 +25,7 @@ redirect_nginx_http_{{ hostname|replace('.', '_') }}_ipv6:
 
 redirect_remote_http_{{ hostname|replace('.', '_') }}:
   description: Redirect Remote HTTP {{ hostname }}
-  check: check_http!{{ hostname }}!/!'{{ status | default(default_status) }}'
+  check: check_http!{{ hostname }}!'{{ uri | default(default_uri) }}'!'{{ status | default(default_status) }}'
   {{ passive_interval(15) }}
   passive: False
   dependencies:
@@ -68,7 +68,7 @@ redirect_ssl_configuration_{{ hostname|replace('.', '_') }}:
 
 redirect_remote_https_{{ hostname|replace('.', '_') }}:
   description: Redirect Remote HTTPS {{ hostname }}
-  check: check_https!{{ hostname }}!/!'{{ status | default(default_status) }}'
+  check: check_https!{{ hostname }}!'{{ uri | default(default_uri) }}'!'{{ status | default(default_status) }}'
   {{ passive_interval(15) }}
   passive: False
   dependencies:
