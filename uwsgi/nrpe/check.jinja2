@@ -1,10 +1,10 @@
 {#- Usage of this is governed by a license that can be found in doc/license.rst -#}
-
-#!/bin/bash
-# {{ salt['pillar.get']('message_do_not_modify') }}
 {#- the reason this script is used instead of /usr/local/uwsgi/uwsgi
 is because of security reason.
 to force nagios user to only be able to run this check with uwsgi.
 this prevent a user to run uwsgi in a way it overwrite running instance
 or run arbitrary code. -#}
+
+#!/bin/bash
+# {{ salt['pillar.get']('message_do_not_modify') }}
 /usr/local/bin/uwsgi --socket /var/lib/uwsgi/${1}.sock --nagios
