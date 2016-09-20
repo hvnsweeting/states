@@ -44,6 +44,9 @@ class SentryMonitoring(pysc.Application):
             "--api-key-file", help="path to write monitoring sentry \
                                     web api key", required=True)
         argp.add_argument(
+            "--timeout", help="timeout of monitoring sentry check",
+            type=int, required=True)
+        argp.add_argument(
             "--test", help="run in test mode", action="store_true")
 
         return argp
@@ -51,6 +54,7 @@ class SentryMonitoring(pysc.Application):
     def main(self):
         dsn_file = self.config["dsn_file"]
         api_key_file = self.config["api_key_file"]
+        timeout = self.config["timeout"]
         test_mode = self.config["test"]
 
         # get or create monitoring user
@@ -109,9 +113,11 @@ class SentryMonitoring(pysc.Application):
         key.save()
 
         dsn = key.get_dsn()
+        # set timeout
+        dsn = '{0}?timeout={1}'.format(dsn, timeout)
         # disable verify_ssl in test mode
         if test_mode:
-            dsn += "?verify_ssl=0"
+            dsn += "&verify_ssl=0"
 
         with open(dsn_file, "w") as f:
             yaml.dump({"dsn": dsn}, f)
