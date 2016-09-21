@@ -59,7 +59,7 @@ extend:
 
 {%- set dsn_file = "/var/lib/deployments/sentry/monitoring_dsn.yml" %}
 {%- set api_key_file = "/var/lib/deployments/sentry/monitoring_api_key.yml" %}
-{%- set monitoring_timeout = salt['pillar.get']('sentry:monitoring_timeout') %}
+{%- set monitoring_timeout = salt['pillar.get']('sentry:monitoring_timeout', 3) %}
 {#-
 the command below will create dsn_file with:
   * user: www-data
