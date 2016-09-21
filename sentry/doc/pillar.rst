@@ -47,15 +47,6 @@ sentry:initial_admin_user:email
 
 Email address of initial administrative user created at installation.
 
-.. _pillar-sentry-monitoring_timeout:
-
-sentry:monitoring_timeout
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Timeout of sentry_monitoring_events check.
-
-Default: ``3`` seconds.
-
 .. _pillar-sentry-hostnames:
 
 sentry:hostnames
@@ -134,6 +125,8 @@ sentry:ssl_redirect
 
 .. include:: /uwsgi/doc/pillar.inc
 
+.. _pillar-sentry-clean_days:
+
 sentry:clean_days
 ~~~~~~~~~~~~~~~~~
 
@@ -141,3 +134,12 @@ sentry:clean_days
 than this pillar value (in days) will be deleted.
 
 Default: do not delete old data (``False``).
+
+.. _pillar-sentry-monitoring_timeout:
+
+sentry:monitoring_timeout
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Timeout of sentry_monitoring_events check.
+
+Default: ``3`` seconds.
