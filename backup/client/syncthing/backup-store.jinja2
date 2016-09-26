@@ -1,7 +1,0 @@
-{#- Usage of this is governed by a license that can be found in doc/license.rst -#}
-{% extends "backup/client/local/backup-store.jinja2" %}
-{% block backup_commands %}
-chown syncthing:syncthing "$archive_file"
-mv "$archive_file" "$backup_dir"
-chown -R syncthing:syncthing "$backup_dir"
-{% endblock %}

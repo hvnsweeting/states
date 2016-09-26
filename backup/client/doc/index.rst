@@ -29,4 +29,3 @@ Contents:
     ../scp/doc/index
     ../noop/doc/index
     ../local/doc/index
-    ../syncthing/doc/index
