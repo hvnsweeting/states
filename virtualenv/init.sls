@@ -31,6 +31,7 @@ virtualenv:
 {%- endif %}
     - name: pip.install
     - requirements: {{ opts['cachedir'] }}/pip/virtualenv
+    - reload_modules: True {# this state introduces new path of virtualenv, reload to get it #}
     - require:
       - pkg: git
       - pkg: mercurial
