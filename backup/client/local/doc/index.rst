@@ -7,7 +7,7 @@ local
 
 Backup storage driver that stores backup archives in a local directory. It is
 recommended to set :ref:`pillar-backup-local-path` to a shared directory of
-:doc:`/scp/doc/index`.
+:doc:`/backup/client/scp/doc/index`.
 
 .. toctree::
     :glob:
