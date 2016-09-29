@@ -240,7 +240,20 @@ service: nagios-nrpe-server #}
   file:
     - managed
     - template: jinja
-    - source: salt://nrpe/sudo.jinja2
+    - source: salt://nrpe/sudo_check_oom.jinja2
+    - mode: 440
+    - user: root
+    - group: root
+    - require:
+      - pkg: sudo
+    - require_in:
+      - file: nsca-nrpe
+
+/etc/sudoers.d/nrpe_disk:
+  file:
+    - managed
+    - template: jinja
+    - source: salt://nrpe/sudo_check_disk.jinja2
     - mode: 440
     - user: root
     - group: root
