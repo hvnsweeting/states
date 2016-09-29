@@ -21,6 +21,8 @@ Format::
         server_key: other ssl key content
         server_crt: other ssl cert content
         ca_crt: other ssl ca cert content
+      [domain_name]:
+        letsencrypt: True
 
 Example::
 
@@ -191,6 +193,15 @@ days.
 Default: ``15``.
 
 Used only if ``{{ appname }}:ssl`` is turned on.
+
+.. _pillar-ssl-certs-domain-letsencrypt:
+
+ssl:certs:{{ domain }}:letsencrypt
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Indicates to get certificate from `Letsencrypt <http://letsencrypt.org/>_`
+by using :doc:`/acmetool/doc/index`.
+This is mutual exclusion with using certificates from pillar.
 
 .. _pillar-ssl-certs-name-server_key:
 
