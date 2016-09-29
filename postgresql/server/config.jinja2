@@ -64,7 +64,7 @@ ssl = true
 ssl_renegotiation_limit = 512MB
 ssl_ciphers = 'EDH+CAMELLIA:EDH+aRSA:EECDH+aRSA+AESGCM:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH:+CAMELLIA256:+AES256:+CAMELLIA128:+AES128:!SSLv3:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PS'
 ssl_cert_file = '/etc/ssl/certs/{{ pgsql_ssl }}_chained.crt'
-ssl_key_file = '/etc/ssl/private/{{ pgsql_ssl }}.pem'
+ssl_key_file = '/etc/ssl/private/{{ pgsql_ssl }}.key'
 {% else %}
 ssl = false
 {% endif %}
