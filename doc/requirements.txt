@@ -2,7 +2,7 @@
 # {{ salt['pillar.get']('message_do_not_modify') }}
 http://archive.robotinfra.com/pip/sphinx_rtd_theme-0.1.7.tar.bz2
 Sphinx==1.2.3
-pyyaml==3.11
+pyyaml==3.12
 docutils==0.11
 rst2pdf==0.93
 Pillow==2.8.2
