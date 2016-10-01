@@ -3,6 +3,9 @@
 These are required to run some Salt states/modules
 for e.g, `salt.modules.dig` need `dnsutils` to be installed
 -#}
+include:
+  - pip
+  - yaml
 
 salt_minion_deps:
   pkg:
@@ -24,3 +27,9 @@ salt_minion_deps:
       - pciutils
       - dmidecode
 {%- endif %}
+  pip:
+    - installed
+    - name: pyyaml==3.12
+    - require:
+      - module: pip
+      - pkg: yaml
