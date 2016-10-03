@@ -65,6 +65,13 @@ nagios-nrpe-server:
       - service: nagios-nrpe-server
       - service: nsca_passive
 
+/etc/sudoers.d/nrpe_disk:
+  file:
+    - absent
+    - require:
+      - service: nagios-nrpe-server
+      - service: nsca_passive
+
 /etc/cron.d/passive-checks-nrpe.cfg:
   file:
     - absent
