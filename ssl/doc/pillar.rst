@@ -12,6 +12,7 @@ Format::
 
   ssl:
     expiry_days: 15
+    letsencrypt_admin_email: admin@example.com
     certs:
       [key_name]:
         server_key: ssl key content
@@ -169,6 +170,14 @@ ssl:certs
 Define one or multiple SSL certificates.
 
 Default: ``{}``.
+
+ssl:letsencrypt_admin_email
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Email address of admin who will be contacted if Letsencrypt certificates are
+about to expiry.
+
+Default: not use letsencrypt (``None``).
 
 Conditional
 -----------

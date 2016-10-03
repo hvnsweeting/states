@@ -1,9 +1,12 @@
 {#- Usage of this is governed by a license that can be found in doc/license.rst -#}
+{%- set use_letsencrypt = salt['pillar.get']('ssl:letsencrypt_admin_email', None) %}
 
 include:
   - apt
   - openssl
+{%- if use_letsencrypt %}
   - acmetool
+{%- endif %}
 
 ssl-cert:
   pkg:
@@ -206,7 +209,7 @@ ssl_cert_and_key_for_{{ name }}:
 /etc/ssl/{{ name }}:
   file:
     - absent
-{%- set cert_from_letsencrypt = salt['pillar.get']('ssl:certs:' ~ name ~ ':letsencrypt', False) %}
+{%- set cert_from_letsencrypt = salt['pillar.get']('ssl:certs:' ~ name ~ ':letsencrypt', False) and use_letsencrypt %}
 {{ manage_ssl(name, cert_from_letsencrypt) }}
 {% endfor -%}
 
