@@ -14,7 +14,7 @@ protocol = http
 http_addr = 127.0.0.1
 http_port = 3000
 
-domain = {{ salt['pillar.get']('grafana:hostnames')[0] }}
+domain = 127.0.0.1
 enforce_domain = false {# let NGINX handle it #}
 
 root_url = %(protocol)s://%(domain)s:%(http_port)s/
