@@ -141,7 +141,8 @@ apt_sources:
     - pkgs:
       - debconf-utils
       - python-apt
-      - python-software-properties
+      - python-software-properties {# to run pkgrepo with ppa argument #}
+    - reload_modules: True
     - require:
       - module: apt
       - file: /var/lib/apt/periodic

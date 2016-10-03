@@ -3,6 +3,7 @@
 include:
   - apt
   - openssl
+  - acmetool
 
 ssl-cert:
   pkg:
@@ -61,40 +62,63 @@ ssl_dhparam:
     - require:
       - pkg: ssl-cert
 
-{% for name in salt['pillar.get']('ssl:certs', {}) -%}
-/etc/ssl/{{ name }}:
-  file:
-    - absent
+{%- macro manage_ssl(name, cert_from_letsencrypt=False) %}
+# managing SSL from pillar or generate by letsencrypt
+{%- if not cert_from_letsencrypt %}
+  {%- set server_key = salt['pillar.get']('ssl:certs:' + name + ':server_key') | indent(8) -%}
+  {%- set server_crt = salt['pillar.get']('ssl:certs:' + name + ':server_crt') | indent(8) -%}
+  {%- set ca_crt = salt['pillar.get']('ssl:certs:' + name + ':ca_crt') | indent(8) %}
+{%- else %}
+acmetool_set_group: {# API, for using by ssl-cert group #}
+  cmd:
+    - run
+    - name: find /var/lib/acme/keys/ -type d -exec chown -R root:ssl-cert {} \;
+    - require:
+      - file: acmetool_renew_config
+      - pkg: ssl-cert
+    - require_in:
+      - cmd: ssl_create_symlink_by_hash
+{%- endif %}
 
-{%- set server_key = salt['pillar.get']('ssl:certs:' + name + ':server_key') | indent(8) -%}
-{%- set server_crt = salt['pillar.get']('ssl:certs:' + name + ':server_crt') | indent(8) -%}
-{%- set ca_crt = salt['pillar.get']('ssl:certs:' + name + ':ca_crt') | indent(8) %}
 
 /etc/ssl/private/{{ name }}.key:
   file:
+{%- if not cert_from_letsencrypt %}
     - managed
     - contents: |
         {{ server_key }}
+    - mode: 440
     - user: root
     - group: ssl-cert
-    - mode: 440
+{% else %}
+    - symlink
+    - target: /var/lib/acme/live/{{ name }}/privkey
+{% endif %}
     - require:
       - pkg: ssl-cert
       - file: /etc/ssl/private
 
 /etc/ssl/certs/{{ name }}.crt:
   file:
+{%- if not cert_from_letsencrypt %}
     - managed
     - contents: |
         {{ server_crt }}
     - user: root
     - group: ssl-cert
     - mode: 444
+{% else %}
+    - symlink
+    - target: /var/lib/acme/live/{{ name }}/cert
+{% endif %}
     - require:
       - pkg: ssl-cert
+    - watch_in:
+      - cmd: ssl_create_symlink_by_hash
 
 /etc/ssl/certs/{{ name }}_ca.crt:
   file:
+{% if not cert_from_letsencrypt %}
     - managed
     - contents: |
         {{ ca_crt }}
@@ -104,9 +128,16 @@ ssl_dhparam:
   {%- if ca_crt == "" %}
     - replace: False
   {%- endif %}
+{% else %}
+    - symlink
+    - target: /var/lib/acme/live/{{ name }}/chain
+{% endif %}
     - require:
       - pkg: ssl-cert
+    - watch_in:
+      - cmd: ssl_create_symlink_by_hash
 
+{%- if not cert_from_letsencrypt %}
 {#-
 Create from server private key and certificate a PEM used by most daemon
 that support SSL.
@@ -124,6 +155,7 @@ that support SSL.
       - pkg: ssl-cert
       - file: /etc/ssl/private
 
+{%- endif %}
 {#-
 Some browsers may complain about a certificate signed by a well-known
 certificate authority, while other browsers may accept the certificate without
@@ -137,6 +169,7 @@ in the combined file:
 #}
 /etc/ssl/certs/{{ name }}_chained.crt:
   file:
+{%- if not cert_from_letsencrypt %}
     - managed
     - contents: |
         {{ server_crt }}
@@ -144,28 +177,14 @@ in the combined file:
     - user: root
     - group: ssl-cert
     - mode: 444
+{% else %}
+    - symlink
+    - target: /var/lib/acme/live/{{ name }}/fullchain
+{% endif %}
     - require:
       - pkg: ssl-cert
-
-{#- OpenSSL expects to find each certificate in a file named by the certificate
-    subject's hashed name, plus a number extension that starts with 0.
-
-    That means you can't just drop My_Awesome_CA_Cert.pem in the directory and
-    expect it to be picked up automatically. However, OpenSSL ships with
-    a utility called c_rehash which you can invoke on a directory
-    to have all certificates indexed with appropriately named symlinks.
-
-    http://mislav.uniqpath.com/2013/07/ruby-openssl/#SSL_CERT_DIR #}
-ssl_create_symlink_by_hash_for_{{ name }}:
-  cmd:
-    - wait
-    - name: c_rehash /etc/ssl/certs > /dev/null
-    - watch:
-      - file: /etc/ssl/certs/{{ name }}.crt
-      - file: /etc/ssl/certs/{{ name }}_ca.crt
-      - file: /etc/ssl/certs/{{ name }}_chained.crt
-    - require:
-      - cmd: ca-certificates
+    - watch_in:
+      - cmd: ssl_create_symlink_by_hash
 
 {#- as service need to watch all cert files, use this cmd as trigger that
     service restart everywhen cert files changed #}
@@ -177,9 +196,32 @@ ssl_cert_and_key_for_{{ name }}:
       - file: /etc/ssl/private/{{ name }}.key
       - file: /etc/ssl/certs/{{ name }}.crt
       - file: /etc/ssl/certs/{{ name }}_ca.crt
-      - file: /etc/ssl/private/{{ name }}.pem
       - file: /etc/ssl/certs/{{ name }}_chained.crt
     - require:
-      - cmd: ssl_create_symlink_by_hash_for_{{ name }}
+      - cmd: ssl_create_symlink_by_hash
       - file: ssl_dhparam
+{%- endmacro %}
+
+{% for name in salt['pillar.get']('ssl:certs', {}) -%}
+/etc/ssl/{{ name }}:
+  file:
+    - absent
+{%- set cert_from_letsencrypt = salt['pillar.get']('ssl:certs:' ~ name ~ ':letsencrypt', False) %}
+{{ manage_ssl(name, cert_from_letsencrypt) }}
 {% endfor -%}
+
+{#- OpenSSL expects to find each certificate in a file named by the certificate
+    subject's hashed name, plus a number extension that starts with 0.
+
+    That means you can't just drop My_Awesome_CA_Cert.pem in the directory and
+    expect it to be picked up automatically. However, OpenSSL ships with
+    a utility called c_rehash which you can invoke on a directory
+    to have all certificates indexed with appropriately named symlinks.
+
+    http://mislav.uniqpath.com/2013/07/ruby-openssl/#SSL_CERT_DIR #}
+ssl_create_symlink_by_hash:
+  cmd:
+    - wait
+    - name: c_rehash /etc/ssl/certs > /dev/null
+    - require:
+      - cmd: ca-certificates

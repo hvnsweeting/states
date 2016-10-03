@@ -4,7 +4,7 @@
     listen {% if ip %}{{ ip }}:{% endif %}443 ssl;
     listen [::]:443 ssl;
     ssl_certificate /etc/ssl/certs/{{ certname }}_chained.crt;
-    ssl_certificate_key /etc/ssl/private/{{ certname }}.pem;
+    ssl_certificate_key /etc/ssl/private/{{ certname }}.key;
     ssl_client_certificate /etc/ssl/certs/{{ certname }}_ca.crt;
     ssl_session_cache shared:SSL:10m;
     ssl_session_timeout 10m;

@@ -152,7 +152,7 @@ http {
         listen 443 default_server ssl;
         listen [::]:443 default_server ssl;
         ssl_certificate /etc/ssl/certs/{{ ssl }}_chained.crt;
-        ssl_certificate_key /etc/ssl/private/{{ ssl }}.pem;
+        ssl_certificate_key /etc/ssl/private/{{ ssl }}.key;
         ssl_client_certificate /etc/ssl/certs/{{ ssl }}_ca.crt;
         ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
         server_name "";

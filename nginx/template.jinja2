@@ -51,6 +51,12 @@ server {
 {%- block first_location %}
 {%- endblock %}
 
+{%- block letsencrypt %}
+    location /.well-known/acme-challenge/ {
+      alias /var/run/acme/acme-challenge/;
+    }
+{%- endblock %}
+
 {%- block static_location %}
 {% for dir in static_dirs %}
     location /{{ dir }}/ {
