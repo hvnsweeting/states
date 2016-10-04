@@ -32,11 +32,3 @@ Related Formulas
 ----------------
 
 * :doc:`/apt/doc/index`
-
-Content
--------
-
-.. toctree::
-    :glob:
-
-    *
