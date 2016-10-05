@@ -14,7 +14,7 @@
 {%- if hostnames is not defined %}
   {%- set hostnames = salt['pillar.get'](pillar_prefix + ':hostnames') %}
 {%- endif %}
-{%- set ssl_redirect = salt['pillar.get'](pillar_prefix + ':ssl_redirect', False) %}
+{%- set ssl_redirect = salt['pillar.get'](pillar_prefix + ':ssl_redirect', True) %}
 
 {%- block header %}
 {%- endblock %}

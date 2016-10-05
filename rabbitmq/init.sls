@@ -252,7 +252,7 @@ host_{{ node }}:
     - context:
         destination: http://127.0.0.1:15672
         ssl: {{ salt['pillar.get']('rabbitmq:ssl', False) }}
-        ssl_redirect: {{ salt['pillar.get']('rabbitmq:ssl_redirect', False) }}
+        ssl_redirect: {{ salt['pillar.get']('rabbitmq:ssl_redirect', True) }}
         hostnames: {{ salt['pillar.get']('rabbitmq:hostnames') }}
     - watch_in:
       - service: nginx

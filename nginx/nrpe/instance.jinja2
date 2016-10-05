@@ -17,7 +17,7 @@
         and pillar value ask for it
         http is redirected to https, force a specific header.
       -#}
-    {%- if salt['pillar.get'](pillar_prefix + ':ssl_redirect', False) and allow_ssl_redirect -%}
+    {%- if salt['pillar.get'](pillar_prefix + ':ssl_redirect', True) and allow_ssl_redirect -%}
         {%- set http_result="301 Moved Permanently" -%}
     {%- elif not http_result -%}
         {%- set http_result="200 OK" -%}
@@ -113,7 +113,7 @@
 
 {%- macro check_bad_link(formula, pillar_prefix=None) %}
   {%- set pillar_prefix = pillar_prefix or formula %}
-  {%- set https_arg = "-ssl" if salt['pillar.get'](pillar_prefix ~ ':ssl_redirect', False) else "" %}
+  {%- set https_arg = "-ssl" if salt['pillar.get'](pillar_prefix ~ ':ssl_redirect', True) else "" %}
   {%- set domain_name = salt['pillar.get'](pillar_prefix ~ ':hostnames')[0] -%}
 check_bad_link_{{ formula }}:
   cmd:
