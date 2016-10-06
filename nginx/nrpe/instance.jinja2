@@ -17,7 +17,9 @@
         and pillar value ask for it
         http is redirected to https, force a specific header.
       -#}
-    {%- if salt['pillar.get'](pillar_prefix + ':ssl_redirect', True) and allow_ssl_redirect -%}
+    {%- if salt['pillar.get'](pillar_prefix + ':ssl', False)
+        and salt['pillar.get'](pillar_prefix + ':ssl_redirect', True)
+        and allow_ssl_redirect -%}
         {%- set http_result="301 Moved Permanently" -%}
     {%- elif not http_result -%}
         {%- set http_result="200 OK" -%}
