@@ -14,8 +14,6 @@ upstream grafana {
 {%- block root_location %}
 
     location / {
-        client_max_body_size 50M;
-        gzip off;
         proxy_set_header X-Forwarded-Ssl on;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
@@ -33,8 +31,6 @@ upstream grafana {
     location /render/ {
         limit_conn perserver {{ grains['num_cpus'] }};
         {# all directive same as in / #}
-        client_max_body_size 50M;
-        gzip off;
         proxy_set_header X-Forwarded-Ssl on;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
