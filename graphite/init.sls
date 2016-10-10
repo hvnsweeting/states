@@ -173,9 +173,8 @@ graphite-web-uwsgi:
     - wait
     - name: file.touch
     - m_name: /etc/uwsgi/graphite.yml
-    - require:
-      - file: /etc/uwsgi/graphite.yml
     - watch:
+      - file: graphite-web-uwsgi
       - user: graphite
       - module: graphite_settings
       - file: graphite_wsgi
