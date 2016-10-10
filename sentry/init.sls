@@ -140,9 +140,8 @@ sentry-uwsgi:
     - wait
     - name: file.touch
     - m_name: /etc/uwsgi/sentry.yml
-    - require:
-      - file: /etc/uwsgi/sentry.yml
     - watch:
+      - file: sentry-uwsgi
       - file: sentry
       - cmd: sentry_settings
       - file: /var/lib/deployments/sentry
