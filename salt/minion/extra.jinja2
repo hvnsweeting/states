@@ -3,5 +3,12 @@
 # {{ salt['pillar.get']('message_do_not_modify') }}
 
 {%- for k, v in salt['pillar.get']('salt:extra', {}).iteritems() %}
+{%- if v is mapping %}
+{{ k }}:
+{%- for subkey, subvalue in v.iteritems() %}
+  {{ subkey }}: {{ subvalue }}
+{%- endfor %}
+{%- else %}
 {{ k }}: {{ v }}
+{%- endif %}
 {%- endfor %}
