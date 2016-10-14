@@ -8,3 +8,8 @@ backup_replicate:
 /etc/cron.daily/backup_replicate:
   file:
     - absent
+
+backup_replicate_cleanup_old_archive:
+  file:
+    - absent
+    - name: /etc/cron.daily/backup-server-ssh
