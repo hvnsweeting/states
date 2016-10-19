@@ -9,6 +9,8 @@ file_client: remote
 file_client: local
 {%- endif %}
 
+cache_jobs: {{ salt['pillar.get']('salt:cache_jobs', False) }}
+
 file_roots:
   base:
     - /srv/salt/states

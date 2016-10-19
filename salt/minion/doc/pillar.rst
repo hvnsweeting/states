@@ -39,6 +39,15 @@ If set to ``False`` means this minion will run in master-less (local) mode.
 
 Default: ``False``.
 
+.. _pillar-salt-cache_jobs:
+
+salt:cache_jobs
+~~~~~~~~~~~~~~~
+
+Whether to turn on cache jobs on :doc:`index`.
+
+Default: disable (``False``).
+
 .. _pillar-salt-extra:
 
 salt:extra
