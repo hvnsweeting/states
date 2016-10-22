@@ -42,7 +42,9 @@ apt-get install -y --force-yes salt-minion
 
 if [ $LOCAL_MODE -eq 1 ]; then
     echo "Salt master-less (local) mode"
-    if [ ! -f /.dockerinit ]; then
+    if grep docker /proc/1/cgroup ; then
+      echo "Running in docker, do not change hostname"
+    else
       echo $1 > /etc/hostname
       hostname `cat /etc/hostname`
     fi
