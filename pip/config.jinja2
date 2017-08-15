@@ -21,6 +21,3 @@ proxy = {{ salt['pillar.get']('proxy_server') }}
 {%- if salt['pillar.get']('debug', False) %}
 verbose = true
 {%- endif %}
-
-trusted-host = {%- for t_host in salt['pillar.get']('pip:trusted_hosts', []) %} {{ t_host }} {% endfor %}
-{%- if files_archive %}{{ salt['common.urlparse'](files_archive).hostname }}{%- endif %}

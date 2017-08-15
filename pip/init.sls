@@ -41,14 +41,6 @@ pip-config:
       - file: {{ root_user_home }}/.pip
       - file: /var/cache/pip
 
-distutils-config:
-  file:
-    - managed
-    - name: {{ root_user_home }}/.pydistutils.cfg
-    - template: jinja
-    - source: salt://pip/distutils.jinja2
-    - user: root
-    - group: root
 
 python-pip:
   pkg:
@@ -77,11 +69,7 @@ pip:
   archive:
     - extracted
     - name: {{ opts['cachedir'] }}/pip
-{%- if files_archive %}
-    - source: {{ files_archive }}/pip/pip-{{ version }}.tar.gz
-{%- else %}
     - source: https://pypi.python.org/packages/source/p/pip/pip-{{ version }}.tar.gz
-{%- endif %}
     - source_hash: md5=6b86f11841e89c8241d689956ba99ed7
     - archive_format: tar
     - tar_options: z
@@ -105,7 +93,6 @@ pip:
     - require:
       - pkg: python-pip
       - file: pip-config
-      - file: distutils-config
       - pkg: python
       - pkg: python-setuptools
       - file: pip
