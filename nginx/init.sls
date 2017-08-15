@@ -1,10 +1,8 @@
 {#- Usage of this is governed by a license that can be found in doc/license.rst -#}
 
-{%- from 'upstart/rsyslog.jinja2' import manage_upstart_log with context -%}
 include:
   - apt
   - hostname
-  - rsyslog
   - ssl.dev
   - web
 
@@ -67,25 +65,6 @@ nginx-old-init-disable:
     - watch:
       - file: nginx-old-init
 
-{% set logger_types = ('access', 'error') %}
-
-{% for log_type in logger_types %}
-/var/log/nginx/{{ log_type }}.log:
-  file:
-    - absent
-    - require:
-      - service: nginx
-
-nginx-logger-{{ log_type }}:
-  file:
-    - absent
-    - name: /etc/init/nginx-logger-{{ log_type }}.conf
-    - require:
-      - service: nginx-logger-{{ log_type }}
-  service:
-    - dead
-{% endfor %}
-
 /etc/logrotate.d/nginx:
   file:
     - absent
@@ -104,24 +83,8 @@ nginx_dependencies:
       - pkg: ssl-dev
       - cmd: apt_sources
 
-{%- set version = '1.10.1' %}
-{%- set sub_version = '{0}-1~{1}'.format(version, grains['oscodename']) %}
-{%- set filename = 'nginx_{0}_{1}.deb'.format(sub_version, grains['osarch']) %}
-
 {#- PID file owned by root, no need to manage #}
 nginx:
-  file:
-    - managed
-    - name: /etc/init/nginx.conf
-    - template: jinja
-    - user: root
-    - group: root
-    - mode: 440
-    - source: salt://nginx/upstart.jinja2
-    - require:
-      - pkg: nginx
-      - file: nginx-old-init
-      - module: nginx-old-init
   service:
     - running
     - enable: True
@@ -129,7 +92,6 @@ nginx:
     - watch:
       - host: hostname
       - user: web
-      - file: nginx
       - file: nginx.conf
       - file: /etc/nginx/mime.types
 {%- for filename in bad_configs %}
@@ -138,19 +100,20 @@ nginx:
       - pkg: nginx
       - user: nginx
 {%- set files_archive = salt['pillar.get']('files_archive', False) %}
+  pkgrepo:
+    - managed
+    - key_url: http://nginx.org/keys/nginx_signing.key
+    - name: deb http://nginx.org/packages/mainline/ubuntu/ {{ grains['oscodename'] }} nginx
+    - require:
+      - pkg: apt_sources
   pkg:
-    - installed
-    - sources:
-{%- if files_archive %}
-      - nginx: {{ files_archive|replace('file://', '')|replace('https://', 'http://') }}/mirror/{{ filename }}
-{%- else %}
-      {#- source: http://nginx.org/packages/mainline/ubuntu #}
-      - nginx: https://archive.robotinfra.com/mirror/{{ filename }}
+    - latest
 {%- endif %}
     - require:
       - host: hostname
       - user: web
       - pkg: nginx_dependencies
+      - pkgrepo: nginx
 {%- for log_type in logger_types %}
       - file: nginx-logger-{{ log_type }}
 {%- endfor %}
@@ -159,8 +122,6 @@ nginx:
     - shell: /bin/false
     - require:
       - pkg: nginx
-
-{{ manage_upstart_log('nginx') }}
 
 {%- if salt['pkg.version']('nginx') not in ('', sub_version) %}
 nginx_old_version:
