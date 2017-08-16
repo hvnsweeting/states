@@ -5,7 +5,8 @@
 user www-data www-data;
 worker_processes {{ salt['pillar.get']('nginx:worker_processes', 'auto') }};
 
-error_log syslog:server=localhost,severity=warn;
+error_log syslog:server=unix:/dev/log;
+
 pid /var/run/nginx.pid;
 daemon off;
 
