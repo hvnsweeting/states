@@ -118,6 +118,20 @@ nginx:
     - shell: /bin/false
     - require:
       - pkg: nginx
+  file:
+    - managed
+    - name: /lib/systemd/system/nginx.service
+    - source: salt://nginx/systemd.jinja2
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: 644
+    - require:
+      - pkg: nginx
+      - user: web
+      - file: /var/www
+    - require_in:
+      - service: nginx
 
 /etc/apt/sources.list.d/nginx.org-packages_ubuntu-precise.list:
   file:
