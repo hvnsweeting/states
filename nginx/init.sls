@@ -108,29 +108,16 @@ nginx:
       - pkg: apt_sources
   pkg:
     - latest
-{%- endif %}
     - require:
       - host: hostname
       - user: web
       - pkg: nginx_dependencies
       - pkgrepo: nginx
-{%- for log_type in logger_types %}
-      - file: nginx-logger-{{ log_type }}
-{%- endfor %}
   user:
     - present
     - shell: /bin/false
     - require:
       - pkg: nginx
-
-{%- if salt['pkg.version']('nginx') not in ('', sub_version) %}
-nginx_old_version:
-  pkg:
-    - removed
-    - name: nginx
-    - require_in:
-      - pkg: nginx
-{%- endif %}
 
 /etc/apt/sources.list.d/nginx.org-packages_ubuntu-precise.list:
   file:
@@ -152,11 +139,4 @@ nginx_old_version:
       - user: web
       - file: /var/www
     - require_in:
-      - service: nginx
-
-nginx_verify_version:
-  cmd:
-    - wait
-    - name: nginx -v 2>&1 | grep -q '{{ version }}'
-    - watch:
       - service: nginx
