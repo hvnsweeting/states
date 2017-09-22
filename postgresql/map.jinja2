@@ -3,7 +3,7 @@
     "version": "9.4",
     "repo_configs": {
       "9.4": {
-        "repo": "deb " ~ files_archive|replace('https://', 'http://') ~ "/mirror/postgresql/9.4.5-1 " ~ grains['oscodename'] ~ "-pgdg  main",
+        "repo": "deb http://apt.postgresql.org/pub/repos/apt/ " ~ grains['oscodename'] ~ "-pgdg main"
         "key": "key-9.4.gpg",
         "unix_socket_dir_var": "unix_socket_directories",
       },
